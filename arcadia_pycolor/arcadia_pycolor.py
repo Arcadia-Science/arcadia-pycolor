@@ -1,11 +1,7 @@
-import pandas as pd
 import numpy as np
-import seaborn as sns
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy.interpolate import make_interp_spline
-
-from sklearn import datasets
-import matplotlib as mpl
 
 arcadia_Core = {
     'arcadia:lightgrey': '#EBEDE8',
