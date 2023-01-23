@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='Arcadia-Pycolor',
+    name='arcadia_pycolor',
     url='https://github.com/Arcadia-Science/arcadia-pycolor',
     author='Dennis Sun',
     author_email='dennis.sun@arcadiascience.com',
