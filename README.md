@@ -15,11 +15,11 @@ Install using the pip in that environment.
 Import the colors as follows.  
 You can access the `'color':'HEX'` dictionaries from the below options:
 - `arcadia_Core`: Core colors such as `'arcadia:forest'`
-- `arcadia_Neural`: 
-- `arcadia_Accent`
-- `arcadia_Light_accent`
-- `arcadia_Accent_expanded`
-- `arcadia_Light_accent_expanded`
+- `arcadia_Neutral`: Dark and light colors for lines and backgrounds.
+- `arcadia_Accent`: Bright accent colors for figure labels. Colorblind-safe.
+- `arcadia_Light_accent`: Light accent colors for figure labels. Colorblind-safe.
+- `arcadia_Accent_expanded`: Additional bright accent colors for figure labels that are compatible with Accent colors.
+- `arcadia_Light_accent_expanded`: Additional light accent colors for figure labels that are compatible with Light_accent colors.
 
 
 ```python
@@ -102,8 +102,6 @@ These color pairs are good for showing over/under plots such as heatmaps, and ar
 
 
 ```python
-import matplotlib as mpl
-
 data = [np.arange(0, 11)]
 fig, (ax1, ax2, ax3) = plt.subplots(nrows=3)
 
@@ -127,6 +125,60 @@ apc.plot_examples([mpl.colormaps['arcadia:aegeanamber'],
 
     
 ![png](README_files/README_8_1.png)
+    
+
+
+## Matplotlib `ListedColormap`s
+
+This package also includes some selected `ListedColormap` objects to cycle through when you have a variable number of samples to plot.  
+The colors are selected to be visually distinct and (mostly) colorblind-friendly regardless of the number of samples, up to 12 samples for each Accent and Light palettes.  
+
+You can also combine the two palettes together to get up to 24 distinct colors (although this becomes less colorblind-friendly).
+
+The palettes are:
+- `arcadia:AccentOrdered`
+- `arcadia:LightOrdered`
+- `arcadia:AllOrdered`: AccentOrdered followed by LightOrdered.
+
+
+```python
+data = [np.arange(0, 12)]
+
+fig, (ax1, ax2) = plt.subplots(nrows=2)
+
+ax1.imshow(data, cmap='arcadia:AccentOrdered')
+ax1.title.set_text('AccentOrdered')
+ax2.imshow(data, cmap='arcadia:LightOrdered')
+ax2.title.set_text('LightOrdered')
+
+plt.show()
+
+apc.randspline_colortest('arcadia:AccentOrdered', 4)
+apc.randspline_colortest('arcadia:AccentOrdered', 8)
+apc.randspline_colortest('arcadia:LightOrdered', 12)
+```
+
+
+    
+![png](README_files/README_10_0.png)
+    
+
+
+
+    
+![png](README_files/README_10_1.png)
+    
+
+
+
+    
+![png](README_files/README_10_2.png)
+    
+
+
+
+    
+![png](README_files/README_10_3.png)
     
 
 
