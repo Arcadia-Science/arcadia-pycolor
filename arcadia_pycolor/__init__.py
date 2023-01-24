@@ -101,7 +101,7 @@ def randspline_colortest(cmap, nlines = 8, timepoints = 6, title = '', save = ''
         plt.plot(X_, Y_, label = str(i), linewidth = 3)
     
     plt.title(title)
-    plt.legend(loc = 'upper right', bbox_to_anchor = (1.4, 1))
+    plt.legend(loc = 'upper right', bbox_to_anchor = (1.2, 1))
     
     if save != '':
         plt.savefig(save)
@@ -170,4 +170,3 @@ arcadia_Accent_ordered_cmap = mpl.colors.ListedColormap(arcadia_Accent_ordered.k
 arcadia_Light_ordered_cmap = mpl.colors.ListedColormap(arcadia_Light_ordered.keys(), name = 'arcadia:LightOrdered')
 mpl.colormaps.register(cmap=arcadia_Accent_ordered_cmap)
 mpl.colormaps.register(cmap=arcadia_Light_ordered_cmap)
-
