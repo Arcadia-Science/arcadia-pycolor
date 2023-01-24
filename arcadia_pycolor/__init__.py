@@ -170,7 +170,7 @@ arcadia_All_ordered = arcadia_Accent_ordered | arcadia_Light_ordered
 
 arcadia_Accent_ordered_cmap = mpl.colors.ListedColormap(arcadia_Accent_ordered.keys(), name = 'arcadia:AccentOrdered')
 arcadia_Light_ordered_cmap = mpl.colors.ListedColormap(arcadia_Light_ordered.keys(), name = 'arcadia:LightOrdered')
-arcadia_Light_ordered_cmap = mpl.colors.ListedColormap(arcadia_All_ordered.keys(), name = 'arcadia:AllOrdered')
+arcadia_All_ordered_cmap = mpl.colors.ListedColormap(arcadia_All_ordered.keys(), name = 'arcadia:AllOrdered')
 mpl.colormaps.register(cmap=arcadia_Accent_ordered_cmap)
 mpl.colormaps.register(cmap=arcadia_Light_ordered_cmap)
 mpl.colormaps.register(cmap=arcadia_All_ordered_cmap)
