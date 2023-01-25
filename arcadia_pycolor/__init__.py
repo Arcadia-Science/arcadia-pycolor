@@ -174,3 +174,27 @@ arcadia_All_ordered_cmap = mpl.colors.ListedColormap(arcadia_All_ordered.keys(),
 mpl.colormaps.register(cmap=arcadia_Accent_ordered_cmap)
 mpl.colormaps.register(cmap=arcadia_Light_ordered_cmap)
 mpl.colormaps.register(cmap=arcadia_All_ordered_cmap)
+
+
+color_lists = {
+    'arcadia:viridis': {
+        'colors': ["arcadia:crow", "arcadia:aegean", "arcadia:lime", "yellow"],
+        'nodes': [0, 0.49, 0.75, 1]
+    },
+    'arcadia:magma': {
+        'colors': ["arcadia:black", "#5A4596", "#E87485", "arcadia:orange", "arcadia:oat"],
+        'nodes': [0, 0.38, 0.72, 0.9, 1]
+    },
+}
+
+def make_LSCM(key, colors, nodes):
+    if nodes == []:
+        cmap = mpl.colors.LinearSegmentedColormap.from_list(key, colors)
+    else:
+        cmap = mpl.colors.LinearSegmentedColormap.from_list(key, list(zip(nodes, colors)))
+    
+    if key not in mpl.colormaps.keys():
+        mpl.colormaps.register(cmap=cmap)
+
+for key, attr in color_lists.items():
+    make_LSCM(key, attr['colors'], attr['nodes'])
