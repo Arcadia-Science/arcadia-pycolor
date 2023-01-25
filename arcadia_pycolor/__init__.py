@@ -184,7 +184,7 @@ color_lists = {
     'arcadia:magma': {
         'colors': ["arcadia:black", "#5A4596", "#E87485", "arcadia:orange", "arcadia:oat"],
         'nodes': [0, 0.38, 0.72, 0.9, 1]
-    },
+    }
 }
 
 def make_LSCM(key, colors, nodes):
