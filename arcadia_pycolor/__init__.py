@@ -178,7 +178,7 @@ mpl.colormaps.register(cmap=arcadia_All_ordered_cmap)
 
 color_lists = {
     'arcadia:viridis': {
-        'colors': ["arcadia:crow", "arcadia:aegean", "arcadia:lime", "yellow"],
+        'colors': ["#341E60", "arcadia:aegean", "arcadia:lime", "yellow"],
         'nodes': [0, 0.49, 0.75, 1]
     },
     'arcadia:magma': {
