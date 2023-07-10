@@ -14,6 +14,14 @@ __all__ = ['print_color', 'slice_dict', 'reverse_gradient',
            'plot_color_gradients', 'plot_color_lightness']
 
 def print_color(colors):
+    '''
+    Prints colors to output in an interactive session using HTML formatting.
+    
+    Args:
+        colors (str, list, or dict)
+    '''
+    
+    # detect what format the input colors are provided as and plot appropriately.
     if type(colors) == str:
         display(Markdown('<br>'.join(
             f'<span style="font-family: monospace">{colors} <span style="color: {colors}">██████</span></span>'
@@ -32,9 +40,23 @@ def print_color(colors):
         print('failed')
 
 def slice_dict(dictionary: dict, lst: list):
+    '''
+    Slices a dictionary using a list of keys.
+    
+    Args:
+        dictionary (dict): dictionary to slice.
+        lst (list): list of keys to use for slicing.
+    '''
     return {i: dictionary[i] for i in lst if i in dictionary}
 
 def reverse_gradient(grad_dictionary: dict):
+    '''
+    Takes in a gradient dictionary containing a 'color_dict' entry and a 'values' entry and reverses it.
+    
+    Args:
+        grad_dictionary (dict): a dictionary containing a 'color_dict' where keys are color names and values are color HEX codes, and a 'values' list that contains the value of colors positioned from 0 to 1.
+    '''
+    
     if 'color_dict' not in grad_dictionary or 'values' not in grad_dictionary:
         raise TypeError('Gradient dictionary should have both a "color_dict" and a "values" entry.')
     
@@ -111,6 +133,19 @@ def extend_colors(color_order: list, total_colors: int, how = 'darken', steps = 
     return output_colors[:total_colors]
 
 def display_palette(cmap_dicts: list, ncols = 1, show = True):
+    '''
+    Displays color palettes using Matplotlib imshow.
+    
+    Expects a list of dictionaries, where each dictionary contains the following entries:
+        - 'name': the name of the palette
+        - 'cmap': a matplotlib ListedColorMap containing the palette's colors
+        - 'length': the number of squares of color to show, usually the number of colors in 'cmap'
+    
+    Args:
+        cmap_dicts (list of dict): list of colormap dictionaries
+        ncols (int): number of columns to plot
+        show (bool): whether or not to show the plotted colors
+    '''
     
     width = 0.5 * max([cmap_dict['length'] for cmap_dict in cmap_dicts])
     height = 0.5 * len(cmap_dicts)

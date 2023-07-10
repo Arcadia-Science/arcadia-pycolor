@@ -97,7 +97,7 @@ apc.Palettes['arcadia:AccentFull'].display()
 apc.Palettes['arcadia:LightFull'].display()
 ```
 
-    /Users/dennis/Code/arcadia-pycolor/arcadia_pycolor/functions.py:138: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all axes decorations.
+    /Users/dennis/Code/arcadia-pycolor/arcadia_pycolor/functions.py:173: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all axes decorations.
       plt.tight_layout()
 
 
@@ -487,8 +487,8 @@ The classes and methods of the package can be used to build and test your own co
 ```python
 # construct a gradient using built-in colors and custom values
 my_gradient_dict = {
-    'color_dict': apc.royal | apc.aegean | apc.vitalblue | apc.bluesky | apc.zephyr | apc.paper,
-    'values': [0, 0.3, 0.5, 0.8, 0.95, 1]
+    'color_dict': apc.royal | apc.aegean | apc.vitalblue | apc.bluesky | apc.zephyr,
+    'values': [0, 0.3, 0.5, 0.8, 1]
 }
 
 # instantiate a new Gradient object
@@ -513,7 +513,7 @@ plt.colorbar(im, label = 'my_gradient')
 plt.show()
 ```
 
-    /Users/dennis/Code/arcadia-pycolor/arcadia_pycolor/functions.py:138: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all axes decorations.
+    /Users/dennis/Code/arcadia-pycolor/arcadia_pycolor/functions.py:173: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all axes decorations.
       plt.tight_layout()
 
 
