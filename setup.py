@@ -19,7 +19,7 @@ setup(
         "mplstyles": "arcadia_pycolor/mplstyles"
     },
     package_data={
-        "arcadia_basic.mplstyle": ["mplstyles/arcadia_basic.mplstyle"]
+        "mplstyles": ["arcadia_basic.mplstyle"]
     },
     include_package_data = True
     # We will also need a readme eventually (there will be a warning)
