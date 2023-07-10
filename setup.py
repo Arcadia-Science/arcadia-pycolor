@@ -15,6 +15,9 @@ setup(
     version='0.2',
     license='MIT',
     description="A Python package to distribute Arcadia's color and style guidelines for figures.",
+    package_dir={
+        "mplstyles": "arcadia_pycolor/mplstyles"
+    }
     package_data={
         "arcadia_basic.mplstyle": ["mplstyles/arcadia_basic.mplstyle"]
     },
