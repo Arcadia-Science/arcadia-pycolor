@@ -1,6 +1,7 @@
 import random
 import matplotlib as mpl
-from .functions import print_color, display_palette, display_palette_interactive, extend_colors
+from .functions import print_color, display_palette, display_palette_interactive, extend_colors, plot_color_gradients, plot_color_lightness
+import json
 
 __all__ = ['Palette', 'Gradient']
 
@@ -84,8 +85,17 @@ class Palette(object):
     def display(self):
         display_palette([{'name': self.name, 'length': len(self.dict), 'cmap': self.mpl_ListedColormap}])
         
+    def display_r(self):
+        display_palette([{'name': self.name, 'length':  len(self.dict), 'cmap': self.mpl_ListedColormap_r}])
+        
     def display_interactive(self):
         display_palette_interactive({self.name: self.dict})
+
+    def __repr__(self):
+        return json.dumps(self.dict, indent = 2)
+    
+    def __call__(self):
+        self.display()
 
 class Gradient(Palette):
     def __init__(self, name: str, color_dict: dict, values = []):
@@ -128,3 +138,19 @@ class Gradient(Palette):
         if self.name not in mpl.colormaps.keys():
             mpl.colormaps.register(cmap=self.mpl_LinearSegmentedColormap)
             mpl.colormaps.register(cmap=self.mpl_LinearSegmentedColormap_r)
+    
+    def display(self, length = 10):
+        display_palette([{'name': self.name, 'length': length, 'cmap': self.mpl_LinearSegmentedColormap}])
+        
+    def display_r(self, length = 10):
+        display_palette([{'name': self.name, 'length': length, 'cmap': self.mpl_LinearSegmentedColormap_r}])
+    
+    def plot_gradient(self, figsize = (5, 0.5), *args, **kwargs):
+        plot_color_gradients({self.name: self.mpl_LinearSegmentedColormap}, figsize = figsize, *args, **kwargs)
+    
+    def plot_lightness(self, cmap_type = '', tickrotation = 0, markersize = 100, figsize = (3, 2), *args, **kwargs):
+        plot_color_lightness({self.name: self.mpl_LinearSegmentedColormap}, cmap_type = cmap_type, tickrotation = tickrotation, markersize = markersize, figsize = figsize, *args, **kwargs)
+    
+    def __repr__(self):
+        out_json = {'color_dict': self.dict, 'values': self.values}
+        return json.dumps(out_json, indent = 2)

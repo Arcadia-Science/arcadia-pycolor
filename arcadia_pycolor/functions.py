@@ -6,8 +6,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from IPython.display import Markdown, display
 import colorsys
+from colorspacious import cspace_converter
 
-__all__ = ['print_color', 'slice_dict', 'reverse_gradient', 'adjust_lightness', 'extend_colors', 'display_palette', 'display_palette_interactive']
+__all__ = ['print_color', 'slice_dict', 'reverse_gradient', 
+           'adjust_lightness', 'extend_colors',
+           'display_palette', 'display_palette_interactive',
+           'plot_color_gradients', 'plot_color_lightness']
 
 def print_color(colors):
     if type(colors) == str:
@@ -44,6 +48,7 @@ def reverse_gradient(grad_dictionary: dict):
     
     values = grad_dictionary['values'].copy()
     values.reverse()
+    values = [1 - value for value in values]
     
     return {'color_dict': color_dict, 'values': values}
 
@@ -105,22 +110,7 @@ def extend_colors(color_order: list, total_colors: int, how = 'darken', steps = 
         
     return output_colors[:total_colors]
 
-def display_palette(cmaps: list, lengths: list, ncols = 1):
-    
-    
-    if len(cmaps) != len(used_lengths):
-        raise ValueError('cmap and lengths lists must be of the same length.')
-    
-    nrows = int(np.ceil(len(color_dicts) / ncols))
-    
-    for n, (cmap, length) in enumerate(zip(cmaps, lengths)):
-        
-        data = [np.arange(0, length)]
-        ax = plt.subplot(nrows, ncols, n + 1)
-        
-        ax.imshow(data, cmap = cmap)
-
-def display_palette(cmap_dicts: list, ncols = 1):
+def display_palette(cmap_dicts: list, ncols = 1, show = True):
     
     width = 0.5 * max([cmap_dict['length'] for cmap_dict in cmap_dicts])
     height = 0.5 * len(cmap_dicts)
@@ -139,15 +129,18 @@ def display_palette(cmap_dicts: list, ncols = 1):
         
         ax.imshow(data, cmap = cmap)
         ax.title.set_text(name)
+        ax.spines[['right', 'top', 'left', 'bottom']].set_visible(False)
         
         plt.xticks([])
         plt.yticks([])
         
-    plt.tight_layout()
+    if show:
+        plt.tight_layout()
+        plt.show()
     
-    plt.show()
+    return fig
         
-def display_palette_interactive(cmap_dicts: list, ncols = 1):
+def display_palette_interactive(cmap_dicts: list, ncols = 1, show = True):
     plot_width = 25 * max([len(cmap_dict) for cmap_dict in cmap_dicts])
     plot_height = 35 * len(cmap_dicts)
     
@@ -185,5 +178,114 @@ def display_palette_interactive(cmap_dicts: list, ncols = 1):
         margin=dict(l=0, r=0, t=0, b=0),
     )
     
-    fig.show(config={'displayModeBar': False})
+    if show:
+        fig.show(config={'displayModeBar': False})
+    else:
+        return fig
+
+def plot_color_gradients(cmap_dict: dict, title = None, return_fig = False, figsize = (5, 3)):
     
+    # Indices to step through colormap.
+    x = np.linspace(0.0, 1.0, 100)
+
+    gradient = np.linspace(0, 1, 256)
+    gradient = np.vstack((gradient, gradient))
+    
+    fig, axs = plt.subplots(nrows=len(cmap_dict), ncols=2, figsize = figsize, squeeze = False)
+    fig.subplots_adjust(top=0.90, bottom=0.01, left=0.2, right=0.99,
+                        wspace=0.05)
+    
+    if title is not None:
+        fig.suptitle(title, fontsize=12, y=1.0, x=0.6)
+
+    for ax, (name, cmap) in zip(axs, cmap_dict.items()):
+
+        # Get RGB values for colormap.
+        if name in mpl.colormaps:
+            rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]
+        else:
+            rgb = cmap(x)[np.newaxis, :, :3]
+
+        # Get colormap in CAM02-UCS colorspace. We want the lightness.
+        lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+        L = lab[0, :, 0]
+        L = np.float32(np.vstack((L, L, L)))
+
+        ax[0].imshow(gradient, aspect='auto', cmap = cmap)
+        ax[1].imshow(L, aspect='auto', cmap='binary_r', vmin=0., vmax=100.)
+        pos = list(ax[0].get_position().bounds)
+        x_text = pos[0] - 0.01
+        y_text = pos[1] + pos[3]/2.
+        fig.text(x_text, y_text, name, va='center', ha='right', fontsize=10)
+
+    # Turn off *all* ticks & spines, not just the ones with colormaps.
+    for ax in axs.flat:
+        ax.set_axis_off()
+        
+    if return_fig:
+        return fig
+    
+    plt.show()
+    
+def plot_color_lightness(cmap_dict: dict, title = None, 
+                         horizontal_spacing = 1.1, steps = 100, figsize = (7, 4), 
+                         cmap_type = 'linear', tickrotation = 50, markersize = 300,
+                         return_fig = False):
+    # Indices to step through colormap
+    x = np.linspace(0.0, 1.0, steps)
+    
+    locs = []  # locations for text labels
+    
+    fig = plt.figure(figsize = figsize)
+    ax = plt.gca()
+
+    for j,(name, cmap) in enumerate(cmap_dict.items()):
+        
+        # Get RGB values for colormap and convert the colormap in
+        # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
+        if name in mpl.colormaps:
+            rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]
+        else:
+            rgb = cmap(x)[np.newaxis, :, :3]
+        lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+
+        # Plot colormap L values.  Do separately for each category
+        # so each plot can be pretty.  To make scatter markers change
+        # color along plot:
+        # https://stackoverflow.com/q/8202605/
+
+        y_ = lab[0, :, 0]
+        c_ = x
+
+        dc = horizontal_spacing  # cmaps horizontal spacing
+        ax.scatter(x + j*dc, y_, c=c_, cmap=cmap, s=markersize, linewidths=0.0)
+
+        if cmap_type == 'linear':
+            # Store locations for colormap labels
+            locs.append(x[-1] + j*dc)
+        else:
+            locs.append(x[int(np.round(steps / 2))] + j*dc)
+
+    # Set up the axis limits:
+    #   * the 1st subplot is used as a reference for the x-axis limits
+    #   * lightness values goes from 0 to 100 (y-axis limits)
+    ax.set_xlim(ax.get_xlim())
+    ax.set_ylim(0.0, 100.0)
+
+    # Set up labels for colormaps
+    ax.xaxis.set_ticks_position('top')
+    ticker = mpl.ticker.FixedLocator(locs)
+    ax.xaxis.set_major_locator(ticker)
+    ax.xaxis.set_tick_params(rotation = tickrotation)
+    ax.set_xticklabels(labels = cmap_dict.keys())
+    ax.set_ylabel('Lightness $L^*$', fontsize=12)
+    
+    if title is not None:
+        ax.set_xlabel(title, fontsize=14)
+
+    fig.tight_layout(h_pad=0.0, pad=0.5)
+    
+    if return_fig:
+        return fig
+    
+    plt.show()

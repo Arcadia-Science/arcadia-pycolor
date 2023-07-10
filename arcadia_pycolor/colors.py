@@ -1,3 +1,5 @@
+from pathlib import Path
+import matplotlib.pyplot as plt
 from .functions import reverse_gradient
 from .classes import Palette, Gradient
 
@@ -71,6 +73,8 @@ paper = {'arcadia:paper': '#FCFCFC'}
 redwood = {'arcadia:redwood': '#52180A'}
 cocoa = {'arcadia:cocoa': '#4D2C03'}
 royal = {'arcadia:royal': '#3F2D5C'}
+pitaya = {'arcadia:pitaya': '#4A0F45'}
+depths = {'arcadia:depths': '#093345'}
 
 # Other named colors
 white = {'white': '#FFFFFF'}
@@ -172,7 +176,7 @@ arcadia_seaweedrose = {
 ## Strong Bicolor Gradients ##
 ##############################
 
-arcadia_icyhot = {
+arcadia_poppies = {
     'color_dict': concord | aegean | vitalblue | paper | dress | amber | dragon | redwood,
     'values': [0, 0.26, 0.35, 0.5, 0.6, 0.7, 0.8, 1]
 }
@@ -180,6 +184,11 @@ arcadia_icyhot = {
 arcadia_pansies = {
     'color_dict': royal | aster | wish | paper | oat | canary | cocoa,
     'values': [0, 0.21, 0.39, 0.5, 0.55, 0.64, 1]
+}
+
+arcadia_dahlias = {
+    'color_dict': depths | seaweed | paper | rose | dragon | pitaya,
+    'values': [0, 0.25, 0.5, 0.63, 0.77, 1]
 }
 
 ################
@@ -210,15 +219,20 @@ Palette_dicts = {
     'arcadia:LightOrdered': arcadia_Light_ordered,
     'arcadia:AccentAll': arcadia_Accent_all,
     'arcadia:AccentAllOrdered': arcadia_Accent_all_ordered,
-    'arcadia:Other': arcadia_Other
+    'arcadia:Other': arcadia_Other,
+    'arcadia:AllOrdered': arcadia_Accent_all_ordered
 }
 
 Gradient_dicts = {
     'arcadia:viridis': arcadia_viridis,
     'arcadia:magma': arcadia_magma,
     'arcadia:cividis': arcadia_cividis,
-    'arcadia:icyhot': arcadia_icyhot,
-    'arcadia:pansies': arcadia_pansies
+    'arcadia:aegeanamber': arcadia_aegeanamber,
+    'arcadia:astercanary': arcadia_astercanary,
+    'arcadia:seaweedrose': arcadia_seaweedrose,
+    'arcadia:poppies': arcadia_poppies,
+    'arcadia:pansies': arcadia_pansies,
+    'arcadia:dahlias': arcadia_dahlias
 }
 
 Gradient_r_dicts = {}
@@ -243,6 +257,9 @@ for name, color_dict in Palette_dicts.items():
     pal = Palette(name, color_dict)
     pal.mpl_ListedColormap_register()
     Palettes[name] = pal
+    
+# Register each of the colors in arcadia:All
+Palettes['arcadia:All'].mpl_NamedColors_register()
 
 # Register each of the custom gradients
 for name, data in Gradient_dicts.items():
@@ -261,3 +278,19 @@ for color in arcadia_All:
     color_grad = Gradient(name, color_dict)
     color_grad.mpl_LinearSegmentedColormap_register()
     Gradients[name] = color_grad
+    
+    # add reverse single-color gradients to Gradients dictionary
+    name_r = name + '_r'
+    color_dict_r = {color: arcadia_All[color]} | paper
+    color_grad_r = Gradient(name_r, color_dict_r)
+    Gradients[name_r] = color_grad_r
+
+#################
+## Stylesheets ##
+#################
+"""
+Auto-loads the Arcadia Basic style for matplotlib.
+"""
+
+parent_path = Path(__file__).parent.resolve()
+plt.style.use(parent_path / "mplstyles/arcadia_basic.mplstyle")
