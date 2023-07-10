@@ -175,17 +175,28 @@ def display_palette(cmap_dicts: list, ncols = 1, show = True):
     
     return fig
         
-def display_palette_interactive(cmap_dicts: list, ncols = 1, show = True):
-    plot_width = 25 * max([len(cmap_dict) for cmap_dict in cmap_dicts])
-    plot_height = 35 * len(cmap_dicts)
+def display_palette_interactive(cmap_dict: dict, ncols = 1, show = True):
+    '''
+    Displays interactive color palettes using plotly.
     
-    nrows = int(np.ceil(len(cmap_dicts) / ncols))
+    Expects a dictionary, where each entry has the name of the color palette as the key and the color_dict as the value.
+    
+    Args:
+        cmap_dict (dict): dict of cmaps
+        ncols (int): number of columns to plot
+        show (bool): whether or not to show the final figure, if False, returns the figure object
+    '''
+    
+    plot_width = 25 * max([len(cmap_dict) for cmap_dict in cmap_dict])
+    plot_height = 35 * len(cmap_dict)
+    
+    nrows = int(np.ceil(len(cmap_dict) / ncols))
     
     fig = make_subplots(rows = nrows, cols = ncols, horizontal_spacing = 0.02, vertical_spacing = 0.02)
     
-    for n, cmap in enumerate(cmap_dicts):
+    for n, cmap in enumerate(cmap_dict):
         name = cmap
-        cmap = cmap_dicts[cmap]
+        cmap = cmap_dict[cmap]
         length = len(cmap)
         
         row = 1 + n // ncols
@@ -219,6 +230,19 @@ def display_palette_interactive(cmap_dicts: list, ncols = 1, show = True):
         return fig
 
 def plot_color_gradients(cmap_dict: dict, title = None, return_fig = False, figsize = (5, 3)):
+    '''
+    Displays color gradients in color and grayscale.
+    
+    Expects a dictionary, where each entry has the name of the color palette as its key and the value as:
+        - the string name of the registered Matplotlib colormap OR
+        - a Matplotlib ListedColormap object for the colormap
+    
+    Args:
+        cmap_dict (list of dict): list of colormap dictionaries
+        title (str): a title for the plot if desired
+        return_fig (bool): whether or not to return the figure as an object
+        figsize (tuple): the width, height tuple of the figure size
+    '''
     
     # Indices to step through colormap.
     x = np.linspace(0.0, 1.0, 100)
@@ -266,6 +290,25 @@ def plot_color_lightness(cmap_dict: dict, title = None,
                          horizontal_spacing = 1.1, steps = 100, figsize = (7, 4), 
                          cmap_type = 'linear', tickrotation = 50, markersize = 300,
                          return_fig = False):
+    '''
+    Displays color gradients as lines based on lightness, for looking at uniformity of lightness.
+    
+    Expects a dictionary, where each entry has the name of the color palette as its key and the value as:
+        - the string name of the registered Matplotlib colormap OR
+        - a Matplotlib ListedColormap object for the colormap
+    
+    Args:
+        cmap_dict (list of dict): list of colormap dictionaries
+        title (str): a title for the plot if desired
+        horizontal_spacing (float): the spacing between lines
+        steps (int): the number of steps along the gradient to generate
+        figsize (tuple): the width, height tuple of the figure size
+        cmap_type (str): 'linear' if you want the label for the cmap to be at the end; anything else puts the label in the middle.
+        tickrotation (int): rotation of the label for each cmap
+        markersize (int): the size of the points that make up the gradient color line
+        return_fig (bool): whether or not to return the figure as an object
+    '''
+    
     # Indices to step through colormap
     x = np.linspace(0.0, 1.0, steps)
     
