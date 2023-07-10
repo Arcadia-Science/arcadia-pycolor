@@ -12,6 +12,9 @@ First, make sure you're using the right `pip` for your desired environment.
 Install using the pip in that environment.  
 `pip install git+https://github.com/Arcadia-Science/arcadia-pycolor.git#egg=arcadia_pycolor`
 
+Alternatively, if you're installing a development version, use the name of the Github branch.  
+`pip install git+https://github.com/Arcadia-Science/arcadia-pycolor.git@branch/name#egg=arcadia_pycolor`
+
 ### Import
 
 Import the package as usual.  

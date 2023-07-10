@@ -17,7 +17,8 @@ setup(
     description="A Python package to distribute Arcadia's color and style guidelines for figures.",
     package_data={
         "arcadia_basic.mplstyle": ["mplstyles/arcadia_basic.mplstyle"]
-    }
+    },
+    include_package_data = True
     # We will also need a readme eventually (there will be a warning)
     # long_description=open('README.txt').read(),
 )
