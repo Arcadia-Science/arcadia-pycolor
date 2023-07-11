@@ -56,11 +56,11 @@ apc.print_color(apc.aegean)
 
 ### Palette Dictionaries
 
-The base color palettes (`arcadia_Core`, `arcadia_Neutral`, `arcadia_Accent`, etc.) are also stored as dictionaries.
+The base color palettes (`Core`, `Neutral`, `Accent`, etc.) are also stored as dictionaries.
 
 
 ```python
-apc.arcadia_Accent
+apc.Accent
 ```
 
 
@@ -77,7 +77,7 @@ apc.arcadia_Accent
 
 
 ```python
-apc.print_color(apc.arcadia_Accent)
+apc.print_color(apc.Accent)
 ```
 
 
@@ -100,8 +100,10 @@ apc.Palettes['arcadia:AccentFull'].display()
 apc.Palettes['arcadia:LightFull'].display()
 ```
 
-    /Users/dennis/Code/arcadia-pycolor/arcadia_pycolor/functions.py:173: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all axes decorations.
-      plt.tight_layout()
+
+    
+![png](README_files/README_9_0.png)
+    
 
 
 
@@ -119,12 +121,6 @@ apc.Palettes['arcadia:LightFull'].display()
 
     
 ![png](README_files/README_9_3.png)
-    
-
-
-
-    
-![png](README_files/README_9_4.png)
     
 
 
@@ -150,18 +146,50 @@ The `Palette` class allows for quick access to a variety of data structures.
 
 ```python
 # Return palette colors as a dictionary
-print(apc.Palettes['arcadia:Accent'].dict)
-
-# Return colors as a list
-print(apc.Palettes['arcadia:Accent'].colors)
-
-# Return palette colors as a list of tuples
-print(apc.Palettes['arcadia:Accent'].tuple_list)
+apc.Palettes['arcadia:Accent'].dict
 ```
 
-    {'arcadia:aegean': '#5088C5', 'arcadia:amber': '#F28360', 'arcadia:seaweed': '#3B9886', 'arcadia:canary': '#F7B846', 'arcadia:aster': '#7A77AB', 'arcadia:rose': '#F898AE'}
+
+
+
+    {'arcadia:aegean': '#5088C5',
+     'arcadia:amber': '#F28360',
+     'arcadia:seaweed': '#3B9886',
+     'arcadia:canary': '#F7B846',
+     'arcadia:aster': '#7A77AB',
+     'arcadia:rose': '#F898AE'}
+
+
+
+
+```python
+# Return colors as a list
+apc.Palettes['arcadia:Accent'].list
+```
+
+
+
+
     ['#5088C5', '#F28360', '#3B9886', '#F7B846', '#7A77AB', '#F898AE']
-    [('arcadia:aegean', '#5088C5'), ('arcadia:amber', '#F28360'), ('arcadia:seaweed', '#3B9886'), ('arcadia:canary', '#F7B846'), ('arcadia:aster', '#7A77AB'), ('arcadia:rose', '#F898AE')]
+
+
+
+
+```python
+# Return palette colors as a list of tuples
+apc.Palettes['arcadia:Accent'].tuple_list
+```
+
+
+
+
+    [('arcadia:aegean', '#5088C5'),
+     ('arcadia:amber', '#F28360'),
+     ('arcadia:seaweed', '#3B9886'),
+     ('arcadia:canary', '#F7B846'),
+     ('arcadia:aster', '#7A77AB'),
+     ('arcadia:rose', '#F898AE')]
+
 
 
 ---
@@ -181,7 +209,7 @@ apc.Gradients['arcadia:aegeans'].display()
 
 
     
-![png](README_files/README_15_0.png)
+![png](README_files/README_17_0.png)
     
 
 
@@ -196,19 +224,19 @@ apc.Gradients['arcadia:cividis'].display()
 
 
     
-![png](README_files/README_17_0.png)
+![png](README_files/README_19_0.png)
     
 
 
 
     
-![png](README_files/README_17_1.png)
+![png](README_files/README_19_1.png)
     
 
 
 
     
-![png](README_files/README_17_2.png)
+![png](README_files/README_19_2.png)
     
 
 
@@ -220,22 +248,56 @@ You can access colors and values in different data structure, just as you would 
 
 ```python
 # Return gradient colors as a dictionary
-print(apc.Gradients['arcadia:viridis'].dict)
-
-# Return values of gradient colors
-print(apc.Gradients['arcadia:viridis'].values)
-
-# Return paired list of gradient colors and positions as tuples
-print(apc.Gradients['arcadia:viridis'].grad_tuple_list)
-
-# Return paired list of gradient colors and positions as lists
-print(apc.Gradients['arcadia:viridis'].grad_nested_list)
+apc.Gradients['arcadia:viridis'].dict
 ```
 
-    {'arcadia:concord': '#341E60', 'arcadia:aegean': '#5088C5', 'arcadia:lime': '#97CD78', 'yellow': '#FFFF00'}
+
+
+
+    {'arcadia:concord': '#341E60',
+     'arcadia:aegean': '#5088C5',
+     'arcadia:lime': '#97CD78',
+     'yellow': '#FFFF00'}
+
+
+
+
+```python
+# Return values of gradient colors
+apc.Gradients['arcadia:viridis'].values
+```
+
+
+
+
     [0, 0.49, 0.75, 1]
+
+
+
+
+```python
+# Return paired list of gradient colors and positions as tuples
+apc.Gradients['arcadia:viridis'].grad_tuple_list
+```
+
+
+
+
     [(0, '#341E60'), (0.49, '#5088C5'), (0.75, '#97CD78'), (1, '#FFFF00')]
+
+
+
+
+```python
+# Return paired list of gradient colors and positions as lists
+apc.Gradients['arcadia:viridis'].grad_nested_list
+```
+
+
+
+
     [[0, '#341E60'], [0.49, '#5088C5'], [0.75, '#97CD78'], [1, '#FFFF00']]
+
 
 
 ### Gradient visualization
@@ -250,13 +312,13 @@ apc.Gradients['arcadia:viridis'].plot_lightness()
 
 
     
-![png](README_files/README_21_0.png)
+![png](README_files/README_26_0.png)
     
 
 
 
     
-![png](README_files/README_21_1.png)
+![png](README_files/README_26_1.png)
     
 
 
@@ -278,37 +340,37 @@ apc.Gradients['arcadia:dahlias'].display(11)
 
 
     
-![png](README_files/README_23_0.png)
+![png](README_files/README_28_0.png)
     
 
 
 
     
-![png](README_files/README_23_1.png)
+![png](README_files/README_28_1.png)
     
 
 
 
     
-![png](README_files/README_23_2.png)
+![png](README_files/README_28_2.png)
     
 
 
 
     
-![png](README_files/README_23_3.png)
+![png](README_files/README_28_3.png)
     
 
 
 
     
-![png](README_files/README_23_4.png)
+![png](README_files/README_28_4.png)
     
 
 
 
     
-![png](README_files/README_23_5.png)
+![png](README_files/README_28_5.png)
     
 
 
@@ -325,21 +387,31 @@ apc.Gradients['arcadia:aegeans_r'].display()
 
 
     
-![png](README_files/README_25_0.png)
+![png](README_files/README_30_0.png)
     
 
 
 
     
-![png](README_files/README_25_1.png)
+![png](README_files/README_30_1.png)
     
 
 
 ---
 ## 5. `matplotlib` features
 
-The `arcadia_pycolor` automatically integrates with `matplotlib`.  
-It registers Arcadia colors, palettes, and gradients as `matplotlib` named colors.
+The `arcadia_pycolor` package can integrate with `matplotlib`.  
+It registers Arcadia colors, palettes, and gradients as `matplotlib` named colors when using the `apc.mpl_setup()` function.
+
+
+```python
+# run this function to register Arcadia's colors with matplotlib
+# by default, this adds all colors, palettes, and gradients, as well as updates the style sheet.
+# you can choose to modify these things individually; use help(apc.mpl_setup) to learn more.
+apc.mpl_setup()
+```
+
+Once colors have been registered with `matplotlib`, they're availble to be used in all your plotting needs.
 
 
 ```python
@@ -363,11 +435,11 @@ plt.show()
 
 
     
-![png](README_files/README_27_0.png)
+![png](README_files/README_34_0.png)
     
 
 
-All `Palette` and `Gradient` colors are automatically registered as `matplotlib` named entries.
+All `Palette` and `Gradient` colors are registered as `matplotlib` named entries.
 
 
 ```python
@@ -388,13 +460,13 @@ plt.show()
 
 
     
-![png](README_files/README_29_0.png)
+![png](README_files/README_36_0.png)
     
 
 
 ### Default plotting style
 
-Importing `arcadia_pycolor` updates the Matplotlib stylesheet settings so that the defaults better conform with Arcadia's figure styles.  
+Running `apc.mpl_setup()` updates the Matplotlib stylesheet settings so that the defaults better conform with Arcadia's figure styles.  
 You can use Arcadia's default style without having to manually set it for every plot.  
 
 Things that are modified by using `arcadia_pycolor` with `matplotlib`:
@@ -471,13 +543,13 @@ plot_style_examples("Plot using Arcadia's basic style")
 
 
     
-![png](README_files/README_31_0.png)
+![png](README_files/README_38_0.png)
     
 
 
 
     
-![png](README_files/README_31_1.png)
+![png](README_files/README_38_1.png)
     
 
 
@@ -516,31 +588,175 @@ plt.colorbar(im, label = 'my_gradient')
 plt.show()
 ```
 
-    /Users/dennis/Code/arcadia-pycolor/arcadia_pycolor/functions.py:173: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all axes decorations.
-      plt.tight_layout()
-
-
 
     
-![png](README_files/README_33_1.png)
+![png](README_files/README_40_0.png)
     
 
 
 
     
-![png](README_files/README_33_2.png)
+![png](README_files/README_40_1.png)
     
 
 
 
     
-![png](README_files/README_33_3.png)
+![png](README_files/README_40_2.png)
     
 
 
 
     
-![png](README_files/README_33_4.png)
+![png](README_files/README_40_3.png)
+    
+
+
+---
+## 7. Index
+
+
+
+```python
+basic_palettes = ['arcadia:Core', 'arcadia:Neutral', 'arcadia:Accent', 'arcadia:Light', 'arcadia:AccentExpanded', 'arcadia:LightExpanded']
+
+print("----------\nBasic Palettes")
+for pal in basic_palettes:
+    apc.Palettes[pal].display()
+    
+ordered_palettes = ['arcadia:AccentOrdered', 'arcadia:LightOrdered', 'arcadia:AccentAllOrdered']
+
+print("----------\nOrdered Palettes")
+for pal in ordered_palettes:
+    apc.Palettes[pal].display()
+```
+
+    ----------
+    Basic Palettes
+
+
+
+    
+![png](README_files/README_42_1.png)
+    
+
+
+
+    
+![png](README_files/README_42_2.png)
+    
+
+
+
+    
+![png](README_files/README_42_3.png)
+    
+
+
+
+    
+![png](README_files/README_42_4.png)
+    
+
+
+
+    
+![png](README_files/README_42_5.png)
+    
+
+
+
+    
+![png](README_files/README_42_6.png)
+    
+
+
+    ----------
+    Ordered Palettes
+
+
+
+    
+![png](README_files/README_42_8.png)
+    
+
+
+
+    
+![png](README_files/README_42_9.png)
+    
+
+
+
+    
+![png](README_files/README_42_10.png)
+    
+
+
+### Comparing Matplotlib vs. Arcadia gradients
+
+
+```python
+comparison_gradients = ['viridis', 'arcadia:viridis', 'magma', 'arcadia:magma', 'cividis', 'arcadia:cividis']
+
+apc.plot_color_gradients(
+    {grad: grad for grad in comparison_gradients},
+    title = 'matplotlib vs. Arcadia gradients',
+    figsize = (6, 3)
+)
+
+apc.plot_color_lightness(
+    {grad: grad for grad in comparison_gradients},
+    title = 'matplotlib vs. Arcadia gradients',
+    figsize = (6, 3)
+)
+```
+
+
+    
+![png](README_files/README_44_0.png)
+    
+
+
+
+    
+![png](README_files/README_44_1.png)
+    
+
+
+## Arcadia bicolor gradients
+
+
+```python
+bicolor_gradients = [
+    'arcadia:aegeanamber', 'arcadia:astercanary', 'arcadia:seaweedrose', 
+    'arcadia:poppies', 'arcadia:pansies', 'arcadia:dahlias'
+]
+
+apc.plot_color_gradients(
+    {grad: grad for grad in bicolor_gradients},
+    title = 'Arcadia bicolor gradients',
+    figsize = (6, 3)
+)
+
+apc.plot_color_lightness(
+    {grad: grad for grad in bicolor_gradients},
+    title = 'Arcadia bicolor gradients',
+    figsize = (6, 3),
+    horizontal_spacing = 1.2,
+    cmap_type = 'bicolor'
+)
+```
+
+
+    
+![png](README_files/README_46_0.png)
+    
+
+
+
+    
+![png](README_files/README_46_1.png)
     
 
 
