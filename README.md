@@ -615,15 +615,21 @@ plt.show()
 ---
 ## 7. Index
 
+The index below serves as a visual reference for the palettes and gradients.
 
 
 ```python
-basic_palettes = ['arcadia:Core', 'arcadia:Neutral', 'arcadia:Accent', 'arcadia:Light', 'arcadia:AccentExpanded', 'arcadia:LightExpanded']
+# basic palettes
+basic_palettes = ['arcadia:Core', 'arcadia:Neutral', 
+                  'arcadia:Accent', 'arcadia:Light', 
+                  'arcadia:AccentExpanded', 'arcadia:LightExpanded', 
+                  'arcadia:AccentFull', 'arcadia:LightFull', 'arcadia:AccentAll']
 
 print("----------\nBasic Palettes")
 for pal in basic_palettes:
     apc.Palettes[pal].display()
-    
+
+# palettes ordered to maximize color distance between each additional color
 ordered_palettes = ['arcadia:AccentOrdered', 'arcadia:LightOrdered', 'arcadia:AccentAllOrdered']
 
 print("----------\nOrdered Palettes")
@@ -671,8 +677,10 @@ for pal in ordered_palettes:
     
 
 
-    ----------
-    Ordered Palettes
+
+    
+![png](README_files/README_42_7.png)
+    
 
 
 
@@ -687,13 +695,35 @@ for pal in ordered_palettes:
     
 
 
+    ----------
+    Ordered Palettes
+
+
 
     
-![png](README_files/README_42_10.png)
+![png](README_files/README_42_11.png)
+    
+
+
+
+    
+![png](README_files/README_42_12.png)
+    
+
+
+
+    
+![png](README_files/README_42_13.png)
     
 
 
 ### Comparing Matplotlib vs. Arcadia gradients
+
+The gradients built into this package were chosen to resemble existing matplotlib [perceptually uniform colormaps](https://matplotlib.org/stable/gallery/color/colormap_reference.html).  
+The colors used in the Arcadia colormaps are visually similar to matplotlib's maps, but strive to use Arcadia's color palette and compatible colors.
+
+The plots below show the new colormaps compared to the original matplolotlib colormaps in grayscale.  
+They also illustrate the linearly-increasing lightness of these colormaps, which approximates the matplotlib references.
 
 
 ```python
@@ -724,7 +754,12 @@ apc.plot_color_lightness(
     
 
 
-## Arcadia bicolor gradients
+### Arcadia bicolor gradients
+
+The bicolor gradients in the package were designed to be linearly decreasing in brightness in both directions.  
+We've tried to make them colorblind-friendly as well.  
+
+In general, the blue-red and purple-yellow colorschemes are more universally visible than the green-pink colorscheme.
 
 
 ```python
