@@ -132,7 +132,7 @@ def extend_colors(color_order: list, total_colors: int, how = 'darken', steps = 
         
     return output_colors[:total_colors]
 
-def display_palette(cmap_dicts: list, ncols = 1, show = True):
+def display_palette(cmap_dicts: list, ncols = 1, show = True, figsize = (0, 0)):
     '''
     Displays color palettes using Matplotlib imshow.
     
@@ -146,11 +146,14 @@ def display_palette(cmap_dicts: list, ncols = 1, show = True):
         ncols (int): number of columns to plot
         show (bool): whether or not to show the plotted colors
     '''
+
     
-    width = 0.5 * max([cmap_dict['length'] for cmap_dict in cmap_dicts])
-    height = 0.5 * len(cmap_dicts)
-    
-    fig = plt.figure(figsize = (width, height))
+    if figsize == (0, 0):
+        width = 0.5 * max([cmap_dict['length'] for cmap_dict in cmap_dicts])
+        height = 0.5 * len(cmap_dicts)
+        fig = plt.figure(figsize = (width, height))
+    else:
+        fig = plt.figure(figsize = figsize)
     
     nrows = int(np.ceil(len(cmap_dicts) / ncols))
     

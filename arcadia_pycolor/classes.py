@@ -204,6 +204,9 @@ class Gradient(Palette):
         if len(color_dict) < 2:
             raise ValueError('A gradient must include at least 2 distinct colors.')
         
+        if isinstance(values, str):
+            raise ValueError('Values should be a list of floats.')
+        
         # if there are no values passed, generates color positions uniformly
         if len(values) == 0:
             fraction = 1 / (len(color_dict) - 1)

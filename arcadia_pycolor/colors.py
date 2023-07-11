@@ -246,9 +246,9 @@ for name, grad in Gradient_dicts.items():
 
 Gradient_dicts = Gradient_dicts | Gradient_r_dicts
 
-###################################
-## Matplotlib Color Registration ##
-###################################
+#############################################
+## Palette and Gradient library generation ##
+#############################################
 
 # Collectors for Palette and Gradient objects
 Palettes = {}
@@ -257,18 +257,13 @@ Gradients = {}
 # Register each of the base palettes
 for name, color_dict in Palette_dicts.items():
     pal = Palette(name, color_dict)
-    pal.mpl_ListedColormap_register()
     Palettes[name] = pal
-    
-# Register each of the colors in arcadia:All
-Palettes['arcadia:All'].mpl_NamedColors_register()
 
 # Register each of the custom gradients
 for name, data in Gradient_dicts.items():
     color_dict = data['color_dict']
     values = data['values']
     grad = Gradient(name, color_dict, values)
-    grad.mpl_LinearSegmentedColormap_register()
     Gradients[name] = grad
 
 # Register paper-to-color gradient for each of the colors in the base palette
@@ -278,7 +273,6 @@ for color in All:
     name = color + 's'
     color_dict = paper | {color: All[color]}
     color_grad = Gradient(name, color_dict)
-    color_grad.mpl_LinearSegmentedColormap_register()
     Gradients[name] = color_grad
     
     # add reverse single-color gradients to Gradients dictionary
@@ -287,12 +281,26 @@ for color in All:
     color_grad_r = Gradient(name_r, color_dict_r)
     Gradients[name_r] = color_grad_r
 
-#################
-## Stylesheets ##
-#################
-"""
-Auto-loads the Arcadia Basic style for matplotlib.
-"""
+######################################
+## Matplotlib registration function ##
+######################################
 
-parent_path = Path(__file__).parent.resolve()
-plt.style.use(parent_path / "mplstyles/arcadia_basic.mplstyle")
+def mpl_setup(mode = 'all'):
+    if mode == 'colors' or mode == 'all':
+        # Register each of the colors in arcadia:All
+        Palettes['arcadia:All'].mpl_NamedColors_register()
+        
+    if mode == 'palettes' or mode == 'all':
+        for pal in Palettes:
+            Palettes[pal].mpl_ListedColormap_register()
+    
+    if mode == 'stylesheets' or mode == 'all':
+        # find the upstream path to this file
+        parent_path = Path(__file__).parent.resolve()
+        plt.style.use(parent_path / "mplstyles/arcadia_basic.mplstyle")
+    
+    if mode == 'gradients' or mode == 'all':
+        for grad in Gradients:
+            # don't duplicate registration of reverse gradients
+            if '_r' not in grad:
+                Gradients[grad].mpl_LinearSegmentedColormap_register()
