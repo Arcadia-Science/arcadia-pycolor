@@ -1,0 +1,65 @@
+### Arcadia Science basic plotting style
+
+### FIGURE
+figure.facecolor: w
+figure.edgecolor : w       # figure edgecolor
+figure.dpi: 100
+figure.titlesize: 14
+figure.titleweight: bold
+
+### AXES
+axes.facecolor      : w
+axes.prop_cycle: cycler('color', ['5088C5', 'F28360', 'F7B846', '97CD78', '7A77AB', 'F898AE', '3B9886', 'C85152', '73B5E3', 'BAB0A8', '8A99AD', 'FFB984', 'C6E7F4', 'F8C5C1', 'F5E4BE', 'B5BEA4', 'DCBFFC', 'B6C8D4', 'DAD3C7', 'DA9085', 'F5CBE4', 'D1EADF', 'BABEE0', 'F1E8DA'])
+axes.spines.bottom  : True
+axes.spines.left    : True
+axes.spines.right   : False
+axes.spines.top     : False
+
+### TICKS
+xtick.major.size     : 2      # major tick size in points
+xtick.minor.size     : 1      # minor tick size in points
+xtick.labelsize      : small # fontsize of the tick labels
+xtick.major.pad      : 2
+ytick.major.size     : 2      # major tick size in points
+ytick.minor.size     : 1      # minor tick size in points
+ytick.labelsize      : small # fontsize of the tick labels
+ytick.major.pad      : 2
+
+### LINES
+# See https://matplotlib.org/api/artist_api.html#module-matplotlib.lines for more
+# information on line properties.
+lines.linewidth   : 2.0     # line width in points
+lines.linestyle   : -       # solid line
+lines.color       : 5088C5       # arcadia:aegean
+lines.markeredgewidth  : 0.0     # the line width around the marker symbol
+lines.markersize  : 6            # markersize, in points
+lines.antialiased : True         # render lines in antialiased (no jaggies)
+lines.solid_capstyle : round
+
+### Marker props
+markers.fillstyle: full
+
+### PATCHES
+patch.linewidth        : 0.0     # edge width in points
+patch.facecolor        : 5088C5 # arcadia:aegean
+patch.antialiased      : True    # render patches in antialiased (no jaggies)
+
+### FONT
+font.family         : sans-serif
+font.size           : 12.0
+font.serif     : Suisse Intl Serif, DejaVu Serif, New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L, Times New Roman, Times, Palatino, Charter, serif
+font.sans-serif: Suisse Intl, Arial, DejaVu Sans, Lucida Grande, Verdana, Geneva, Lucid, Helvetica, Avant Garde, sans-serif
+font.monospace : Suisee Intl Mono, Arial, Courier, DejaVu Sans Mono, Andale Mono, Nimbus Mono L, Courier New, Fixed, Terminal, monospace
+
+### SAVING FIGURES
+pdf.fonttype        : 42
+ps.fonttype         : 42
+savefig.dpi         : 300
+savefig.transparent : True
+svg.fonttype        : none
+
+### TEXT
+text.color          : k
+
+### IMAGES
+image.cmap: arcadia:viridis 
