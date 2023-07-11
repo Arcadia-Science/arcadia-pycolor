@@ -170,7 +170,6 @@ def display_palette(cmap_dicts: list, ncols = 1, show = True):
         plt.yticks([])
         
     if show:
-        plt.tight_layout()
         plt.show()
     
     return fig

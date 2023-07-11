@@ -50,6 +50,13 @@ class Palette(object):
         return list(self.dict.keys())
     
     @property
+    def list(self):
+        '''
+        Returns the list of colors.
+        '''
+        return self.colors
+    
+    @property
     def colors(self):
         '''
         Returns the list of color hex values.
@@ -95,13 +102,13 @@ class Palette(object):
         if number > len(self):
             raise Exception(f'Requested {number} colors but there are only {len(self)} in this palette.')
         
-        if how == 'list':
+        if fmt == 'list':
             return random.choices(self.colors, number)
-        elif how == 'dict':
+        elif fmt == 'dict':
             return {choice: self.dict[choice] for choice in random.choices(self.nicknames, number)}
-        elif how == 'nested_list':
+        elif fmt == 'nested_list':
             return [[choice, self.dict[choice]] for choice in random.choices(self.nicknames, number)]
-        elif how == 'tuple_list':
+        elif fmt == 'tuple_list':
             return [(choice, self.dict[choice]) for choice in random.choices(self.nicknames, number)]
         else:
             raise Exception(f'{fmt} is not a valid format option.')
