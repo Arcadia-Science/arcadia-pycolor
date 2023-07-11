@@ -92,16 +92,16 @@ magenta = {'magenta': '#FF00FF'}
 These are the dictionaries collecting the basic palettes.
 """
 
-arcadia_Core = lightgrey | shell | dawn | seafoam | orange | black | charcoal | marineblue | forest
-arcadia_Neutral = zephyr | paleazure | lichen | orchid | buff | bark | slate | crow
+Core = lightgrey | shell | dawn | seafoam | orange | black | charcoal | marineblue | forest
+Neutral = zephyr | paleazure | lichen | orchid | buff | bark | slate | crow
 
-arcadia_Accent = aegean | amber | seaweed | canary | aster | rose
-arcadia_Light = bluesky | dress | sage | oat | periwinkle | blossom
+Accent = aegean | amber | seaweed | canary | aster | rose
+Light = bluesky | dress | sage | oat | periwinkle | blossom
 
-arcadia_Accent_expanded = lime | vitalblue | orange | chateau | dragon | marineblue
-arcadia_Light_expanded = mint | wish | satin | taupe | mars | denim
+Accent_expanded = lime | vitalblue | orange | chateau | dragon | marineblue
+Light_expanded = mint | wish | satin | taupe | mars | denim
 
-arcadia_Other = concord | grape | taffy | brightgrey | paper | redwood | cocoa | royal
+Other = concord | grape | taffy | brightgrey | paper | redwood | cocoa | royal
 
 #############################
 ## Aggregated Dictionaries ##
@@ -109,14 +109,14 @@ arcadia_Other = concord | grape | taffy | brightgrey | paper | redwood | cocoa |
 """
 These are the dictionaries that aggregate different combinations of the basic palettes.
 """
-arcadia_All = arcadia_Core | arcadia_Neutral | arcadia_Accent | arcadia_Light | arcadia_Accent_expanded | arcadia_Light_expanded | arcadia_Other
-arcadia_Accent_full = arcadia_Accent | arcadia_Accent_expanded
-arcadia_Light_full = arcadia_Light | arcadia_Light_expanded
-arcadia_Accent_all = arcadia_Accent | arcadia_Accent_expanded | arcadia_Light | arcadia_Light_expanded
+All = Core | Neutral | Accent | Light | Accent_expanded | Light_expanded | Other
+Accent_full = Accent | Accent_expanded
+Light_full = Light | Light_expanded
+Accent_all = Accent | Accent_expanded | Light | Light_expanded
 
 # this exists for backwards-compatibility with other dependent repos that use this variable
 # just a temporary fix for now
-arcadia_all = arcadia_All
+arcadia_all = All
 
 ##########################
 ## Ordered Dictionaries ##
@@ -126,10 +126,10 @@ These are the dictionaries with specifically-ordered colors.
 The order of colors has been chosen to maximize distinguishability.
 """
 
-arcadia_Accent_ordered = aegean | amber | canary | lime | aster | rose | seaweed | dragon | vitalblue | chateau | marineblue | orange
-arcadia_Light_ordered = bluesky | dress | oat | sage | periwinkle | denim | taupe | mars | blossom | mint | wish | satin
+Accent_ordered = aegean | amber | canary | lime | aster | rose | seaweed | dragon | vitalblue | chateau | marineblue | orange
+Light_ordered = bluesky | dress | oat | sage | periwinkle | denim | taupe | mars | blossom | mint | wish | satin
 
-arcadia_Accent_all_ordered = arcadia_Accent_ordered | arcadia_Light_ordered
+Accent_all_ordered = Accent_ordered | Light_ordered
 
 ####################################
 ## Perceptually Uniform Gradients ##
@@ -140,17 +140,17 @@ They have been modified to use colors that are harmonious with our brand palette
 The colors have also been optimized to be nearly-perceptually uniform based on lightness.
 """
 
-arcadia_viridis = {
+viridis = {
     'color_dict': concord | aegean | lime | yellow,
     'values': [0, 0.49, 0.75, 1]
 }
 
-arcadia_magma = {
+magma = {
     'color_dict': black | grape | taffy | orange | oat,
     'values': [0, 0.38, 0.72, 0.9, 1]
 }
 
-arcadia_cividis = {
+cividis = {
     'color_dict': crow | forest | canary | satin,
     'values': [0, 0.39, 0.85, 1]
 }
@@ -159,15 +159,15 @@ arcadia_cividis = {
 ## Weak Bicolor Gradients ##
 ############################
 
-arcadia_aegeanamber = {
+aegeanamber = {
     'color_dict': aegean | paper | amber,
     'values': [0, 0.5, 1]
 }
-arcadia_astercanary = {
+astercanary = {
     'color_dict': aster | paper | canary,
     'values': [0, 0.5, 1]
 }
-arcadia_seaweedrose = {
+seaweedrose = {
     'color_dict': seaweed | paper | rose,
     'values': [0, 0.5, 1]
 }
@@ -176,17 +176,17 @@ arcadia_seaweedrose = {
 ## Strong Bicolor Gradients ##
 ##############################
 
-arcadia_poppies = {
+poppies = {
     'color_dict': concord | aegean | vitalblue | paper | dress | amber | dragon | redwood,
     'values': [0, 0.26, 0.35, 0.5, 0.6, 0.7, 0.8, 1]
 }
 
-arcadia_pansies = {
+pansies = {
     'color_dict': royal | aster | wish | paper | oat | canary | cocoa,
     'values': [0, 0.21, 0.39, 0.5, 0.55, 0.64, 1]
 }
 
-arcadia_dahlias = {
+dahlias = {
     'color_dict': depths | seaweed | paper | rose | dragon | pitaya,
     'values': [0, 0.25, 0.5, 0.63, 0.77, 1]
 }
@@ -206,37 +206,39 @@ or, if using the apc alias:
 """
 
 Palette_dicts = {
-    'arcadia:All': arcadia_All,
-    'arcadia:Core': arcadia_Core,
-    'arcadia:Neutral': arcadia_Neutral,
-    'arcadia:Accent': arcadia_Accent,
-    'arcadia:AccentExpanded': arcadia_Accent_expanded,
-    'arcadia:AccentFull': arcadia_Accent_full,
-    'arcadia:AccentOrdered': arcadia_Accent_ordered,
-    'arcadia:Light': arcadia_Light,
-    'arcadia:LightExpanded': arcadia_Light_expanded,
-    'arcadia:LightFull': arcadia_Light_full,
-    'arcadia:LightOrdered': arcadia_Light_ordered,
-    'arcadia:AccentAll': arcadia_Accent_all,
-    'arcadia:AccentAllOrdered': arcadia_Accent_all_ordered,
-    'arcadia:Other': arcadia_Other,
-    'arcadia:AllOrdered': arcadia_Accent_all_ordered
+    'arcadia:All': All,
+    'arcadia:Core': Core,
+    'arcadia:Neutral': Neutral,
+    'arcadia:Accent': Accent,
+    'arcadia:AccentExpanded': Accent_expanded,
+    'arcadia:AccentFull': Accent_full,
+    'arcadia:AccentOrdered': Accent_ordered,
+    'arcadia:Light': Light,
+    'arcadia:LightExpanded': Light_expanded,
+    'arcadia:LightFull': Light_full,
+    'arcadia:LightOrdered': Light_ordered,
+    'arcadia:AccentAll': Accent_all,
+    'arcadia:AccentAllOrdered': Accent_all_ordered,
+    'arcadia:Other': Other,
+    'arcadia:AllOrdered': Accent_all_ordered
 }
 
 Gradient_dicts = {
-    'arcadia:viridis': arcadia_viridis,
-    'arcadia:magma': arcadia_magma,
-    'arcadia:cividis': arcadia_cividis,
-    'arcadia:aegeanamber': arcadia_aegeanamber,
-    'arcadia:astercanary': arcadia_astercanary,
-    'arcadia:seaweedrose': arcadia_seaweedrose,
-    'arcadia:poppies': arcadia_poppies,
-    'arcadia:pansies': arcadia_pansies,
-    'arcadia:dahlias': arcadia_dahlias
+    'arcadia:viridis': viridis,
+    'arcadia:magma': magma,
+    'arcadia:cividis': cividis,
+    'arcadia:aegeanamber': aegeanamber,
+    'arcadia:astercanary': astercanary,
+    'arcadia:seaweedrose': seaweedrose,
+    'arcadia:poppies': poppies,
+    'arcadia:pansies': pansies,
+    'arcadia:dahlias': dahlias
 }
 
+# collector for reverse gradients
 Gradient_r_dicts = {}
 
+# generate reverse gradients and add them as dictionary entries
 for name, grad in Gradient_dicts.items():
     grad_r_name = name + '_r'
     grad_r = reverse_gradient(grad)
@@ -270,18 +272,18 @@ for name, data in Gradient_dicts.items():
     Gradients[name] = grad
 
 # Register paper-to-color gradient for each of the colors in the base palette
-for color in arcadia_All:
+for color in All:
     if color == 'arcadia:paper':
         continue
     name = color + 's'
-    color_dict = paper | {color: arcadia_All[color]}
+    color_dict = paper | {color: All[color]}
     color_grad = Gradient(name, color_dict)
     color_grad.mpl_LinearSegmentedColormap_register()
     Gradients[name] = color_grad
     
     # add reverse single-color gradients to Gradients dictionary
     name_r = name + '_r'
-    color_dict_r = {color: arcadia_All[color]} | paper
+    color_dict_r = {color: All[color]} | paper
     color_grad_r = Gradient(name_r, color_dict_r)
     Gradients[name_r] = color_grad_r
 
