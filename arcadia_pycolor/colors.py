@@ -288,6 +288,14 @@ for color in All:
 def mpl_setup(mode = 'all'):
     '''
     Register Arcadia's colors from the arcadia_pycolor package for use with matplotlib.
+    
+    Args:
+        mode (str): defaults to 'all', which does all of the following keywords.
+            To use just one of the following, set mode to the corresponding keyword.
+        - 'colors': registers the Arcadia named colors (e.g. 'arcadia:aegean') with matplotlib's named colors.
+        - 'palettes': registers the Palettes as named matplotlib ListedColormaps.
+        - 'gradients': registers the Gradients as named matplotlib LinearSegmentedColormaps.
+        - 'stylesheets': sets the default stylesheet to Arcadia's basic style.
     '''
     if mode == 'colors' or mode == 'all':
         # Register each of the colors in arcadia:All
