@@ -73,7 +73,7 @@ paper = {'arcadia:paper': '#FCFCFC'}
 redwood = {'arcadia:redwood': '#52180A'}
 cocoa = {'arcadia:cocoa': '#4D2C03'}
 royal = {'arcadia:royal': '#3F2D5C'}
-pitaya = {'arcadia:pitaya': '#4A0F45'}
+pitaya = {'arcadia:pitaya': '#47092D'}
 depths = {'arcadia:depths': '#093345'}
 
 # Other named colors
@@ -286,6 +286,9 @@ for color in All:
 ######################################
 
 def mpl_setup(mode = 'all'):
+    '''
+    Register Arcadia's colors from the arcadia_pycolor package for use with matplotlib.
+    '''
     if mode == 'colors' or mode == 'all':
         # Register each of the colors in arcadia:All
         Palettes['arcadia:All'].mpl_NamedColors_register()
