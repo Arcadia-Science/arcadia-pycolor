@@ -12,7 +12,7 @@ setup(
     author_email='dennis.sun@arcadiascience.com',
     packages=['arcadia_pycolor'],
     install_requires=['numpy', 'matplotlib', 'plotly', 'colorspacious'],
-    version='0.2',
+    version='0.3',
     license='MIT',
     description="A Python package to distribute Arcadia's color and style guidelines for figures.",
     package_dir={
