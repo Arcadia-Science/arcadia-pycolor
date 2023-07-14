@@ -446,9 +446,9 @@ All `Palette` and `Gradient` colors are registered as `matplotlib` named entries
 prng = np.random.RandomState(20230710)
 random_sample_1 = prng.random_sample(size = (5, 5))
 
-fig, axs = plt.subplots(1, 3, figsize = (7, 2))
-
 cmaps = ['arcadia:aegeans', 'arcadia:viridis', 'arcadia:poppies_r']
+
+fig, axs = plt.subplots(1, len(cmaps), figsize = (2.5 * len(cmaps), 1.8))
 
 for cmap, ax in zip(cmaps, axs):
     im = ax.imshow(random_sample_1, cmap = cmap)
@@ -613,7 +613,205 @@ plt.show()
 
 
 ---
-## 7. Index
+## 7. Color vision deficiency (CVD) testing
+
+`Palette` and `Gradient` objects have methods for testing how colors would appear for various color vision deficiencies.  
+
+`arcadia_pycolor` leverages the [color vision simulation provided by `colorspacious`](https://colorspacious.readthedocs.io/en/latest/tutorial.html#simulating-colorblindness).  
+You can display a color palette using `Palette.display_cvd()` for these color vision deficiencies:
+- `'d'` for deuteranopia
+- `'p'` for protanopia
+- `'t'` for tritanopia
+
+
+```python
+test_palette = 'arcadia:AccentOrdered'
+
+apc.Palettes[test_palette].display()
+
+cvd_forms = ['d', 'p', 't']
+for form in cvd_forms:
+    apc.Palettes[test_palette].display_cvd(form)
+```
+
+
+    
+![png](README_files/README_42_0.png)
+    
+
+
+
+    
+![png](README_files/README_42_1.png)
+    
+
+
+
+    
+![png](README_files/README_42_2.png)
+    
+
+
+
+    
+![png](README_files/README_42_3.png)
+    
+
+
+You can access these cvd-transformed colors using these functions:  
+- `Palette.colors_cvd(form)` returns a list of the HEX colors of the palette that simulate that CVD
+- `Palette.mpl_ListedColormap(form)` returns a matplotlib ListedColormap with colors that simulate that CVD
+- `Gradient.mpl_LinearSegmentedColormap(form)` returns a matplotlib LinearSegmentedColormap with colors that simulate that CVD  
+
+Several display methods also have a `_cvd` suffixed form:
+- `Palette.display_cvd(form)`
+- `Gradient.plot_gradient_cvd(form)`
+- `Gradient.plot_lightness_cvd(form)`
+
+
+```python
+test_palette = 'arcadia:viridis'
+
+apc.Gradients[test_palette].plot_gradient()
+
+cvd_forms = ['d', 'p', 't']
+for form in cvd_forms:
+    apc.Gradients[test_palette].plot_gradient_cvd(form)
+```
+
+
+    
+![png](README_files/README_44_0.png)
+    
+
+
+
+    
+![png](README_files/README_44_1.png)
+    
+
+
+
+    
+![png](README_files/README_44_2.png)
+    
+
+
+
+    
+![png](README_files/README_44_3.png)
+    
+
+
+If you prefer to display the CVD differences as a single plot, you can try the following code.
+
+
+```python
+test_palette = 'arcadia:magma'
+
+cvd_dict = {test_palette + '_' + form: apc.Gradients[test_palette].mpl_LinearSegmentedColormap_cvd(form) for form in cvd_forms}
+plot_dict = {test_palette: apc.Gradients[test_palette].mpl_LinearSegmentedColormap} | cvd_dict
+
+apc.plot_color_gradients(
+    plot_dict,
+    title = test_palette + ' CVD test',
+    figsize = (6, 3)
+)
+
+apc.plot_color_lightness(
+    plot_dict,
+    title = test_palette + ' CVD test',
+    figsize = (6, 3)
+)
+```
+
+
+    
+![png](README_files/README_46_0.png)
+    
+
+
+
+    
+![png](README_files/README_46_1.png)
+    
+
+
+### `matplotlib` color vision deficiency integration
+
+The color vision deficient versions of each gradient or palette are registered to matplotlib automatically when calling `apc.mpl_setup()` or when registering a `Palette` or `Gradient` object with `mpl_ListedColormap_register()` or `mpl_LinearSegmentedColormap_register()` respectively.  
+
+You can access these as named colormaps by adding a `'_d'`, `'_p'`, or `'_t'` suffix to the end of the colormap name.
+
+
+```python
+prng = np.random.RandomState(20230710)
+random_sample_1 = prng.random_sample(size = (5, 5))
+
+cmaps = ['arcadia:aegeans', 'arcadia:ambers_t', 'arcadia:viridis', 'arcadia:viridis_p']
+
+fig, axs = plt.subplots(1, len(cmaps), figsize = (2.5 * len(cmaps), 1.8))
+
+for cmap, ax in zip(cmaps, axs):
+    im = ax.imshow(random_sample_1, cmap = cmap)
+    plt.colorbar(im, label = cmap)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+    
+![png](README_files/README_48_0.png)
+    
+
+
+### Color vision deficiency simulation for existing images
+
+Sometimes you've already generated a figure and you'd like to know if it's colorblind-friendly.  
+You can generate colorblind images using `apc.simulate_cvd_image()`.  
+
+This function should work on PNG, JPEG, and TIFF format images.
+
+
+```python
+image = 'README_files/cell_drawing.png'
+
+print("----------\nOriginal image")
+
+plt.figure(figsize = (3, 3))
+plt.imshow(plt.imread(image))
+plt.axis("off")
+plt.tight_layout()
+plt.show()
+
+print("----------\nCVD simulations")
+
+apc.simulate_cvd_image(image, fig_width = 6)
+```
+
+    ----------
+    Original image
+
+
+
+    
+![png](README_files/README_50_1.png)
+    
+
+
+    ----------
+    CVD simulations
+
+
+
+    
+![png](README_files/README_50_3.png)
+    
+
+
+---
+## 8. Index
 
 The index below serves as a visual reference for the palettes and gradients.
 
@@ -643,55 +841,55 @@ for pal in ordered_palettes:
 
 
     
-![png](README_files/README_42_1.png)
+![png](README_files/README_52_1.png)
     
 
 
 
     
-![png](README_files/README_42_2.png)
+![png](README_files/README_52_2.png)
     
 
 
 
     
-![png](README_files/README_42_3.png)
+![png](README_files/README_52_3.png)
     
 
 
 
     
-![png](README_files/README_42_4.png)
+![png](README_files/README_52_4.png)
     
 
 
 
     
-![png](README_files/README_42_5.png)
+![png](README_files/README_52_5.png)
     
 
 
 
     
-![png](README_files/README_42_6.png)
+![png](README_files/README_52_6.png)
     
 
 
 
     
-![png](README_files/README_42_7.png)
+![png](README_files/README_52_7.png)
     
 
 
 
     
-![png](README_files/README_42_8.png)
+![png](README_files/README_52_8.png)
     
 
 
 
     
-![png](README_files/README_42_9.png)
+![png](README_files/README_52_9.png)
     
 
 
@@ -701,19 +899,19 @@ for pal in ordered_palettes:
 
 
     
-![png](README_files/README_42_11.png)
+![png](README_files/README_52_11.png)
     
 
 
 
     
-![png](README_files/README_42_12.png)
+![png](README_files/README_52_12.png)
     
 
 
 
     
-![png](README_files/README_42_13.png)
+![png](README_files/README_52_13.png)
     
 
 
@@ -744,13 +942,13 @@ apc.plot_color_lightness(
 
 
     
-![png](README_files/README_44_0.png)
+![png](README_files/README_54_0.png)
     
 
 
 
     
-![png](README_files/README_44_1.png)
+![png](README_files/README_54_1.png)
     
 
 
@@ -785,13 +983,13 @@ apc.plot_color_lightness(
 
 
     
-![png](README_files/README_46_0.png)
+![png](README_files/README_56_0.png)
     
 
 
 
     
-![png](README_files/README_46_1.png)
+![png](README_files/README_56_1.png)
     
 
 
