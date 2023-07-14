@@ -73,9 +73,11 @@ paper = {'arcadia:paper': '#FCFCFC'}
 redwood = {'arcadia:redwood': '#52180A'}
 cocoa = {'arcadia:cocoa': '#4D2C03'}
 royal = {'arcadia:royal': '#3F2D5C'}
-carmine = {'arcadia:carmine': '#480918'}
+carmine = {'arcadia:carmine': '#471122'}
 depths = {'arcadia:depths': '#093345'}
 bluegrass = {'arcadia:bluegrass': '#458F99'}
+yucca = {'arcadia:yucca': '#1E4812'}
+pitaya = {'arcadia:pitaya': '#C74970'}
 
 # Other named colors
 white = {'white': '#FFFFFF'}
@@ -188,8 +190,8 @@ pansies = {
 }
 
 dahlias = {
-    'color_dict': depths | bluegrass | paper | rose | dragon | carmine,
-    'values': [0, 0.25, 0.5, 0.63, 0.77, 1]
+    'color_dict': yucca | lime | paper | rose | pitaya | carmine,
+    'values': [0, 0.33, 0.5, 0.63, 0.77, 1]
 }
 
 ################
