@@ -6,12 +6,13 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from IPython.display import Markdown, display
 import colorsys
-from colorspacious import cspace_converter
+from colorspacious import cspace_converter, cspace_convert
 
 __all__ = ['print_color', 'slice_dict', 'reverse_gradient', 
            'adjust_lightness', 'extend_colors',
            'display_palette', 'display_palette_interactive',
-           'plot_color_gradients', 'plot_color_lightness']
+           'plot_color_gradients', 'plot_color_lightness',
+           'simulate_cvd', 'simulate_cvd_image']
 
 def print_color(colors):
     '''
@@ -369,3 +370,81 @@ def plot_color_lightness(cmap_dict: dict, title = None,
         return fig
     
     plt.show()
+    
+    
+def make_cvd_dict(form: str, severity: int):
+    forms = {'d': 'deuteranomaly', 'p': 'protanomaly', 't': 'tritanomaly'}
+    
+    if form not in forms:
+        raise ValueError("Choose 'd' for deuteranomaly, 'p' for protanomaly, and 't' for tritanomaly.")
+    
+    sev = np.clip(severity, 0, 100)
+    
+    # define a cvd space
+    cvd_space = {
+        "name": "sRGB1+CVD",
+        "cvd_type": forms[form],
+        "severity": sev
+    }
+    
+    return cvd_space
+
+def simulate_cvd(colors: list, form = 'd', severity = 100):
+    
+    cvd_space = make_cvd_dict(form = form, severity = severity)
+    
+    # check if it's a hex color, converting to rgb as needed
+    if '#' in colors[0] and len(colors[0]) == 7:
+        rgb_colors = [mpl.colors.to_rgb(i) for i in colors]
+    else:
+        rgb_colors = colors
+    
+    cvd_rgb_colors = np.clip(cspace_convert(rgb_colors, cvd_space, "sRGB1"), 0, 1)
+    cvd_hex_colors = [mpl.colors.to_hex(color) for color in cvd_rgb_colors]
+
+    return cvd_hex_colors
+
+def simulate_cvd_image(file: str, severity = 100, fig_width = 10, show = True):
+    
+    forms = ['d', 'p', 't']
+    
+    fmt = file.split('.')[-1].lower()
+    
+    cvd_spaces = {form: make_cvd_dict(form = form, severity = severity) for form in forms}
+    
+    if fmt == 'png':
+        im_sRGB = plt.imread(file)[:, :, :3]
+    elif fmt == 'tiff':
+        im_sRGB255 = plt.imread(file)[:, :, :3]
+        im_sRGB = cspace_convert(im_sRGB255, "sRGB255", "sRGB1")
+    elif fmt == 'jpg' or fmt == 'jpeg':
+        im_sRGB255 = plt.imread(file)
+        im_sRGB = cspace_convert(im_sRGB255, "sRGB255", "sRGB1")
+    
+    im_cvds = {form: np.clip(cspace_convert(im_sRGB, cvd_spaces[form], "sRGB1"), 0, 1) for form in forms}
+    
+    px_height = im_sRGB.shape[0]
+    px_width = im_sRGB.shape[1]
+
+    im_width = fig_width / 2 
+    px_ratio = px_height / px_width
+    im_height = im_width * px_ratio * 1.05
+
+
+    fig, axs = plt.subplots(2, 2, figsize = (im_width * 2, im_height * 2))
+
+    labels = ['original', 'deuteranopia', 'protanopia', 'tritanopia']
+
+    for i, im in enumerate([im_sRGB] + list(im_cvds.values())):
+        ax = axs.flat[i]
+
+        ax.imshow(im)
+        ax.text(0, 0, labels[i])
+        ax.axis("off")
+
+    plt.tight_layout()
+    
+    if show:
+        plt.show()
+    else:
+        return fig

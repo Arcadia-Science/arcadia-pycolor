@@ -1,6 +1,6 @@
 import random
 import matplotlib as mpl
-from .functions import print_color, display_palette, display_palette_interactive, extend_colors, plot_color_gradients, plot_color_lightness
+from .functions import print_color, display_palette, display_palette_interactive, extend_colors, plot_color_gradients, plot_color_lightness, simulate_cvd
 import json
 
 __all__ = ['Palette', 'Gradient']
@@ -91,6 +91,24 @@ class Palette(object):
         '''
         return self.mpl_ListedColormap.reversed()
     
+    def colors_cvd(self, form = 'd'):
+        '''
+        Returns a color vision deficient version of the colors in the palette.
+        '''
+        return simulate_cvd(self.colors, form = form)
+    
+    def mpl_ListedColormap_cvd(self, form = 'd'):
+        '''
+        Returns a color vision deficient version of the colors in the palette as a matplotlib ListedColormap object.
+        '''
+        return mpl.colors.ListedColormap(self.colors_cvd(form), name = self.name + '_' + form)
+    
+    def mpl_ListedColormap_cvd_r(self, form = 'd'):
+        '''
+        Returns a color vision deficient version of the colors in the palette as a matplotlib ListedColormap object.
+        '''
+        return self.mpl_ListedColormap_cvd(form).reversed()
+    
     def sample(self, number: int, fmt = 'list'):
         '''
         Randomly samples the color dictionary, returning the data in the desired format.
@@ -154,6 +172,10 @@ class Palette(object):
         if self.name not in mpl.colormaps.keys():
             mpl.colormaps.register(cmap=self.mpl_ListedColormap)
             mpl.colormaps.register(cmap=self.mpl_ListedColormap_r)
+            
+            for form in ['d', 'p', 't']:
+                mpl.colormaps.register(cmap=self.mpl_ListedColormap_cvd(form))
+                mpl.colormaps.register(cmap=self.mpl_ListedColormap_cvd_r(form))
         
     def mpl_NamedColors_register(self):
         '''
@@ -179,6 +201,12 @@ class Palette(object):
         '''
         display_palette([{'name': self.name, 'length':  len(self.dict), 'cmap': self.mpl_ListedColormap_r}])
         
+    def display_cvd(self, form = 'd'):
+        '''
+        Uses display_palette to display the colors in the reversed palette.
+        '''
+        display_palette([{'name': self.name + '_' + form, 'length':  len(self.dict), 'cmap': self.mpl_ListedColormap_cvd(form = form)}])
+    
     def display_interactive(self):
         '''
         Uses display_palette_interactive to display an interactive hover-over version of the palette.
@@ -249,12 +277,30 @@ class Gradient(Palette):
         '''
         return [(self.values[i], self.colors[i]) for i in range(len(self.dict))]
     
+    def grad_nested_list_cvd(self, form = 'd'):
+        '''
+        Returns a nested list of pairs of value - color relationships.
+        '''
+        return [[self.values[i], self.colors_cvd(form = form)[i]] for i in range(len(self.dict))]
+    
+    def grad_tuple_list_cvd(self, form = 'd'):
+        '''
+        Returns a nested list of pairs of value - color relationships.
+        '''
+        return [(self.values[i], self.colors_cvd(form = form)[i]) for i in range(len(self.dict))]
+    
     @property
     def mpl_LinearSegmentedColormap(self):
         '''
         Returns the gradient as a matplotlib LinearSegmentedColormap object.
         '''
         return mpl.colors.LinearSegmentedColormap.from_list(self.name, self.grad_tuple_list)
+    
+    def mpl_LinearSegmentedColormap_cvd(self, form = 'd'):
+        '''
+        Returns the gradient as a matplotlib LinearSegmentedColormap object.
+        '''
+        return mpl.colors.LinearSegmentedColormap.from_list(self.name + '_' + form, self.grad_tuple_list_cvd(form = form))
     
     @property
     def mpl_LinearSegmentedColormap_r(self):
@@ -263,6 +309,12 @@ class Gradient(Palette):
         '''
         return self.mpl_LinearSegmentedColormap.reversed()
     
+    def mpl_LinearSegmentedColormap_cvd_r(self, form = 'd'):
+        '''
+        Returns the gradient as a matplotlib LinearSegmentedColormap object.
+        '''
+        return self.mpl_LinearSegmentedColormap_cvd(form).reversed()
+    
     def mpl_LinearSegmentedColormap_register(self):
         '''
         Registers the matplotlib LinearSegmentedColormap object (and its reverse) into the list of named matplotlib LinearSegmentedColormaps.
@@ -270,6 +322,10 @@ class Gradient(Palette):
         if self.name not in mpl.colormaps.keys():
             mpl.colormaps.register(cmap=self.mpl_LinearSegmentedColormap)
             mpl.colormaps.register(cmap=self.mpl_LinearSegmentedColormap_r)
+            
+            for form in ['d', 'p', 't']:
+                mpl.colormaps.register(cmap=self.mpl_LinearSegmentedColormap_cvd(form))
+                mpl.colormaps.register(cmap=self.mpl_LinearSegmentedColormap_cvd_r(form))
     
     def display(self, length = 9):
         '''
@@ -288,6 +344,15 @@ class Gradient(Palette):
             length (int): number of steps to show.
         '''
         display_palette([{'name': self.name, 'length': length, 'cmap': self.mpl_LinearSegmentedColormap_r}])
+        
+    def display_cvd(self, form = 'd', length = 9):
+        '''
+        Uses display_palette to display the reversed gradient with a number of steps equal to length.
+        
+        Args:
+            length (int): number of steps to show.
+        '''
+        display_palette([{'name': self.name + '_' + form, 'length': length, 'cmap': self.mpl_LinearSegmentedColormap_cvd(form)}])
     
     def plot_gradient(self, figsize = (5, 0.5), *args, **kwargs):
         '''
@@ -297,6 +362,15 @@ class Gradient(Palette):
             figsize (tuple): width, height of the resulting plot.
         '''
         plot_color_gradients({self.name: self.mpl_LinearSegmentedColormap}, figsize = figsize, *args, **kwargs)
+        
+    def plot_gradient_cvd(self, form = 'd', figsize = (5, 0.5), *args, **kwargs):
+        '''
+        Uses plot_color_gradient to display the gradient in both color and black and white.
+        
+        Args:
+            figsize (tuple): width, height of the resulting plot.
+        '''
+        plot_color_gradients({self.name + '_' + form: self.mpl_LinearSegmentedColormap_cvd(form)}, figsize = figsize, *args, **kwargs)
     
     def plot_lightness(self, cmap_type = '', tickrotation = 0, markersize = 100, figsize = (3, 2), *args, **kwargs):
         '''
@@ -309,3 +383,15 @@ class Gradient(Palette):
             figsize (tuple): width, height of the resulting plot.
         '''
         plot_color_lightness({self.name: self.mpl_LinearSegmentedColormap}, cmap_type = cmap_type, tickrotation = tickrotation, markersize = markersize, figsize = figsize, *args, **kwargs)
+
+    def plot_lightness_cvd(self, form = 'd', cmap_type = '', tickrotation = 0, markersize = 100, figsize = (3, 2), *args, **kwargs):
+        '''
+        Uses plot_color_lightness to display the lightness of the colors along the gradient.
+        
+        Args:
+            cmap_type (str): if set to 'linear', puts the name of the colormap at the end of the color line
+            tickrotation (int): rotation of text label for colormap
+            markersize (int): the size of markers to use for plotting the line
+            figsize (tuple): width, height of the resulting plot.
+        '''
+        plot_color_lightness({self.name + '_' + form: self.mpl_LinearSegmentedColormap_cvd(form)}, cmap_type = cmap_type, tickrotation = tickrotation, markersize = markersize, figsize = figsize, *args, **kwargs)
