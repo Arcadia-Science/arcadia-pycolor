@@ -331,7 +331,7 @@ apc.Gradients['arcadia:viridis'].plot_lightness()
     
 
 
-### Strong linear gradients
+### Strong monocolor gradients
 
 In addition to gradients from Arcadia's colors to `arcadia:paper`, there are also built-in linear color gradients that have greater contrast between low and high values.
 
@@ -944,6 +944,37 @@ apc.plot_color_lightness(
     
 
 
+### Arcadia monocolor gradients
+
+
+```python
+monocolor_gradients = ['arcadia:' + color for color in ['reds', 'oranges', 'yellows', 'greens', 'teals', 'blues', 'purples', 'magentas']]
+
+apc.plot_color_gradients(
+    {grad: grad for grad in monocolor_gradients},
+    title = 'Arcadia monocolor gradients',
+    figsize = (6, 4)
+)
+
+apc.plot_color_lightness(
+    {grad: grad for grad in monocolor_gradients},
+    title = 'Arcadia monocolor gradients',
+    figsize = (7, 3)
+)
+```
+
+
+    
+![png](README_files/README_58_0.png)
+    
+
+
+
+    
+![png](README_files/README_58_1.png)
+    
+
+
 ### Arcadia bicolor gradients
 
 The bicolor gradients in the package were designed to be linearly decreasing in brightness in both directions.  
@@ -975,13 +1006,13 @@ apc.plot_color_lightness(
 
 
     
-![png](README_files/README_58_0.png)
+![png](README_files/README_60_0.png)
     
 
 
 
     
-![png](README_files/README_58_1.png)
+![png](README_files/README_60_1.png)
     
 
 
