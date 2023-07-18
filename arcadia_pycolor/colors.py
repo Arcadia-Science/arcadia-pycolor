@@ -15,7 +15,7 @@ lightgrey = {'arcadia:lightgrey': '#EBEDE8'}
 shell = {'arcadia:shell': '#EDE0D6'}
 dawn = {'arcadia:dawn': '#F8F4F1'}
 seafoam = {'arcadia:seafoam': '#F9FCF0'}
-orange = {'arcadia:orange': '#FFB984'}
+tangerine = {'arcadia:tangerine': '#FFB984'}
 black = {'arcadia:black': '#09090A'}
 charcoal = {'arcadia:charcoal': '#484B50'}
 marineblue = {'arcadia:marineblue': '#8A99AD'}
@@ -48,10 +48,10 @@ periwinkle = {'arcadia:periwinkle': '#DCBFFC'}
 blossom = {'arcadia:blossom': '#F5CBE4'}
 
 # Accent expanded colors
-# (Orange and Marineblue are included, but are also Core colors)
+# (tangerine and Marineblue are included, but are also Core colors)
 lime = {'arcadia:lime': '#97CD78'}
 vitalblue = {'arcadia:vitalblue': '#73B5E3'}
-# orange = {'arcadia:orange': '#FFB984'}
+# tangerine = {'arcadia:tangerine': '#FFB984'}
 chateau = {'arcadia:chateau': '#BAB0A8'}
 dragon = {'arcadia:dragon': '#C85152'}
 # marineblue = {'arcadia:marineblue': '#8A99AD'}
@@ -74,10 +74,12 @@ redwood = {'arcadia:redwood': '#52180A'}
 cocoa = {'arcadia:cocoa': '#4D2C03'}
 royal = {'arcadia:royal': '#3F2D5C'}
 carmine = {'arcadia:carmine': '#471122'}
-depths = {'arcadia:depths': '#093345'}
+depths = {'arcadia:depths': '#09473E'}
 bluegrass = {'arcadia:bluegrass': '#458F99'}
 yucca = {'arcadia:yucca': '#1E4812'}
 pitaya = {'arcadia:pitaya': '#C74970'}
+soil = {'arcadia:soil': '#4D2500'}
+umber = {'arcadia:umber': '#A85E28'}
 
 # Other named colors
 white = {'white': '#FFFFFF'}
@@ -95,16 +97,16 @@ magenta = {'magenta': '#FF00FF'}
 These are the dictionaries collecting the basic palettes.
 """
 
-Core = lightgrey | shell | dawn | seafoam | orange | black | charcoal | marineblue | forest
+Core = lightgrey | shell | dawn | seafoam | tangerine | black | charcoal | marineblue | forest
 Neutral = zephyr | paleazure | lichen | orchid | buff | bark | slate | crow
 
 Accent = aegean | amber | seaweed | canary | aster | rose
 Light = bluesky | dress | sage | oat | periwinkle | blossom
 
-Accent_expanded = lime | vitalblue | orange | chateau | dragon | marineblue
+Accent_expanded = lime | vitalblue | tangerine | chateau | dragon | marineblue
 Light_expanded = mint | wish | satin | taupe | mars | denim
 
-Other = concord | grape | taffy | brightgrey | paper | redwood | cocoa | royal
+Other = paper | brightgrey | taffy | pitaya | redwood | cocoa | umber | soil | yucca | bluegrass | depths | royal | grape | concord
 
 #############################
 ## Aggregated Dictionaries ##
@@ -129,7 +131,7 @@ These are the dictionaries with specifically-ordered colors.
 The order of colors has been chosen to maximize distinguishability.
 """
 
-Accent_ordered = aegean | amber | canary | lime | aster | rose | seaweed | dragon | vitalblue | chateau | marineblue | orange
+Accent_ordered = aegean | amber | canary | lime | aster | rose | seaweed | dragon | vitalblue | chateau | marineblue | tangerine
 Light_ordered = bluesky | dress | oat | sage | periwinkle | denim | taupe | mars | blossom | mint | wish | satin
 
 Accent_all_ordered = Accent_ordered | Light_ordered
@@ -143,13 +145,18 @@ They have been modified to use colors that are harmonious with our brand palette
 The colors have also been optimized to be nearly-perceptually uniform based on lightness.
 """
 
-viridis = {
+viridis_v1 = {
     'color_dict': concord | aegean | lime | yellow,
     'values': [0, 0.49, 0.75, 1]
 }
 
+viridis = {
+    'color_dict': concord | grape | aegean | lime | yellow,
+     'values': [0, 0.23, 0.49, 0.77, 1]
+}
+
 magma = {
-    'color_dict': black | grape | taffy | orange | oat,
+    'color_dict': black | grape | taffy | tangerine | oat,
     'values': [0, 0.38, 0.72, 0.9, 1]
 }
 
@@ -157,6 +164,44 @@ cividis = {
     'color_dict': crow | forest | canary | satin,
     'values': [0, 0.39, 0.85, 1]
 }
+
+################################
+## Strong Monocolor Gradients ##
+################################
+
+reds = {
+    'color_dict': redwood | dragon | amber | paper,
+    'values': [0.0, 0.43, 0.64, 1.0]
+}
+oranges = {
+    'color_dict': soil | umber | tangerine | paper,
+    'values': [0.0, 0.38, 0.8, 1.0]
+}
+yellows = {
+    'color_dict': cocoa | canary | oat | paper,
+    'values': [0.0, 0.76, 0.9, 1.0]
+}
+greens = {
+    'color_dict': yucca | lime | paper,
+    'values': [0, 0.7, 1]
+}
+teals = {
+    'color_dict': depths | seaweed | paper,
+    'values': [0, 0.42, 1]
+}
+blues = {
+    'color_dict': concord | aegean | vitalblue | paper,
+    'values': [0, 0.47, 0.66, 1.0]
+}
+purples = {
+    'color_dict': royal | aster | wish | paper,
+    'values': [0, 0.4, 0.74, 1.0]
+}
+magentas = {
+    'color_dict': carmine | pitaya | rose | paper,
+    'values': [0, 0.44, 0.73, 1]
+}
+
 
 ############################
 ## Weak Bicolor Gradients ##
@@ -170,8 +215,20 @@ astercanary = {
     'color_dict': aster | paper | canary,
     'values': [0, 0.5, 1]
 }
+limerose = {
+    'color_dict': lime | paper | rose,
+    'values': [0, 0.5, 1]
+}
+seaweedtangerine = {
+    'color_dict': seaweed | paper | tangerine,
+    'values': [0, 0.5, 1]
+}
 seaweedrose = {
     'color_dict': seaweed | paper | rose,
+    'values': [0, 0.5, 1]
+}
+limetangerine = {
+    'color_dict': lime | paper | tangerine,
     'values': [0, 0.5, 1]
 }
 
@@ -180,18 +237,20 @@ seaweedrose = {
 ##############################
 
 poppies = {
-    'color_dict': concord | aegean | vitalblue | paper | dress | amber | dragon | redwood,
-    'values': [0, 0.26, 0.35, 0.5, 0.6, 0.7, 0.8, 1]
+    'color_dict': concord | aegean | vitalblue | paper | amber | dragon | redwood,
+    'values': [0, 0.235, 0.33, 0.5, 0.68, 0.785, 1.0]
 }
-
 pansies = {
     'color_dict': royal | aster | wish | paper | oat | canary | cocoa,
-    'values': [0, 0.21, 0.39, 0.5, 0.55, 0.64, 1]
+    'values': [0, 0.2, 0.37, 0.5, 0.55, 0.62, 1.0]
 }
-
 dahlias = {
     'color_dict': yucca | lime | paper | rose | pitaya | carmine,
-    'values': [0, 0.33, 0.5, 0.63, 0.77, 1]
+    'values': [0, 0.35, 0.5, 0.635, 0.78, 1.0]
+}
+lilies = {
+    'color_dict': depths | seaweed | paper | tangerine | umber | soil, 
+    'values': [0.0, 0.21, 0.5, 0.6, 0.81, 1.0]
 }
 
 ################
@@ -227,15 +286,28 @@ Palette_dicts = {
 }
 
 Gradient_dicts = {
+    'arcadia:reds': reds,
+    'arcadia:oranges': oranges,
+    'arcadia:yellows': yellows,
+    'arcadia:greens': greens,
+    'arcadia:teals': teals,
+    'arcadia:blues': blues,
+    'arcadia:purples': purples,
+    'arcadia:magentas': magentas,
     'arcadia:viridis': viridis,
+    'arcadia:viridis_v1': viridis_v1,
     'arcadia:magma': magma,
     'arcadia:cividis': cividis,
     'arcadia:aegeanamber': aegeanamber,
     'arcadia:astercanary': astercanary,
     'arcadia:seaweedrose': seaweedrose,
+    'arcadia:limerose': limerose,
+    'arcadia:seaweedtangerine': seaweedtangerine,
+    'arcadia:limetangerine': limetangerine,
     'arcadia:poppies': poppies,
     'arcadia:pansies': pansies,
-    'arcadia:dahlias': dahlias
+    'arcadia:dahlias': dahlias,
+    'arcadia:lilies': lilies
 }
 
 # collector for reverse gradients

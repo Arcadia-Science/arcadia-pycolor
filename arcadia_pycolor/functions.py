@@ -173,6 +173,9 @@ def display_palette(cmap_dicts: list, ncols = 1, show = True, figsize = (0, 0)):
         plt.xticks([])
         plt.yticks([])
         
+    if len(cmap_dicts) > 1:
+        plt.tight_layout()
+        
     if show:
         plt.show()
     
