@@ -1,4 +1,4 @@
-__all__ = ['classes', 'functions', 'colors']
+__all__ = ["classes", "functions", "colors"]
 
 from .classes import *
 from .functions import *
