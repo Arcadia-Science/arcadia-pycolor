@@ -1,13 +1,13 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "arcadia-pycolor"
 dynamic = ["version"]
 description = "A Python package to distribute Arcadia's color and style guidelines for figures."
 readme = "README.md"
-license = "MIT"
+license = {file = "LICENSE"}
 authors = [
     { name = "Dennis Sun", email = "dennis.sun@arcadiascience.com" },
 ]
@@ -21,11 +21,3 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/Arcadia-Science/arcadia-pycolor"
-
-[tool.hatch.version]
-path = "arcadia_pycolor/__init__.py"
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "/arcadia_pycolor",
-]
