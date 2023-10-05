@@ -1,0 +1,12 @@
+name: apc
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - numpy=1.26.0
+  - matplotlib=3.8.0
+  - colorspacious=1.1.2
+  - plotly=5.17.0
+  - ipython=8.16.1
+  - python=3.9
