@@ -1017,7 +1017,29 @@ apc.plot_color_lightness(
 
 
 ---
+## 9. For Developers
+
+The packages needed to develop for this repository are included in the `apc.yml` conda environment file.  
+You can install this conda environment using this command:
+```bash
+conda env create -f apc.yml
+```
+
+You can activate this environment using:
+```bash
+conda activate apc
+```
+
+The development environment includes additional packages, such as `jupyter`, `ipykernel`, and `scipy` which are not used by the package itself, but helpful or useful for developing for the package.  
+
+---
+## Contributing
+
+See how we recognize [feedback and contributions to our code](https://github.com/Arcadia-Science/arcadia-software-handbook/blob/main/guides-and-standards/guide-credit-for-contributions.md).
+
+
+---
 ### Note
-This README file is converted to markdown using:
+The README in the repository is generated from the `README.ipynb file` using:
 
 `jupyter nbconvert --execute --to markdown README.ipynb`
