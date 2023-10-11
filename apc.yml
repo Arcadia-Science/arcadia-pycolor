@@ -12,3 +12,4 @@ dependencies:
   - ipykernel=6.25.2
   - python=3.9
   - scipy=1.11.3
+  - jupyter=1.0.0
