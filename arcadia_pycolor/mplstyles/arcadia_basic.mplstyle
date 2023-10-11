@@ -98,7 +98,7 @@ font.sans-serif: Suisse Intl, Arial, DejaVu Sans, Lucida Grande, Verdana, Geneva
 font.monospace : Suisee Intl Mono, Arial, Courier, DejaVu Sans Mono, Andale Mono, Nimbus Mono L, Courier New, Fixed, Terminal, monospace
 
 ### SAVING FIGURES
-savefig.dpi         : 300
+savefig.dpi         : 100
 savefig.transparent : True
 
 pdf.fonttype        : 42
