@@ -5,8 +5,10 @@ channels:
   - defaults
 dependencies:
   - numpy=1.26.0
-  - matplotlib=3.8.0
+  - matplotlib=3.7.3 #3.8.0 has a bug in gradients as of 2023-10-11
   - colorspacious=1.1.2
   - plotly=5.17.0
   - ipython=8.16.1
+  - ipykernel=6.25.2
   - python=3.9
+  - scipy=1.11.3
