@@ -255,6 +255,7 @@ apc.Gradients['arcadia:viridis'].dict
 
 
     {'arcadia:concord': '#341E60',
+     'arcadia:grape': '#5A4596',
      'arcadia:aegean': '#5088C5',
      'arcadia:lime': '#97CD78',
      'yellow': '#FFFF00'}
@@ -270,7 +271,7 @@ apc.Gradients['arcadia:viridis'].values
 
 
 
-    [0, 0.49, 0.75, 1]
+    [0, 0.23, 0.49, 0.77, 1]
 
 
 
@@ -283,7 +284,11 @@ apc.Gradients['arcadia:viridis'].grad_tuple_list
 
 
 
-    [(0, '#341E60'), (0.49, '#5088C5'), (0.75, '#97CD78'), (1, '#FFFF00')]
+    [(0, '#341E60'),
+     (0.23, '#5A4596'),
+     (0.49, '#5088C5'),
+     (0.77, '#97CD78'),
+     (1, '#FFFF00')]
 
 
 
@@ -296,7 +301,11 @@ apc.Gradients['arcadia:viridis'].grad_nested_list
 
 
 
-    [[0, '#341E60'], [0.49, '#5088C5'], [0.75, '#97CD78'], [1, '#FFFF00']]
+    [[0, '#341E60'],
+     [0.23, '#5A4596'],
+     [0.49, '#5088C5'],
+     [0.77, '#97CD78'],
+     [1, '#FFFF00']]
 
 
 
@@ -322,20 +331,15 @@ apc.Gradients['arcadia:viridis'].plot_lightness()
     
 
 
-### Bicolor gradients
+### Strong monocolor gradients
 
-In addition to linear gradients, the package also contains six built-in bicolor gradients.  
-These color gradients have been chosen to have linearly-increasing lightness and to be colorblind-friendly.  
+In addition to gradients from Arcadia's colors to `arcadia:paper`, there are also built-in linear color gradients that have greater contrast between low and high values.
 
 
 ```python
-apc.Gradients['arcadia:aegeanamber'].display(11)
-apc.Gradients['arcadia:astercanary'].display(11)
-apc.Gradients['arcadia:seaweedrose'].display(11)
+linear_gradients = ['arcadia:' + color for color in ['reds', 'oranges', 'yellows', 'greens', 'teals', 'blues', 'purples', 'magentas']]
 
-apc.Gradients['arcadia:poppies'].display(11)
-apc.Gradients['arcadia:pansies'].display(11)
-apc.Gradients['arcadia:dahlias'].display(11)
+figure = apc.display_palette([{'name': grad, 'length': 9, 'cmap': apc.Gradients[grad].mpl_LinearSegmentedColormap} for grad in linear_gradients], figsize = (6, 6))
 ```
 
 
@@ -344,33 +348,21 @@ apc.Gradients['arcadia:dahlias'].display(11)
     
 
 
+### Bicolor gradients
 
-    
-![png](README_files/README_28_1.png)
-    
-
-
-
-    
-![png](README_files/README_28_2.png)
-    
+In addition to linear gradients, the package also contains several built-in bicolor gradients.  
+These color gradients have been chosen to have linearly-increasing lightness and to be colorblind-friendly.  
 
 
+```python
+bicolor_gradients = ['arcadia:aegeanamber', 'arcadia:astercanary', 'arcadia:limerose', 'arcadia:seaweedtangerine', 'arcadia:poppies', 'arcadia:pansies', 'arcadia:dahlias', 'arcadia:lilies']
 
-    
-![png](README_files/README_28_3.png)
-    
-
+figure = apc.display_palette([{'name': grad, 'length': 9, 'cmap': apc.Gradients[grad].mpl_LinearSegmentedColormap} for grad in bicolor_gradients], figsize = (6, 6))
+```
 
 
     
-![png](README_files/README_28_4.png)
-    
-
-
-
-    
-![png](README_files/README_28_5.png)
+![png](README_files/README_30_0.png)
     
 
 
@@ -387,13 +379,13 @@ apc.Gradients['arcadia:aegeans_r'].display()
 
 
     
-![png](README_files/README_30_0.png)
+![png](README_files/README_32_0.png)
     
 
 
 
     
-![png](README_files/README_30_1.png)
+![png](README_files/README_32_1.png)
     
 
 
@@ -435,7 +427,7 @@ plt.show()
 
 
     
-![png](README_files/README_34_0.png)
+![png](README_files/README_36_0.png)
     
 
 
@@ -446,9 +438,9 @@ All `Palette` and `Gradient` colors are registered as `matplotlib` named entries
 prng = np.random.RandomState(20230710)
 random_sample_1 = prng.random_sample(size = (5, 5))
 
-fig, axs = plt.subplots(1, 3, figsize = (7, 2))
-
 cmaps = ['arcadia:aegeans', 'arcadia:viridis', 'arcadia:poppies_r']
+
+fig, axs = plt.subplots(1, len(cmaps), figsize = (2.5 * len(cmaps), 1.8))
 
 for cmap, ax in zip(cmaps, axs):
     im = ax.imshow(random_sample_1, cmap = cmap)
@@ -460,7 +452,7 @@ plt.show()
 
 
     
-![png](README_files/README_36_0.png)
+![png](README_files/README_38_0.png)
     
 
 
@@ -543,13 +535,13 @@ plot_style_examples("Plot using Arcadia's basic style")
 
 
     
-![png](README_files/README_38_0.png)
+![png](README_files/README_40_0.png)
     
 
 
 
     
-![png](README_files/README_38_1.png)
+![png](README_files/README_40_1.png)
     
 
 
@@ -590,30 +582,228 @@ plt.show()
 
 
     
-![png](README_files/README_40_0.png)
+![png](README_files/README_42_0.png)
     
 
 
 
     
-![png](README_files/README_40_1.png)
+![png](README_files/README_42_1.png)
     
 
 
 
     
-![png](README_files/README_40_2.png)
+![png](README_files/README_42_2.png)
     
 
 
 
     
-![png](README_files/README_40_3.png)
+![png](README_files/README_42_3.png)
     
 
 
 ---
-## 7. Index
+## 7. Color vision deficiency (CVD) testing
+
+`Palette` and `Gradient` objects have methods for testing how colors would appear for various color vision deficiencies.  
+
+`arcadia_pycolor` leverages the [color vision simulation provided by `colorspacious`](https://colorspacious.readthedocs.io/en/latest/tutorial.html#simulating-colorblindness).  
+You can display a color palette using `Palette.display_cvd()` for these color vision deficiencies:
+- `'d'` for deuteranopia
+- `'p'` for protanopia
+- `'t'` for tritanopia
+
+
+```python
+test_palette = 'arcadia:AccentOrdered'
+
+apc.Palettes[test_palette].display()
+
+cvd_forms = ['d', 'p', 't']
+for form in cvd_forms:
+    apc.Palettes[test_palette].display_cvd(form)
+```
+
+
+    
+![png](README_files/README_44_0.png)
+    
+
+
+
+    
+![png](README_files/README_44_1.png)
+    
+
+
+
+    
+![png](README_files/README_44_2.png)
+    
+
+
+
+    
+![png](README_files/README_44_3.png)
+    
+
+
+You can access these cvd-transformed colors using these functions:  
+- `Palette.colors_cvd(form)` returns a list of the HEX colors of the palette that simulate that CVD
+- `Palette.mpl_ListedColormap(form)` returns a matplotlib ListedColormap with colors that simulate that CVD
+- `Gradient.mpl_LinearSegmentedColormap(form)` returns a matplotlib LinearSegmentedColormap with colors that simulate that CVD  
+
+Several display methods also have a `_cvd` suffixed form:
+- `Palette.display_cvd(form)`
+- `Gradient.plot_gradient_cvd(form)`
+- `Gradient.plot_lightness_cvd(form)`
+
+
+```python
+test_palette = 'arcadia:viridis'
+
+apc.Gradients[test_palette].plot_gradient()
+
+cvd_forms = ['d', 'p', 't']
+for form in cvd_forms:
+    apc.Gradients[test_palette].plot_gradient_cvd(form)
+```
+
+
+    
+![png](README_files/README_46_0.png)
+    
+
+
+
+    
+![png](README_files/README_46_1.png)
+    
+
+
+
+    
+![png](README_files/README_46_2.png)
+    
+
+
+
+    
+![png](README_files/README_46_3.png)
+    
+
+
+If you prefer to display the CVD differences as a single plot, you can try the following code.
+
+
+```python
+test_palette = 'arcadia:magma'
+
+cvd_dict = {test_palette + '_' + form: apc.Gradients[test_palette].mpl_LinearSegmentedColormap_cvd(form) for form in cvd_forms}
+plot_dict = {test_palette: apc.Gradients[test_palette].mpl_LinearSegmentedColormap} | cvd_dict
+
+apc.plot_color_gradients(
+    plot_dict,
+    title = test_palette + ' CVD test',
+    figsize = (6, 3)
+)
+
+apc.plot_color_lightness(
+    plot_dict,
+    title = test_palette + ' CVD test',
+    figsize = (6, 3)
+)
+```
+
+
+    
+![png](README_files/README_48_0.png)
+    
+
+
+
+    
+![png](README_files/README_48_1.png)
+    
+
+
+### `matplotlib` color vision deficiency integration
+
+The color vision deficient versions of each gradient or palette are registered to matplotlib automatically when calling `apc.mpl_setup()` or when registering a `Palette` or `Gradient` object with `mpl_ListedColormap_register()` or `mpl_LinearSegmentedColormap_register()` respectively.  
+
+You can access these as named colormaps by adding a `'_d'`, `'_p'`, or `'_t'` suffix to the end of the colormap name.
+
+
+```python
+prng = np.random.RandomState(20230710)
+random_sample_1 = prng.random_sample(size = (5, 5))
+
+cmaps = ['arcadia:aegeans', 'arcadia:aegeans_t', 'arcadia:viridis', 'arcadia:viridis_p']
+
+fig, axs = plt.subplots(1, len(cmaps), figsize = (2.5 * len(cmaps), 1.8))
+
+for cmap, ax in zip(cmaps, axs):
+    im = ax.imshow(random_sample_1, cmap = cmap)
+    plt.colorbar(im, label = cmap)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+    
+![png](README_files/README_50_0.png)
+    
+
+
+### Color vision deficiency simulation for existing images
+
+Sometimes you've already generated a figure and you'd like to know if it's colorblind-friendly.  
+You can generate colorblind images using `apc.simulate_cvd_image()`.  
+
+This function should work on PNG, JPEG, and TIFF format images.
+
+
+```python
+image = 'README_files/cell_drawing.png'
+
+print("----------\nOriginal image")
+
+plt.figure(figsize = (3, 3))
+plt.imshow(plt.imread(image))
+plt.axis("off")
+plt.tight_layout()
+plt.show()
+
+print("----------\nCVD simulations")
+
+apc.simulate_cvd_image(image, fig_width = 6)
+```
+
+    ----------
+    Original image
+
+
+
+    
+![png](README_files/README_52_1.png)
+    
+
+
+    ----------
+    CVD simulations
+
+
+
+    
+![png](README_files/README_52_3.png)
+    
+
+
+---
+## 8. Index
 
 The index below serves as a visual reference for the palettes and gradients.
 
@@ -643,55 +833,55 @@ for pal in ordered_palettes:
 
 
     
-![png](README_files/README_42_1.png)
+![png](README_files/README_54_1.png)
     
 
 
 
     
-![png](README_files/README_42_2.png)
+![png](README_files/README_54_2.png)
     
 
 
 
     
-![png](README_files/README_42_3.png)
+![png](README_files/README_54_3.png)
     
 
 
 
     
-![png](README_files/README_42_4.png)
+![png](README_files/README_54_4.png)
     
 
 
 
     
-![png](README_files/README_42_5.png)
+![png](README_files/README_54_5.png)
     
 
 
 
     
-![png](README_files/README_42_6.png)
+![png](README_files/README_54_6.png)
     
 
 
 
     
-![png](README_files/README_42_7.png)
+![png](README_files/README_54_7.png)
     
 
 
 
     
-![png](README_files/README_42_8.png)
+![png](README_files/README_54_8.png)
     
 
 
 
     
-![png](README_files/README_42_9.png)
+![png](README_files/README_54_9.png)
     
 
 
@@ -701,19 +891,19 @@ for pal in ordered_palettes:
 
 
     
-![png](README_files/README_42_11.png)
+![png](README_files/README_54_11.png)
     
 
 
 
     
-![png](README_files/README_42_12.png)
+![png](README_files/README_54_12.png)
     
 
 
 
     
-![png](README_files/README_42_13.png)
+![png](README_files/README_54_13.png)
     
 
 
@@ -744,13 +934,44 @@ apc.plot_color_lightness(
 
 
     
-![png](README_files/README_44_0.png)
+![png](README_files/README_56_0.png)
     
 
 
 
     
-![png](README_files/README_44_1.png)
+![png](README_files/README_56_1.png)
+    
+
+
+### Arcadia monocolor gradients
+
+
+```python
+monocolor_gradients = ['arcadia:' + color for color in ['reds', 'oranges', 'yellows', 'greens', 'teals', 'blues', 'purples', 'magentas']]
+
+apc.plot_color_gradients(
+    {grad: grad for grad in monocolor_gradients},
+    title = 'Arcadia monocolor gradients',
+    figsize = (6, 4)
+)
+
+apc.plot_color_lightness(
+    {grad: grad for grad in monocolor_gradients},
+    title = 'Arcadia monocolor gradients',
+    figsize = (7, 3)
+)
+```
+
+
+    
+![png](README_files/README_58_0.png)
+    
+
+
+
+    
+![png](README_files/README_58_1.png)
     
 
 
@@ -764,20 +985,20 @@ In general, the blue-red and purple-yellow colorschemes are more universally vis
 
 ```python
 bicolor_gradients = [
-    'arcadia:aegeanamber', 'arcadia:astercanary', 'arcadia:seaweedrose', 
-    'arcadia:poppies', 'arcadia:pansies', 'arcadia:dahlias'
+    'arcadia:aegeanamber', 'arcadia:astercanary', 'arcadia:limerose', 'arcadia:seaweedtangerine',
+    'arcadia:poppies', 'arcadia:pansies', 'arcadia:dahlias', 'arcadia:lilies'
 ]
 
 apc.plot_color_gradients(
     {grad: grad for grad in bicolor_gradients},
     title = 'Arcadia bicolor gradients',
-    figsize = (6, 3)
+    figsize = (6, 4)
 )
 
 apc.plot_color_lightness(
     {grad: grad for grad in bicolor_gradients},
     title = 'Arcadia bicolor gradients',
-    figsize = (6, 3),
+    figsize = (7, 3),
     horizontal_spacing = 1.2,
     cmap_type = 'bicolor'
 )
@@ -785,18 +1006,40 @@ apc.plot_color_lightness(
 
 
     
-![png](README_files/README_46_0.png)
+![png](README_files/README_60_0.png)
     
 
 
 
     
-![png](README_files/README_46_1.png)
+![png](README_files/README_60_1.png)
     
 
 
 ---
+## 9. For Developers
+
+The packages needed to develop for this repository are included in the `apc.yml` conda environment file.  
+You can install this conda environment using this command:
+```bash
+conda env create -f apc.yml
+```
+
+You can activate this environment using:
+```bash
+conda activate apc
+```
+
+The development environment includes additional packages, such as `jupyter`, `ipykernel`, and `scipy` which are not used by the package itself, but helpful or useful for developing for the package.  
+
+---
+## Contributing
+
+See how we recognize [feedback and contributions to our code](https://github.com/Arcadia-Science/arcadia-software-handbook/blob/main/guides-and-standards/guide-credit-for-contributions.md).
+
+
+---
 ### Note
-This README file is converted to markdown using:
+The README in the repository is generated from the `README.ipynb file` using:
 
 `jupyter nbconvert --execute --to markdown README.ipynb`
