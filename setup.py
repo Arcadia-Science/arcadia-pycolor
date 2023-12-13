@@ -18,7 +18,7 @@ setup(
         "colorspacious>=1.1.2",
         "ipython>=8.16.1",
     ],
-    version="0.3.1",
+    version="0.3.2",
     license="MIT",
     description="A Python package to distribute Arcadia's color and style guidelines for figures.",
     package_dir={"arcadia_pycolor": "arcadia_pycolor"},
