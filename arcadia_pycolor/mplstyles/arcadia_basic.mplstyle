@@ -20,7 +20,6 @@ axes.prop_cycle: cycler('color', ['5088C5', 'F28360', 'F7B846', '97CD78', '7A77A
 
 axes.labelsize:     8  # font size of the x and y labels
 axes.labelpad:      4.0     # space between label and axis
-axes.labelweight:   300  # weight of the x and y labels
 axes.labelcolor:    484B50
 
 axes.spines.bottom  : True
