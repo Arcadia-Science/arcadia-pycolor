@@ -1,6 +1,6 @@
 .PHONY: lint
 lint:
-	ruff --exit-zero check .
+	ruff check --exit-zero .
 
 .PHONY: format
 format:
