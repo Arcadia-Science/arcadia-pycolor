@@ -20,12 +20,25 @@ conda activate <NAME>
 
 **Tips for Developers**
 
-You can use the following command to export your current conda environment to a `yml` file.  
-This command will only export the packages that you have installed directly, not the ones that were installed as dependencies. When you're ready to share, please delete this section.
+(_When you're ready to share, please delete this section_)
 
-```{bash}
-conda env export --from-history --no-builds > envs/dev.yml
-```
+1. Install your pre-commit hooks:
+
+    ```{bash}
+    pre-commit install
+    ```
+
+    This installs the pre-commit hooks defined in your config (`./.pre-commit-config.yaml`).
+
+2. Export your conda environment before sharing:
+
+    As your project develops, the number of dependencies in your environment may increase. Whenever you install new dependencies (using either `pip install` or `mamba install`), you should update the environment file using the following command.
+
+    ```{bash}
+    conda env export --from-history --no-builds > envs/dev.yml
+    ```
+
+    `--from-history` only exports packages that were explicitly added by you (e.g., the packages you installed with `pip` or `mamba`) and `--no-builds` removes build specification from the exported packages to increase portability between different platforms. 
 
 ## Data
 

@@ -1,5 +1,5 @@
 <!--
-# TODO: Fill the name of the repo Arcadia-Science/<NAME> pull request
+# TODO: If you're a maintainer of this repo, open `.github/PULL_REQUEST_TEMPLATE.md`, replace <NAME> with the repo name, and remove this line.
 
 Many thanks for contributing to Arcadia-Science/<NAME>!
 
