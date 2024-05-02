@@ -18,9 +18,7 @@ mamba env create -n <NAME> --file envs/dev.yml
 conda activate <NAME>
 ```
 
-**Tips for Developers**
-
-(_When you're ready to share, please delete this section_)
+<details><summary>Developer Notes (click to expand/collapse)</summary>
 
 1. Install your pre-commit hooks:
 
@@ -39,6 +37,7 @@ conda activate <NAME>
     ```
 
     `--from-history` only exports packages that were explicitly added by you (e.g., the packages you installed with `pip` or `mamba`) and `--no-builds` removes build specification from the exported packages to increase portability between different platforms. 
+</details>
 
 ## Data
 
@@ -70,7 +69,7 @@ See how we recognize [feedback and contributions to our code](https://github.com
 ---
 ## For Developers
 
-This section contains information for developers who are working off of this template. Please delete this section when you're ready to share your repository.
+This section contains information for developers who are working off of this template. Please adjust or edit this section as appropriate when you're ready to share your repo.
 
 ### GitHub templates
 This template uses GitHub templates to provide checklists when making new pull requests. These templates are stored in the [.github/](./.github/) directory.
