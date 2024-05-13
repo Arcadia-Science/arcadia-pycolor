@@ -1,7 +1,5 @@
 <!--
-# TODO: If you're a maintainer of this repo, open `.github/PULL_REQUEST_TEMPLATE.md`, replace <NAME> with the repo name, and remove this line.
-
-Many thanks for contributing to Arcadia-Science/<NAME>!
+Many thanks for contributing to Arcadia-Science/arcadia-pycolor!
 
 Please fill in the appropriate checklist below (delete whatever is not relevant).
 These are the most common things requested on pull requests (PRs).

@@ -1,6 +1,6 @@
 [project]
-name = "TODO: Tool name"
-description = "TODO: Tool description"
+name = "arcadia-pycolor"
+description = "A Python package to distribute Arcadia's color and style guidelines for figures."
 version = "0.0.0"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -17,7 +17,7 @@ indent-width = 4
 # run ruff on jupyter notebooks (this is not enabled by default)
 extend-include = ["*.ipynb"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # ignore star and unused imports
 "__init__.py" = ["F403", "F405"]
 # ignore useless expressions used for printing examples
