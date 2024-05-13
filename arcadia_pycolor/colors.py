@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+import colorir as cl
 import matplotlib.pyplot as plt
 
 from .classes import Gradient, Palette
@@ -13,7 +14,7 @@ from .functions import reverse_gradient
 Each color is provided as a dictionary with the color name and HEX code.
 """
 
-ALL = {
+_ALL_COLORS = {
     # Core colors
     "lightgrey": "#EBEDE8",
     "shell": "#EDE0D6",
@@ -88,14 +89,18 @@ ALL = {
     "k": "#000000",
 }
 
+ALL = cl.Palette(**_ALL_COLORS)
+
 # Possibly unwisely programmatically adds color names to namespace.
-this_module = sys.modules[__name__]
-for color in ALL:
-    setattr(this_module, color, ALL[color])
+# This allows for direct access to colors by name.
+# For example, apc.aegean will return the color "#5088C5".
+_this_module = sys.modules[__name__]
+for name, color in ALL._color_dict.items():
+    setattr(_this_module, name, color)
 
 
 def _assemble_palette(color_names: list) -> dict:
-    return {name: ALL[name] for name in color_names}
+    return cl.Palette({name: _ALL_COLORS[name] for name in color_names})
 
 
 ###############################
@@ -201,9 +206,9 @@ OTHER = _assemble_palette(
 """
 These are the dictionaries that aggregate different combinations of the basic palettes.
 """
-ACCENT_FULL = ACCENT | ACCENT_EXPANDED
-LIGHT_FULL = LIGHT | LIGHT_EXPANDED
-ACCENT_ALL = ACCENT | ACCENT_EXPANDED | LIGHT | LIGHT_EXPANDED
+ACCENT_FULL = ACCENT + ACCENT_EXPANDED
+LIGHT_FULL = LIGHT + LIGHT_EXPANDED
+ACCENT_ALL = ACCENT + ACCENT_EXPANDED + LIGHT + LIGHT_EXPANDED
 
 ##########################
 ## Ordered Dictionaries ##
@@ -519,7 +524,7 @@ or, if using the apc alias:
     apc.Gradient_dicts
 """
 
-PALETTE_DICTS = {
+Palettes = {
     "apc:All": ALL,
     "apc:Core": CORE,
     "apc:Neutral": NEUTRAL,
