@@ -1,7 +1,9 @@
 from pathlib import Path
+
 import matplotlib.pyplot as plt
+
+from .classes import Gradient, Palette
 from .functions import reverse_gradient
-from .classes import Palette, Gradient
 
 #######################
 ## Individual Colors ##
@@ -97,17 +99,7 @@ magenta = {"magenta": "#FF00FF"}
 These are the dictionaries collecting the basic palettes.
 """
 
-Core = (
-    lightgrey
-    | shell
-    | dawn
-    | seafoam
-    | tangerine
-    | black
-    | charcoal
-    | marineblue
-    | forest
-)
+Core = lightgrey | shell | dawn | seafoam | tangerine | black | charcoal | marineblue | forest
 Neutral = zephyr | paleazure | lichen | orchid | buff | bark | slate | crow
 
 Accent = aegean | amber | seaweed | canary | aster | rose
@@ -171,18 +163,7 @@ Accent_ordered = (
     | tangerine
 )
 Light_ordered = (
-    bluesky
-    | dress
-    | oat
-    | sage
-    | periwinkle
-    | denim
-    | taupe
-    | mars
-    | blossom
-    | mint
-    | wish
-    | satin
+    bluesky | dress | oat | sage | periwinkle | denim | taupe | mars | blossom | mint | wish | satin
 )
 
 Accent_all_ordered = Accent_ordered | Light_ordered
@@ -377,10 +358,11 @@ def mpl_setup(mode="all"):
     Args:
         mode (str): defaults to 'all', which does all of the following keywords.
             To use just one of the following, set mode to the corresponding keyword.
-        - 'colors': registers the Arcadia named colors (e.g. 'arcadia:aegean') with matplotlib's named colors.
-        - 'palettes': registers the Palettes as named matplotlib ListedColormaps.
-        - 'gradients': registers the Gradients as named matplotlib LinearSegmentedColormaps.
-        - 'stylesheets': sets the default stylesheet to Arcadia's basic style.
+        'colors': registers the Arcadia named colors (e.g. 'arcadia:aegean')
+            with matplotlib's named colors.
+        'palettes': registers the Palettes as named matplotlib ListedColormaps.
+        'gradients': registers the Gradients as named matplotlib LinearSegmentedColormaps.
+        'stylesheets': sets the default stylesheet to Arcadia's basic style.
     """
     if mode == "colors" or mode == "all":
         # Register each of the colors in arcadia:All

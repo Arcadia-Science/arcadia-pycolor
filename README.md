@@ -1,4 +1,7 @@
 # arcadia-pycolor
+
+[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/projects/miniconda/en/latest/)
+
 Tools for using the Arcadia palette in Python.  
 This package automatically generate color palettes and color maps for use with Matplotlib.
 

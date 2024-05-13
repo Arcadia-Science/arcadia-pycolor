@@ -1,5 +1,6 @@
-from setuptools import setup
 import sys
+
+from setuptools import setup
 
 if sys.version_info[0] < 3 or sys.version_info[1] < 9:
     print("This package requires Python version 3.9 or above.")
@@ -23,7 +24,7 @@ setup(
     description="A Python package to distribute Arcadia's color and style guidelines for figures.",
     package_dir={"arcadia_pycolor": "arcadia_pycolor"},
     package_data={"arcadia_pycolor": ["mplstyles/arcadia_basic.mplstyle"]},
-    include_package_data=True
+    include_package_data=True,
     # We will also need a readme eventually (there will be a warning)
     # long_description=open('README.txt').read(),
 )

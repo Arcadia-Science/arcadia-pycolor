@@ -1,12 +1,13 @@
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import matplotlib.colors as mc
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from IPython.display import Markdown, display
 import colorsys
-from colorspacious import cspace_converter, cspace_convert
+
+import matplotlib as mpl
+import matplotlib.colors as mc
+import matplotlib.pyplot as plt
+import numpy as np
+import plotly.graph_objects as go
+from colorspacious import cspace_convert, cspace_converter
+from IPython.display import Markdown, display
+from plotly.subplots import make_subplots
 
 __all__ = [
     "print_color",
@@ -32,28 +33,31 @@ def print_color(colors):
     """
 
     # detect what format the input colors are provided as and plot appropriately.
-    if type(colors) == str:
+    if isinstance(colors, str):
         display(
             Markdown(
                 "<br>".join(
-                    f'<span style="font-family: monospace">{colors} <span style="color: {colors}">██████</span></span>'
+                    f'<span style="font-family: monospace">{colors} \
+                        <span style="color: {colors}">██████</span></span>'
                 )
             )
         )
-    if type(colors) == list:
+    if isinstance(colors, list):
         display(
             Markdown(
                 "<br>".join(
-                    f'<span style="font-family: monospace">{color} <span style="color: {color}">██████</span></span>'
+                    f'<span style="font-family: monospace">{color} \
+                        <span style="color: {color}">██████</span></span>'
                     for color in colors
                 )
             )
         )
-    elif type(colors) == dict:
+    elif isinstance(colors, dict):
         display(
             Markdown(
                 "<br>".join(
-                    f'<span style="font-family: monospace"> {color} <span style="color: {color}">██████</span> {name}</span>'
+                    f'<span style="font-family: monospace"> {color} \
+                        <span style="color: {color}">██████</span> {name}</span>'
                     for name, color in colors.items()
                 )
             )
@@ -75,21 +79,20 @@ def slice_dict(dictionary: dict, lst: list):
 
 def reverse_gradient(grad_dictionary: dict):
     """
-    Takes in a gradient dictionary containing a 'color_dict' entry and a 'values' entry and reverses it.
+    Takes in a gradient dictionary containing a 'color_dict' entry
+        and a 'values' entry and reverses it.
 
     Args:
-        grad_dictionary (dict): a dictionary containing a 'color_dict' where keys are color names and values are color HEX codes, and a 'values' list that contains the value of colors positioned from 0 to 1.
+        grad_dictionary (dict): a dictionary containing a 'color_dict' where keys are color names
+            and values are color HEX codes, and a 'values' list that contains the value of colors
+            positioned from 0 to 1.
     """
 
     if "color_dict" not in grad_dictionary or "values" not in grad_dictionary:
-        raise TypeError(
-            'Gradient dictionary should have both a "color_dict" and a "values" entry.'
-        )
+        raise TypeError('Gradient dictionary should have both a "color_dict" and a "values" entry.')
 
     if len(grad_dictionary["color_dict"]) != len(grad_dictionary["values"]):
-        raise ValueError(
-            "Number of values must be equal to number of color_dict entries."
-        )
+        raise ValueError("Number of values must be equal to number of color_dict entries.")
 
     keys = [i for i in grad_dictionary["color_dict"]].copy()
     keys.reverse()
@@ -116,7 +119,7 @@ def adjust_lightness(color: str, amount=0.5) -> str:
     """
     try:
         color_string = mc.cnames[color]
-    except:
+    except IndexError:
         color_string = color
     # convert rgb to hls
     color_string = colorsys.rgb_to_hls(*mc.to_rgb(color_string))
@@ -128,7 +131,7 @@ def adjust_lightness(color: str, amount=0.5) -> str:
     return mc.to_hex(color_string2)
 
 
-def extend_colors(color_order: list, total_colors: int, how="darken", steps=[]) -> list:
+def extend_colors(color_order: list, total_colors: int, how="darken", steps: list = None) -> list:
     """
     Checks a list of keys and colors and extends the colors list as needed.
 
@@ -141,7 +144,7 @@ def extend_colors(color_order: list, total_colors: int, how="darken", steps=[]) 
     """
     num_cycles = int(np.ceil(total_colors / len(color_order)))
 
-    if len(steps) > 0:
+    if steps is not None:
         steps_used = steps
     elif how == "lighten":
         steps_used = [1.1, 1.25, 1.4]
@@ -154,11 +157,12 @@ def extend_colors(color_order: list, total_colors: int, how="darken", steps=[]) 
     # if there aren't enough cycles, die
     if num_cycles > len(steps_used):
         raise Exception(
-            f"Can create up to {len(steps_used) * len(color_order)} colors to use.\nNeeded {total_colors} colors."
+            f"Can create up to {len(steps_used) * len(color_order)} \
+                colors to use.\nNeeded {total_colors} colors."
         )
 
     # create additional colors and add to collector
-    for n in range(num_cycles - 1):
+    for _ in range(num_cycles - 1):
         color_order_duplicated = [adjust_lightness(color) for color in color_order]
         more_colors.extend(color_order_duplicated)
 
@@ -219,7 +223,8 @@ def display_palette_interactive(cmap_dict: dict, ncols=1, show=True):
     """
     Displays interactive color palettes using plotly.
 
-    Expects a dictionary, where each entry has the name of the color palette as the key and the color_dict as the value.
+    Expects a dictionary, where each entry has the name of the color palette as the key
+        and the color_dict as the value.
 
     Args:
         cmap_dict (dict): dict of cmaps
@@ -232,9 +237,7 @@ def display_palette_interactive(cmap_dict: dict, ncols=1, show=True):
 
     nrows = int(np.ceil(len(cmap_dict) / ncols))
 
-    fig = make_subplots(
-        rows=nrows, cols=ncols, horizontal_spacing=0.02, vertical_spacing=0.02
-    )
+    fig = make_subplots(rows=nrows, cols=ncols, horizontal_spacing=0.02, vertical_spacing=0.02)
 
     for n, cmap in enumerate(cmap_dict):
         name = cmap
@@ -246,9 +249,7 @@ def display_palette_interactive(cmap_dict: dict, ncols=1, show=True):
 
         data = [[i for i in range(0, length)]]
 
-        hovertext = [
-            [f"<b>{colorname}</b><br>{hexcode}" for colorname, hexcode in cmap.items()]
-        ]
+        hovertext = [[f"<b>{colorname}</b><br>{hexcode}" for colorname, hexcode in cmap.items()]]
 
         fig.add_trace(
             go.Heatmap(
@@ -282,7 +283,8 @@ def plot_color_gradients(cmap_dict: dict, title=None, return_fig=False, figsize=
     """
     Displays color gradients in color and grayscale.
 
-    Expects a dictionary, where each entry has the name of the color palette as its key and the value as:
+    Expects a dictionary, where each entry has the name of the color palette
+        as its key and the value as:
         - the string name of the registered Matplotlib colormap OR
         - a Matplotlib ListedColormap object for the colormap
 
@@ -299,9 +301,7 @@ def plot_color_gradients(cmap_dict: dict, title=None, return_fig=False, figsize=
     gradient = np.linspace(0, 1, 256)
     gradient = np.vstack((gradient, gradient))
 
-    fig, axs = plt.subplots(
-        nrows=len(cmap_dict), ncols=2, figsize=figsize, squeeze=False
-    )
+    fig, axs = plt.subplots(nrows=len(cmap_dict), ncols=2, figsize=figsize, squeeze=False)
     fig.subplots_adjust(top=0.90, bottom=0.01, left=0.2, right=0.99, wspace=0.05)
 
     if title is not None:
@@ -350,7 +350,8 @@ def plot_color_lightness(
     """
     Displays color gradients as lines based on lightness, for looking at uniformity of lightness.
 
-    Expects a dictionary, where each entry has the name of the color palette as its key and the value as:
+    Expects a dictionary, where each entry has the name of the color palette
+        as its key and the value as:
         - the string name of the registered Matplotlib colormap OR
         - a Matplotlib ListedColormap object for the colormap
 
@@ -360,7 +361,8 @@ def plot_color_lightness(
         horizontal_spacing (float): the spacing between lines
         steps (int): the number of steps along the gradient to generate
         figsize (tuple): the width, height tuple of the figure size
-        cmap_type (str): 'linear' if you want the label for the cmap to be at the end; anything else puts the label in the middle.
+        cmap_type (str): 'linear' if you want the label for the cmap to be at the end;
+            anything else puts the label in the middle.
         tickrotation (int): rotation of the label for each cmap
         markersize (int): the size of the points that make up the gradient color line
         return_fig (bool): whether or not to return the figure as an object
@@ -497,8 +499,7 @@ def simulate_cvd_image(file: str, severity=100, fig_width=10, show=True):
         im_sRGB = cspace_convert(im_sRGB255, "sRGB255", "sRGB1")
 
     im_cvds = {
-        form: np.clip(cspace_convert(im_sRGB, cvd_spaces[form], "sRGB1"), 0, 1)
-        for form in forms
+        form: np.clip(cspace_convert(im_sRGB, cvd_spaces[form], "sRGB1"), 0, 1) for form in forms
     }
 
     px_height = im_sRGB.shape[0]
