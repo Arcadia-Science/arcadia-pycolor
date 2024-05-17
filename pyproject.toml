@@ -23,6 +23,7 @@ extend-include = ["*.ipynb"]
 # ignore useless expressions used for printing examples
 # ignore module level import not at top of file
 "README.ipynb" = ["B018", "E402"]
+"usage_example.ipynb" = ["B018", "E402"]
 
 [tool.ruff.lint]
 select = [
