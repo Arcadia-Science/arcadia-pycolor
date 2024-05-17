@@ -1,8 +1,5 @@
-# _all__ = ["classes", "functions", "colors"]
+__all__ = ["classes_new", "colors_new", "display"]
 
-# from .classes import *
 from .classes_new import *
 from .colors_new import *
 from .display import *
-from .mpl import *
-from .styles import *
