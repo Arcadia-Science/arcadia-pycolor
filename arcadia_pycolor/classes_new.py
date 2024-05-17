@@ -1,5 +1,7 @@
 import matplotlib.colors as mcolors
 
+from .utils import distribute_values
+
 
 class Color(str):
     def __new__(cls, name: str, hex_code: str):
@@ -70,3 +72,48 @@ class Palette:
 
     def rename(self, name: str):
         self.name = name
+
+
+class Gradient(Palette):
+    def __init__(self, name: str, colors: dict[str, str] | list[Color], values: list[float] = None):
+        """
+        A Gradient object stores a collection of Color objects and their corresponding values.
+
+        Args:
+            name (str): the name of the gradient
+            colors (dict): a dictionary where the key is the color's name as a string
+                and the value is the HEX code of the color as a string
+            OR
+            colors (list): a list of Color objects
+            values (list): a list of float values corresponding to the colors
+        """
+        super().__init__(name=name, colors=colors)
+
+        if values:
+            if not all(0 <= value <= 1 for value in values):
+                raise ValueError("All values must be between 0 and 1.")
+            self.values = values
+        else:
+            self.values = distribute_values(self.colors)
+
+    def __repr__(self):
+        from arcadia_pycolor.display import gradient_swatch, swatch
+
+        longest_name = max(len(color.name) for color in self.colors.values())
+
+        return "\n".join(
+            [gradient_swatch(self)]
+            + [
+                f"{swatch(color, name_width=longest_name)} {value}"
+                for color, value in zip(self.colors.values(), self.values)
+            ]
+        )
+
+    def to_mpl_cmap_linear(self):
+        colors = [
+            (value, color.hex_code) for value, color in zip(self.values, self.colors.values())
+        ]
+        return mcolors.LinearSegmentedColormap.from_list(
+            self.name,
+            colors=colors,
+        )

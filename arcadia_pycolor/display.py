@@ -30,6 +30,26 @@ def swatch(color: arcadia_pycolor.classes_new.Color, width: int = 2, name_width:
     return output
 
 
+def gradient_swatch(gradient: arcadia_pycolor.classes_new.Gradient, steps=21):
+    """
+    Returns a gradient swatch with the specified number of steps.
+
+    Args:
+        gradient (Gradient): the Gradient object to display
+        steps (int): the number of steps in the gradient
+
+    """
+    # Calculate the color for each step in the gradient
+    cmap = gradient.to_mpl_cmap_linear()
+
+    # Get the color for each step in the gradient
+    colors = [arcadia_pycolor.classes_new.Color(i, cmap(i / steps)) for i in range(steps)]
+
+    swatches = [colorize(" ", bg_color=c) for c in colors]
+
+    return "".join(swatches)
+
+
 def colorize(
     string: str,
     fg_color: arcadia_pycolor.classes_new.Color = None,

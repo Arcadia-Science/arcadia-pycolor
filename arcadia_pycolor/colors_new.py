@@ -1,4 +1,4 @@
-from .classes_new import Color, Palette
+from .classes_new import Color, Gradient, Palette
 
 # Core colors
 lightgrey = Color("lightgrey", "#EBEDE8")
@@ -150,3 +150,125 @@ ALL = (
     + NAMED
 )
 ALL.rename("All")
+
+
+# Perceptually Uniform Gradients
+
+VIRIDIS = Gradient(
+    "viridis",
+    [concord, grape, aegean, lime, y],
+    [0, 0.23, 0.49, 0.77, 1],
+)
+
+MAGMA = Gradient(
+    "magma",
+    [black, grape, taffy, tangerine, oat],
+    [0, 0.38, 0.72, 0.9, 1],
+)
+
+CIVIDIS = Gradient(
+    "cividis",
+    [crow, forest, canary, satin],
+    [0, 0.39, 0.85, 1],
+)
+
+# Strong Monocolor Gradients
+REDS = Gradient(
+    "reds",
+    [redwood, dragon, amber, paper],
+    [0.0, 0.43, 0.64, 1.0],
+)
+
+ORANGES = Gradient(
+    "oranges",
+    [soil, umber, tangerine, paper],
+    [0.0, 0.38, 0.8, 1.0],
+)
+
+YELLOWS = Gradient(
+    "yellows",
+    [cocoa, canary, oat, paper],
+    [0.0, 0.76, 0.9, 1.0],
+)
+
+GREENS = Gradient(
+    "greens",
+    [yucca, lime, paper],
+    [0, 0.7, 1],
+)
+
+TEALS = Gradient(
+    "teals",
+    [depths, seaweed, paper],
+    [0, 0.42, 1],
+)
+
+BLUES = Gradient(
+    "blues",
+    [concord, aegean, vitalblue, paper],
+    [0, 0.47, 0.66, 1.0],
+)
+
+PURPLES = Gradient(
+    "purples",
+    [royal, aster, wish, paper],
+    [0, 0.4, 0.74, 1.0],
+)
+
+MAGENTAS = Gradient(
+    "magentas",
+    [carmine, pitaya, rose, paper],
+    [0, 0.44, 0.73, 1],
+)
+
+# Weak Bicolor Gradients
+
+AEGEANAMBER = Gradient(
+    "aegeanamber",
+    [aegean, paper, amber],
+    [0, 0.5, 1],
+)
+
+ASTERCANARY = Gradient(
+    "astercanary",
+    [aster, paper, canary],
+    [0, 0.5, 1],
+)
+
+LIMEROSE = Gradient(
+    "limerose",
+    [lime, paper, rose],
+    [0, 0.5, 1],
+)
+
+SEAWEEDTANGERINE = Gradient(
+    "seaweedtangerine",
+    [seaweed, paper, tangerine],
+    [0, 0.5, 1],
+)
+
+# Strong Bicolor Gradients
+
+POPPIES = Gradient(
+    "poppies",
+    [concord, aegean, vitalblue, paper, amber, dragon, redwood],
+    [0, 0.235, 0.33, 0.5, 0.68, 0.785, 1.0],
+)
+
+PANSIES = Gradient(
+    "pansies",
+    [royal, aster, wish, paper, oat, canary, cocoa],
+    [0, 0.2, 0.37, 0.5, 0.55, 0.62, 1.0],
+)
+
+DAHLIAS = Gradient(
+    "dahlias",
+    [yucca, lime, paper, rose, pitaya, carmine],
+    [0, 0.35, 0.5, 0.635, 0.78, 1.0],
+)
+
+LILIES = Gradient(
+    "lilies",
+    [depths, seaweed, paper, tangerine, umber, soil],
+    [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
+)
