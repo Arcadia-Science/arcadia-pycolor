@@ -137,3 +137,16 @@ NAMED = Palette(
     "Named",
     [w, r, g, b, c, m, y, k],
 )
+
+# All palettes
+ALL = (
+    CORE
+    + NEUTRAL
+    + ACCENT
+    + LIGHT_ACCENT
+    + ACCENT_EXPANDED
+    + LIGHT_ACCENT_EXPANDED
+    + ARCADIA
+    + NAMED
+)
+ALL.rename("All")
