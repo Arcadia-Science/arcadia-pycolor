@@ -1,8 +1,10 @@
 import matplotlib.colors as mcolors
 
+from arcadia_pycolor.display import swatch
 
-class Color(str):
-    def __new__(cls, name: str, hex_code: str):
+
+class Color:
+    def __init__(self, name: str, hex_code: str):
         """
         A Color object stores a color's name and HEX code.
 
@@ -13,18 +15,14 @@ class Color(str):
         if not mcolors.is_color_like(hex_code):
             raise ValueError(f"Invalid HEX code: {hex_code}")
 
-        obj = str.__new__(cls, hex_code)
-        obj.name = name
-        obj.hex_code = hex_code
-        return obj
+        self.name = name
+        self.hex_code = hex_code
 
     @property
-    def _rgb(self):
+    def to_rgb(self):
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
     def __repr__(self):
-        from arcadia_pycolor.display import swatch  # imported here to avoid circular import
-
         return swatch(self)
 
     def __str__(self):
@@ -32,7 +30,7 @@ class Color(str):
 
 
 class Palette:
-    def __init__(self, name: str, colors: dict[str, str] | list[Color]):
+    def __init__(self, name: str, colors: list[Color]):
         """
         A Palette object stores a collection of Color objects.
 
@@ -44,16 +42,10 @@ class Palette:
             colors (list): a list of Color objects
         """
         self.name = name
+        self.colors = colors
 
-        if isinstance(colors, dict):
-            self.colors = {name: Color(name, hex_code) for name, hex_code in colors.items()}
-        elif isinstance(colors, list):
-            self.colors = {color.name: color for color in colors}
-        else:
-            raise ValueError(
-                "Colors must be either a dictionary of color name and HEX codes",
-                "or a list of Color objects.",
-            )
+    def from_dict(self, colors: dict[str, str]):
+        self.colors = [Color(name, hex_code) for name, hex_code in colors.items()]
 
     def __repr__(self):
         from arcadia_pycolor.display import swatch  # imported here to avoid circular import
@@ -67,6 +59,3 @@ class Palette:
             name=f"{self.name} + {other.name}",
             colors={**self.colors, **other.colors},
         )
-
-    def rename(self, name: str):
-        self.name = name
