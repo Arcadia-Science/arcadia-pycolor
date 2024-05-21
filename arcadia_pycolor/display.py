@@ -1,15 +1,15 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from arcadia_pycolor.classes_new import Color
+    from arcadia_pycolor.classes import HexCode
 
 
-def swatch(color: "Color", width: int = 2, min_name_width: int = None):
+def swatch(color: "HexCode", width: int = 2, min_name_width: int = None):
     """
     Returns a color swatch with the specified width and color name.
 
     Args:
-        color (Color): the Color object to display
+        color (HexCode): the HexCode object to display
         width (int): the width of the color swatch
         min_name_width (int): the desired width of the color name;
             pads the name with spaces if necessary.
@@ -36,16 +36,16 @@ def swatch(color: "Color", width: int = 2, min_name_width: int = None):
 
 def colorize(
     string: str,
-    fg_color: "Color" | None = None,
-    bg_color: "Color" | None = None,
+    fg_color: Optional["HexCode"] = None,
+    bg_color: Optional["HexCode"] = None,
 ):
     """
     Colorizes a string with the specified foreground and background colors.
 
     Args:
         string (str): the string to colorize
-        fg_color (Color): the foreground color
-        bg_color (Color): the background color
+        fg_color (HexCode): the foreground color
+        bg_color (HexCode): the background color
 
     Based on colorir's color_str function:
     https://github.com/aleferna12/colorir/blob/master/colorir/utils.py#L370

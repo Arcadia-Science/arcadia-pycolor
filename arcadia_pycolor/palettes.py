@@ -1,122 +1,101 @@
-from .classes_new import Palette
-from .colors_new import (
-    aegean,
-    amber,
-    aster,
-    bark,
-    black,
-    blossom,
-    blue,
-    bluegrass,
-    bluesky,
-    brightgrey,
-    buff,
-    canary,
-    carmine,
-    charcoal,
-    chateau,
-    cocoa,
-    concord,
-    crow,
-    cyan,
-    dawn,
-    denim,
-    depths,
-    dragon,
-    dress,
-    forest,
-    grape,
-    green,
-    lichen,
-    lightgrey,
-    lime,
-    magenta,
-    marineblue,
-    mars,
-    mint,
-    oat,
-    orchid,
-    paleazure,
-    paper,
-    periwinkle,
-    pitaya,
-    pitch,
-    red,
-    redwood,
-    rose,
-    royal,
-    sage,
-    satin,
-    seafoam,
-    seaweed,
-    shell,
-    slate,
-    soil,
-    taffy,
-    tangerine,
-    taupe,
-    umber,
-    vitalblue,
-    white,
-    wish,
-    yellow,
-    yucca,
-    zephyr,
-)
+import arcadia_pycolor.colors as colors
+
+from .classes import Palette
 
 core = Palette(
     "Core",
-    [lightgrey, shell, dawn, seafoam, tangerine, pitch, charcoal, marineblue, forest],
+    [
+        colors.lightgrey,
+        colors.shell,
+        colors.dawn,
+        colors.seafoam,
+        colors.tangerine,
+        colors.pitch,
+        colors.charcoal,
+        colors.marineblue,
+        colors.forest,
+    ],
 )
 
-neutral = Palette("Neutral", [zephyr, paleazure, lichen, orchid, buff, bark, slate, crow])
+neutral = Palette(
+    "Neutral",
+    [
+        colors.zephyr,
+        colors.paleazure,
+        colors.lichen,
+        colors.orchid,
+        colors.buff,
+        colors.bark,
+        colors.slate,
+        colors.crow,
+    ],
+)
 
 accent = Palette(
     "Accent",
-    [aegean, amber, seaweed, canary, aster, rose],
+    [colors.aegean, colors.amber, colors.seaweed, colors.canary, colors.aster, colors.rose],
 )
 
 light_accent = Palette(
     "LightAccent",
-    [bluesky, dress, sage, oat, periwinkle, blossom],
+    [colors.bluesky, colors.dress, colors.sage, colors.oat, colors.periwinkle, colors.blossom],
 )
 
 # tangerine and marineblue are included in both the core and accent expanded palettes.
 accent_expanded = Palette(
     "AccentExpanded",
-    [lime, vitalblue, tangerine, chateau, marineblue, dragon],
+    [
+        colors.lime,
+        colors.vitalblue,
+        colors.tangerine,
+        colors.chateau,
+        colors.marineblue,
+        colors.dragon,
+    ],
 )
 
-light_accent_expanded = Palette("LightAccentExpanded", [mint, wish, satin, taupe, mars, denim])
+light_accent_expanded = Palette(
+    "LightAccentExpanded",
+    [colors.mint, colors.wish, colors.satin, colors.taupe, colors.mars, colors.denim],
+)
 
 other = Palette(
     "Other",
     [
-        concord,
-        grape,
-        taffy,
-        brightgrey,
-        paper,
-        redwood,
-        cocoa,
-        royal,
-        carmine,
-        depths,
-        bluegrass,
-        yucca,
-        pitaya,
-        soil,
-        umber,
+        colors.concord,
+        colors.grape,
+        colors.taffy,
+        colors.brightgrey,
+        colors.paper,
+        colors.redwood,
+        colors.cocoa,
+        colors.royal,
+        colors.carmine,
+        colors.depths,
+        colors.bluegrass,
+        colors.yucca,
+        colors.pitaya,
+        colors.soil,
+        colors.umber,
     ],
 )
 
 named = Palette(
     "Named",
-    [white, red, green, blue, cyan, magenta, yellow, black],
+    [
+        colors.white,
+        colors.red,
+        colors.green,
+        colors.blue,
+        colors.cyan,
+        colors.magenta,
+        colors.yellow,
+        colors.black,
+    ],
 )
 
 # All palettes
 all = (
     core + neutral + accent + light_accent + accent_expanded + light_accent_expanded + other + named
 )
-all.rename("All")
+all.name = "All"
