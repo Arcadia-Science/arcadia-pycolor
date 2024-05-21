@@ -1,5 +1,6 @@
-__all__ = ["classes_new", "colors_new", "display"]
+__all__ = ["classes", "colors", "display", "palettes"]
 
-from .classes_new import *
-from .colors_new import *
+from .classes import *
+from .colors import *
 from .display import *
+from .palettes import *

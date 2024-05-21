@@ -4,15 +4,16 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - numpy=1.26.0
+  - numpy=1.26.4
   - matplotlib=3.8.4
   - colorspacious=1.1.2
   - plotly=5.17.0
   - ipython=8.16.1
+  - python=3.12.0
   - ipykernel=6.25.2
-  - python=3.9
-  - scipy=1.11.3
+  - scipy=1.13.0
   - jupyter=1.0.0
-  - pip=23.2.1
-  - pip:
-    - colorir==2.0.4
+  - seaborn=0.13.2
+  - ruff=0.4.4
+  - scikit-learn=1.5.0
+  - pytest=8.2.1
