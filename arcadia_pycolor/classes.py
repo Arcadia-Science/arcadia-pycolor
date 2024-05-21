@@ -33,24 +33,21 @@ class HexCode(str):
 class Palette:
     def __init__(self, name: str, colors: list[HexCode]):
         """
-        A Palette object stores a collection of Color objects.
+        A Palette object stores a collection of HexCode objects.
 
         Args:
             name (str): the name of the color palette
-            colors (dict): a dictionary where the key is the color's name as a string
-                and the value is the HEX code of the color as a string
-            OR
-            colors (list): a list of Color objects
+            colors (list): a list of HexCode objects.
         """
         self.name = name
         self.colors = colors
 
-    def from_dict(self, colors: dict[str, str]):
-        self.colors = [HexCode(name, hex_code) for name, hex_code in colors.items()]
+    @classmethod
+    def from_dict(cls, name: str, colors: dict[str, str]):
+        hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
+        return cls(name, hex_codes)
 
     def __repr__(self):
-        from arcadia_pycolor.display import swatch  # imported here to avoid circular import
-
         longest_name = max(len(color.name) for color in self.colors)
 
         return "\n".join([swatch(color, min_name_width=longest_name) for color in self.colors])
