@@ -20,9 +20,7 @@ extend-include = ["*.ipynb"]
 [tool.ruff.lint.per-file-ignores]
 # ignore star and unused imports
 "__init__.py" = ["F403", "F405"]
-# ignore module level import not at top of file
-#"README.ipynb" = ["E402"]
-#"usage_example.ipynb" = ["E402"]
+
 
 [tool.ruff.lint]
 select = [
