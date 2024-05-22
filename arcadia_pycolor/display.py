@@ -44,7 +44,7 @@ def gradient_swatch(gradient: "Gradient", steps=21):
 
     Args:
         gradient (Gradient): the Gradient object to display
-        steps (int): the number of steps in the gradient
+        steps (int): the number of swatches to display in the gradient
 
     """
     # Calculate the color for each step in the gradient

@@ -27,6 +27,7 @@ class HexCode(str):
         return obj
 
     def to_rgb(self):
+        """Returns a tuple of RGB values for the color."""
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
     def __repr__(self):
@@ -72,11 +73,9 @@ class Gradient(Palette):
 
         Args:
             name (str): the name of the gradient
-            colors (dict): a dictionary where the key is the color's name as a string
-                and the value is the HEX code of the color as a string
-            OR
-            colors (list): a list of Color objects
-            values (list): a list of float values corresponding to the colors
+            colors (list): a list of HexCode objects
+            values (list): a list of float values corresponding
+                to the position of colors on a 0 to 1 scale.
         """
         super().__init__(name=name, colors=colors)
 
