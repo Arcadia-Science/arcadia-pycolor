@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from arcadia_pycolor.classes import Gradient, HexCode
 
+from arcadia_pycolor.mpl import to_linear_cmap
+
 
 def swatch(color: "HexCode", width: int = 2, min_name_width: int = None):
     """
@@ -35,6 +37,8 @@ def swatch(color: "HexCode", width: int = 2, min_name_width: int = None):
 
 
 def gradient_swatch(gradient: "Gradient", steps=21):
+    from arcadia_pycolor.classes import HexCode
+
     """
     Returns a gradient swatch with the specified number of steps.
 
@@ -44,7 +48,7 @@ def gradient_swatch(gradient: "Gradient", steps=21):
 
     """
     # Calculate the color for each step in the gradient
-    cmap = gradient.to_mpl_cmap_linear()
+    cmap = to_linear_cmap(gradient)
 
     # Get the color for each step in the gradient
     colors = [HexCode(i, cmap(i / steps)) for i in range(steps)]
