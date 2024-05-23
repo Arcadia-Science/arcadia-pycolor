@@ -95,8 +95,8 @@ seaweed_tangerine = Gradient(
 )
 
 # Strong Bicolor Gradients
-blues_reds = Gradient(
-    "blues_reds",
+poppies = Gradient(
+    "poppies",
     [
         colors.concord,
         colors.aegean,
@@ -109,8 +109,8 @@ blues_reds = Gradient(
     [0, 0.235, 0.33, 0.5, 0.68, 0.785, 1.0],
 )
 
-purples_yellows = Gradient(
-    "purples_yellows",
+pansies = Gradient(
+    "pansies",
     [
         colors.royal,
         colors.aster,
@@ -123,14 +123,14 @@ purples_yellows = Gradient(
     [0, 0.2, 0.37, 0.5, 0.55, 0.62, 1.0],
 )
 
-greens_pinks = Gradient(
-    "greens_pinks",
+dahlias = Gradient(
+    "dahlias",
     [colors.yucca, colors.lime, colors.paper, colors.rose, colors.pitaya, colors.carmine],
     [0, 0.35, 0.5, 0.635, 0.78, 1.0],
 )
 
-teals_oranges = Gradient(
-    "teals_oranges",
+lillies = Gradient(
+    "lillies",
     [colors.depths, colors.seaweed, colors.paper, colors.tangerine, colors.umber, colors.soil],
     [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
 )
