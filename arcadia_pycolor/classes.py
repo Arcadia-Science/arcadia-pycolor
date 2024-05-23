@@ -1,8 +1,18 @@
+import re
+
 import matplotlib.colors as mcolors
 
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.mpl import gradient_to_linear_cmap
 from arcadia_pycolor.utils import distribute_values
+
+
+def _is_hex_code(hex_string: str) -> bool:
+    """Checks if a string is a valid HEX code."""
+    match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", hex_string)
+    if match:
+        return True
+    return False
 
 
 class HexCode(str):
@@ -14,7 +24,7 @@ class HexCode(str):
             name (str): the name of the color
             hex_code (str): the HEX code of the color
         """
-        if not mcolors.is_color_like(hex_code):
+        if not _is_hex_code(hex_code):
             raise ValueError(f"Invalid HEX code: {hex_code}")
 
         obj = str.__new__(cls, hex_code)
@@ -131,7 +141,7 @@ class Gradient(Palette):
         cmap = gradient_to_linear_cmap(self)
 
         # Get the color for each step in the gradient
-        colors = [HexCode(i, cmap(i / steps)) for i in range(steps)]
+        colors = [HexCode(i, mcolors.to_hex(cmap(i / steps))) for i in range(steps)]
 
         swatches = [colorize(" ", bg_color=c) for c in colors]
 
