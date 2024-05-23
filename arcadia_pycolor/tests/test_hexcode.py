@@ -53,6 +53,25 @@ def test_hexcode_swatch(name, hex_code, swatch):
 
 
 @pytest.mark.parametrize(
+    "name, hex_code, swatch",
+    [
+        (
+            "white",
+            "#FFFFFF",
+            "\x1b[48;2;255;255;255m  \x1b[0m\x1b[38;2;255;255;255m white #FFFFFF\x1b[0m",
+        ),
+        (
+            "aegean",
+            "#5088C5",
+            "\x1b[48;2;80;136;197m  \x1b[0m\x1b[38;2;80;136;197m aegean #5088C5\x1b[0m",
+        ),
+    ],
+)
+def test_hexcode_repr(name, hex_code, swatch):
+    assert HexCode(name, hex_code).__repr__() == swatch
+
+
+@pytest.mark.parametrize(
     "name, hex_code, width, min_name_width, swatch",
     [
         (
@@ -74,3 +93,25 @@ def test_hexcode_swatch(name, hex_code, swatch):
 def test_hexcode_swatch_widths(name, hex_code, width, min_name_width, swatch):
     hexcode = HexCode(name, hex_code)
     assert hexcode.swatch(width, min_name_width) == swatch
+
+
+@pytest.mark.parametrize(
+    "name, hex_code, rgb",
+    [
+        ("white", "#FFFFFF", [255, 255, 255]),
+        ("aegean", "#5088C5", [80, 136, 197]),
+    ],
+)
+def test_hexcode_to_rgb(name, hex_code, rgb):
+    assert HexCode(name, hex_code).to_rgb() == rgb
+
+
+@pytest.mark.parametrize(
+    "name, hex_code",
+    [
+        ("white", "#FFFFFF"),
+        ("aegean", "#5088C5"),
+    ],
+)
+def test_hexcode_string(name, hex_code):
+    assert str(HexCode(name, hex_code)) == hex_code
