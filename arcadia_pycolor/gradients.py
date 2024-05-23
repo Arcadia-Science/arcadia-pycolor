@@ -70,33 +70,33 @@ magentas = Gradient(
 )
 
 # Weak Bicolor Gradients
-aegeanamber = Gradient(
-    "aegeanamber",
+aegean_amber = Gradient(
+    "aegean_amber",
     [colors.aegean, colors.paper, colors.amber],
     [0, 0.5, 1],
 )
 
-astercanary = Gradient(
-    "astercanary",
+aster_canary = Gradient(
+    "aster_canary",
     [colors.aster, colors.paper, colors.canary],
     [0, 0.5, 1],
 )
 
-limerose = Gradient(
-    "limerose",
+lime_rose = Gradient(
+    "lime_rose",
     [colors.lime, colors.paper, colors.rose],
     [0, 0.5, 1],
 )
 
-seaweedtangerine = Gradient(
-    "seaweedtangerine",
+seaweed_tangerine = Gradient(
+    "seaweed_tangerine",
     [colors.seaweed, colors.paper, colors.tangerine],
     [0, 0.5, 1],
 )
 
 # Strong Bicolor Gradients
-poppies = Gradient(
-    "poppies",
+blues_reds = Gradient(
+    "blues_reds",
     [
         colors.concord,
         colors.aegean,
@@ -109,8 +109,8 @@ poppies = Gradient(
     [0, 0.235, 0.33, 0.5, 0.68, 0.785, 1.0],
 )
 
-pansies = Gradient(
-    "pansies",
+purples_yellows = Gradient(
+    "purples_yellows",
     [
         colors.royal,
         colors.aster,
@@ -123,14 +123,14 @@ pansies = Gradient(
     [0, 0.2, 0.37, 0.5, 0.55, 0.62, 1.0],
 )
 
-dahlias = Gradient(
-    "dahlias",
+greens_pinks = Gradient(
+    "greens_pinks",
     [colors.yucca, colors.lime, colors.paper, colors.rose, colors.pitaya, colors.carmine],
     [0, 0.35, 0.5, 0.635, 0.78, 1.0],
 )
 
-lilies = Gradient(
-    "lilies",
+teals_oranges = Gradient(
+    "teals_oranges",
     [colors.depths, colors.seaweed, colors.paper, colors.tangerine, colors.umber, colors.soil],
     [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
 )
