@@ -6,6 +6,11 @@ from pathlib import Path
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
 
+import arcadia_pycolor.gradients
+import arcadia_pycolor.palettes
+from arcadia_pycolor.classes import Gradient
+from arcadia_pycolor.mpl import gradient_to_linear_cmap
+
 from . import mplstyles
 
 _DARWIN_FONT_FOLDER = "~/Library/Fonts"
@@ -23,10 +28,6 @@ HALF_S = (10.4167, 9.9928)
 
 
 def _load_colors():
-    return
-
-
-def _load_gradients():
     return
 
 
@@ -52,15 +53,27 @@ def _load_fonts(font_folder: str = None):
         font_manager.FontProperties(fname=font_path)
 
 
+def _load_gradients():
+    for grad in arcadia_pycolor.gradients.__all__:
+        if isinstance(grad, Gradient):
+            plt.register_cmap(name=grad.name, cmap=gradient_to_linear_cmap(grad))
+
+
+def _load_palettes():
+    for pal in arcadia_pycolor.palettes.__all__:
+        plt.register_cmap(name=pal.name, cmap=gradient_to_linear_cmap(pal))
+
+
 def _load_styles(sheet: str = _MPL_STYLESHEET):
     plt.style.use(sheet)
 
 
 def mpl_setup(mode: str = "all", font_folder: str = None):
     dispatch = {
-        "fonts": lambda: _load_fonts(font_folder),
         "colors": _load_colors,
+        "fonts": lambda: _load_fonts(font_folder),
         "gradients": _load_gradients,
+        "palettes": _load_palettes,
         "styles": _load_styles,
     }
 
