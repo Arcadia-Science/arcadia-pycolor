@@ -82,6 +82,10 @@ class Palette:
             colors (list): a list of HexCode objects.
         """
         self.name = name
+
+        if not all(isinstance(color, HexCode) for color in colors):
+            raise ValueError("All colors must be HexCode objects.")
+
         self.colors = colors
 
     @classmethod
@@ -94,7 +98,7 @@ class Palette:
 
         return "\n".join([color.swatch(min_name_width=longest_name) for color in self.colors])
 
-    def __add__(self, other):
+    def __add__(self, other: "Palette"):
         return Palette(
             name=f"{self.name}+{other.name}",
             colors=self.colors + other.colors,

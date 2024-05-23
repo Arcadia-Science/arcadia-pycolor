@@ -1,6 +1,27 @@
 import pytest
 
 from arcadia_pycolor import HexCode
+from arcadia_pycolor.classes import _is_hex_code
+
+
+@pytest.mark.parametrize(
+    "hex_string, is_hex_code",
+    [
+        ("#FFFFFF", True),
+        ("#FFFFFF", True),
+        ("#FFF", True),
+        ("#fff", True),
+        ("#ZZZZZZ", False),
+        ("#ZZZ", False),
+        ("#FF", False),
+        ("apples", False),
+        ("123456", False),
+        ("ffffff", False),
+        ("white", False),
+    ],
+)
+def test_is_hex_code(hex_string, is_hex_code):
+    assert _is_hex_code(hex_string) == is_hex_code
 
 
 @pytest.mark.parametrize(
