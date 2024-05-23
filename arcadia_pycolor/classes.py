@@ -121,7 +121,7 @@ class Gradient(Palette):
                 raise ValueError("The number of colors and values must be the same.")
             self.values = values
         else:
-            self.values = distribute_values(self.colors)
+            self.values = distribute_values(len(self.colors))
 
     @classmethod
     def from_dict(cls, name: str, colors: dict[str, str], values: list[float] = None):
