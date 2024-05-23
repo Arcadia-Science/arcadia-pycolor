@@ -94,9 +94,11 @@ class Palette:
         return cls(name, hex_codes)
 
     def __repr__(self):
-        longest_name = _get_longest_name(self)
+        longest_name_length = _get_longest_name_length(self)
 
-        return "\n".join([color.swatch(min_name_width=longest_name) for color in self.colors])
+        return "\n".join(
+            [color.swatch(min_name_width=longest_name_length) for color in self.colors]
+        )
 
     def __add__(self, other: "Palette"):
         return Palette(
@@ -152,17 +154,17 @@ class Gradient(Palette):
         return "".join(swatches)
 
     def __repr__(self):
-        longest_name = _get_longest_name(self)
+        longest_name_length = _get_longest_name_length(self)
 
         return "\n".join(
             [self.swatch()]
             + [
-                f"{color.swatch(min_name_width=longest_name)} {value}"
+                f"{color.swatch(min_name_width=longest_name_length)} {value}"
                 for color, value in zip(self.colors, self.values)
             ]
         )
 
 
-def _get_longest_name(palette: Palette) -> int:
+def _get_longest_name_length(palette: Palette) -> int:
     "Convenience function to get the length of the longest color name in a palette."
     return max(len(color.name) for color in palette.colors)
