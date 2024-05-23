@@ -1,8 +1,13 @@
-__all__ = ["classes", "colors", "display", "palettes"]
+__all__ = [
+    "classes",
+    "colors",
+    "gradients",
+    "mpl",
+    "palettes",
+    "plot",
+]
+
+from arcadia_pycolor import gradients, mpl, palettes, plot
 
 from .classes import *
 from .colors import *
-from .display import *
-from .gradients import *
-from .mpl import *
-from .palettes import *

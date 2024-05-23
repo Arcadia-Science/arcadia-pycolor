@@ -1,12 +1,8 @@
 import matplotlib.colors as mcolors
 
-from arcadia_pycolor.display import gradient_swatch, swatch
+from arcadia_pycolor.display import colorize
+from arcadia_pycolor.mpl import gradient_to_linear_cmap
 from arcadia_pycolor.utils import distribute_values
-
-
-def _longest_name(palette):
-    "Convenience function to get the length of the longest color name in a palette."
-    return max(len(color.name) for color in palette.colors)
 
 
 class HexCode(str):
@@ -30,8 +26,37 @@ class HexCode(str):
         """Returns a tuple of RGB values for the color."""
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
+    def swatch(self, width: int = 2, min_name_width: int = None):
+        """
+        Returns a color swatch with the specified width and color name.
+
+        Args:
+            color (HexCode): the HexCode object to display
+            width (int): the width of the color swatch
+            min_name_width (int): the desired width of the color name;
+                pads the name with spaces if necessary.
+                If not specified, text will not display in a fixed width.
+
+        Based on colorir's swatch function:
+        https://github.com/aleferna12/colorir/blob/master/colorir/utils.py#L59
+        """
+        # Add padding to the color name if necessary.
+        # Used when displaying multiple colors in a palette.
+        if min_name_width:
+            color_name = self.name.ljust(min_name_width)
+        else:
+            color_name = self.name
+
+        # Creates a block of color with the specified width in monospace characters.
+        swatch_text = " " * width
+        output = colorize(swatch_text, bg_color=self)
+
+        output += colorize(f" {color_name} {self.hex_code}", fg_color=self)
+
+        return output
+
     def __repr__(self):
-        return swatch(self)
+        return self.swatch()
 
     def __str__(self):
         return self.hex_code
@@ -55,9 +80,9 @@ class Palette:
         return cls(name, hex_codes)
 
     def __repr__(self):
-        longest_name = _longest_name(self)
+        longest_name = _get_longest_name(self)
 
-        return "\n".join([swatch(color, min_name_width=longest_name) for color in self.colors])
+        return "\n".join([color.swatch(min_name_width=longest_name) for color in self.colors])
 
     def __add__(self, other):
         return Palette(
@@ -93,13 +118,37 @@ class Gradient(Palette):
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes, values)
 
+    def swatch(self, steps=21):
+        """
+        Returns a gradient swatch with the specified number of steps.
+
+        Args:
+            gradient (Gradient): the Gradient object to display
+            steps (int): the number of swatches to display in the gradient
+
+        """
+        # Calculate the color for each step in the gradient
+        cmap = gradient_to_linear_cmap(self)
+
+        # Get the color for each step in the gradient
+        colors = [HexCode(i, cmap(i / steps)) for i in range(steps)]
+
+        swatches = [colorize(" ", bg_color=c) for c in colors]
+
+        return "".join(swatches)
+
     def __repr__(self):
-        longest_name = _longest_name(self)
+        longest_name = _get_longest_name(self)
 
         return "\n".join(
-            [gradient_swatch(self)]
+            [self.swatch()]
             + [
-                f"{swatch(color, min_name_width=longest_name)} {value}"
+                f"{color.swatch(min_name_width=longest_name)} {value}"
                 for color, value in zip(self.colors, self.values)
             ]
         )
+
+
+def _get_longest_name(palette: Palette) -> int:
+    "Convenience function to get the length of the longest color name in a palette."
+    return max(len(color.name) for color in palette.colors)

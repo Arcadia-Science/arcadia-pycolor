@@ -70,26 +70,26 @@ magentas = Gradient(
 )
 
 # Weak Bicolor Gradients
-aegeanamber = Gradient(
-    "aegeanamber",
+aegean_amber = Gradient(
+    "aegean_amber",
     [colors.aegean, colors.paper, colors.amber],
     [0, 0.5, 1],
 )
 
-astercanary = Gradient(
-    "astercanary",
+aster_canary = Gradient(
+    "aster_canary",
     [colors.aster, colors.paper, colors.canary],
     [0, 0.5, 1],
 )
 
-limerose = Gradient(
-    "limerose",
+lime_rose = Gradient(
+    "lime_rose",
     [colors.lime, colors.paper, colors.rose],
     [0, 0.5, 1],
 )
 
-seaweedtangerine = Gradient(
-    "seaweedtangerine",
+seaweed_tangerine = Gradient(
+    "seaweed_tangerine",
     [colors.seaweed, colors.paper, colors.tangerine],
     [0, 0.5, 1],
 )
@@ -129,8 +129,8 @@ dahlias = Gradient(
     [0, 0.35, 0.5, 0.635, 0.78, 1.0],
 )
 
-lilies = Gradient(
-    "lilies",
+lillies = Gradient(
+    "lillies",
     [colors.depths, colors.seaweed, colors.paper, colors.tangerine, colors.umber, colors.soil],
     [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
 )
