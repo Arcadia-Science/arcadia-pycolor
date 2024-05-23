@@ -3,8 +3,7 @@ import matplotlib.colors as mcolors
 from arcadia_pycolor.display import gradient_swatch, swatch
 from arcadia_pycolor.utils import distribute_values
 
-
-def _longest_name(palette):
+def _get_longest_name(palette: Palette) -> int:
     "Convenience function to get the length of the longest color name in a palette."
     return max(len(color.name) for color in palette.colors)
 
