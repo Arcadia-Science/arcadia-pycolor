@@ -33,6 +33,7 @@ SAVE_PRINT = dict(dpi=300, bbox_inches="tight", pad_inches=0.41)
 
 
 def _catch_axis(axis=None):
+    "Convenience function to catch the current axis if none is provided."
     if axis is None:
         return plt.gca()
     else:
@@ -48,8 +49,6 @@ def monospace_xticklabels(font: str = _MONOSPACE_FONT, axis=None):
 
 def monospace_yticklabels(font: str = _MONOSPACE_FONT, axis=None):
     ax = _catch_axis(axis)
-
-    ax = plt.gca()
 
     ytick_labels = ax.get_yticklabels()
     [i.set_fontfamily(font) for i in ytick_labels]

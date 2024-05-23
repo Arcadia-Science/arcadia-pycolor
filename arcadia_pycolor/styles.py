@@ -57,7 +57,7 @@ def _load_styles(sheet: str = _MPL_STYLESHEET):
 
 
 def mpl_setup(mode: str = "all", font_folder: str = None):
-    dispatch_dict = {
+    dispatch = {
         "fonts": lambda: _load_fonts(font_folder),
         "colors": _load_colors,
         "gradients": _load_gradients,
@@ -65,9 +65,9 @@ def mpl_setup(mode: str = "all", font_folder: str = None):
     }
 
     if mode == "all":
-        for func in dispatch_dict.values():
+        for func in dispatch.values():
             func()
-    elif mode in dispatch_dict:
-        dispatch_dict[mode]()
+    elif mode in dispatch:
+        dispatch[mode]()
     else:
-        print(f"Invalid mode. Please choose from {", ".join(["all"] + dispatch_dict.keys())}.")
+        print(f"Invalid mode. Please choose from {", ".join(["all"] + dispatch.keys())}.")
