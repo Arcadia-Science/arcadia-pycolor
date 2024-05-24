@@ -3,12 +3,13 @@ import platform
 from importlib import resources as impresources
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
 
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
-from arcadia_pycolor.classes import Gradient
+from arcadia_pycolor.classes import Gradient, Palette
 from arcadia_pycolor.mpl import gradient_to_linear_cmap
 
 from . import mplstyles
@@ -28,7 +29,8 @@ HALF_S = (10.4167, 9.9928)
 
 
 def _load_colors():
-    return
+    colors = {color.name: color.hex_code for color in arcadia_pycolor.palettes.all.colors}
+    mpl.cm.colors.get_named_colors_mapping().update(colors)
 
 
 def _load_fonts(font_folder: str = None):
@@ -61,7 +63,8 @@ def _load_gradients():
 
 def _load_palettes():
     for pal in arcadia_pycolor.palettes.__all__:
-        plt.register_cmap(name=pal.name, cmap=gradient_to_linear_cmap(pal))
+        if isinstance(pal, Palette):
+            plt.register_cmap(name=pal.name, cmap=gradient_to_linear_cmap(pal))
 
 
 def _load_styles(sheet: str = _MPL_STYLESHEET):
