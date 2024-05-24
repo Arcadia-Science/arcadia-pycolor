@@ -1,8 +1,18 @@
+import re
+
 import matplotlib.colors as mcolors
 
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.mpl import gradient_to_linear_cmap
 from arcadia_pycolor.utils import distribute_values
+
+
+def _is_hex_code(hex_string: str) -> bool:
+    """Checks if a string is a valid HEX code."""
+    match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", hex_string)
+    if match:
+        return True
+    return False
 
 
 class HexCode(str):
@@ -14,7 +24,7 @@ class HexCode(str):
             name (str): the name of the color
             hex_code (str): the HEX code of the color
         """
-        if not mcolors.is_color_like(hex_code):
+        if not _is_hex_code(hex_code):
             raise ValueError(f"Invalid HEX code: {hex_code}")
 
         obj = str.__new__(cls, hex_code)
@@ -72,6 +82,10 @@ class Palette:
             colors (list): a list of HexCode objects.
         """
         self.name = name
+
+        if not all(isinstance(color, HexCode) for color in colors):
+            raise ValueError("All colors must be HexCode objects.")
+
         self.colors = colors
 
     @classmethod
@@ -80,15 +94,21 @@ class Palette:
         return cls(name, hex_codes)
 
     def __repr__(self):
-        longest_name = _get_longest_name(self)
+        longest_name_length = self._get_longest_name_length()
 
-        return "\n".join([color.swatch(min_name_width=longest_name) for color in self.colors])
+        return "\n".join(
+            [color.swatch(min_name_width=longest_name_length) for color in self.colors]
+        )
 
-    def __add__(self, other):
+    def __add__(self, other: "Palette"):
         return Palette(
             name=f"{self.name}+{other.name}",
             colors=self.colors + other.colors,
         )
+
+    def _get_longest_name_length(self) -> int:
+        "Convenience function to get the length of the longest color name in a palette."
+        return max(len(color.name) for color in self.colors)
 
 
 class Gradient(Palette):
@@ -107,11 +127,13 @@ class Gradient(Palette):
         if values:
             if not all(0 <= value <= 1 for value in values):
                 raise ValueError("All values must be between 0 and 1.")
-            elif len(colors) != len(values):
+            if not values[0] == 0 or not values[-1] == 1:
+                raise ValueError("The first value must be 0 and the last value must be 1.")
+            if len(colors) != len(values):
                 raise ValueError("The number of colors and values must be the same.")
             self.values = values
         else:
-            self.values = distribute_values(self.colors)
+            self.values = distribute_values(len(self.colors))
 
     @classmethod
     def from_dict(cls, name: str, colors: dict[str, str], values: list[float] = None):
@@ -131,24 +153,19 @@ class Gradient(Palette):
         cmap = gradient_to_linear_cmap(self)
 
         # Get the color for each step in the gradient
-        colors = [HexCode(i, cmap(i / steps)) for i in range(steps)]
+        colors = [HexCode(i, mcolors.to_hex(cmap(i / steps))) for i in range(steps)]
 
         swatches = [colorize(" ", bg_color=c) for c in colors]
 
         return "".join(swatches)
 
     def __repr__(self):
-        longest_name = _get_longest_name(self)
+        longest_name_length = self._get_longest_name_length()
 
         return "\n".join(
             [self.swatch()]
             + [
-                f"{color.swatch(min_name_width=longest_name)} {value}"
+                f"{color.swatch(min_name_width=longest_name_length)} {value}"
                 for color, value in zip(self.colors, self.values)
             ]
         )
-
-
-def _get_longest_name(palette: Palette) -> int:
-    "Convenience function to get the length of the longest color name in a palette."
-    return max(len(color.name) for color in palette.colors)

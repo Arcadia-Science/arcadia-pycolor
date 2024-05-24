@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - feat/major-revamp
   pull_request:
     branches:
       - main
+      - feat/major-revamp
 
 jobs:
   lint:
