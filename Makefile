@@ -10,3 +10,7 @@ format:
 .PHONY: pre-commit
 pre-commit:
 	pre-commit run --all-files
+
+.PHONY: test-publish
+test-publish:
+	poetry --build publish
