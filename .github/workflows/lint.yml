@@ -27,7 +27,7 @@ jobs:
           poetry install --no-root --only dev
 
       - name: Run Ruff
-        run: ruff check --output-format=github .
+        run: poetry run ruff check --output-format=github .
 
       - name: Run Ruff formatter
-        run: ruff format --check .
+        run: poetry run ruff format --check .
