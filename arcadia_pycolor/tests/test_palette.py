@@ -1,7 +1,6 @@
 import pytest
 
 from arcadia_pycolor import HexCode, Palette
-from arcadia_pycolor.classes import _get_longest_name_length
 
 
 @pytest.mark.parametrize(
@@ -76,7 +75,7 @@ def test_palette_repr(name, input, swatch):
     ],
 )
 def test_get_longest_name_length(name, input, longest_name_length):
-    assert _get_longest_name_length(Palette(name, input)) == longest_name_length
+    assert Palette(name, input)._get_longest_name_length() == longest_name_length
 
 
 @pytest.mark.parametrize(
