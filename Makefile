@@ -11,6 +11,14 @@ format:
 pre-commit:
 	pre-commit run --all-files
 
+.PHONY: clean
+clean:
+	rm -rf dist
+
 .PHONY: test-publish
-test-publish:
-	poetry --build publish
+test-publish: clean
+	poetry --build publish --repository testpypi
+
+.PHONY: publish
+publish: clean
+	poetry --build publish --repository pypi
