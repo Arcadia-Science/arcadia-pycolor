@@ -2,14 +2,6 @@
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[[tool.poetry.source]]
-name = "testpypi"
-url = "https://test.pypi.org/legacy/"
-
-[[tool.poetry.source]]
-name = "pypi"
-priority = "primary"
-
 [tool.poetry]
 name = "arcadia-pycolor"
 version = "0.4.0"
@@ -27,13 +19,19 @@ homepage = "https://github.com/Arcadia-Science/arcadia-pycolor"
 repository = "https://github.com/Arcadia-Science/arcadia-pycolor"
 documentation = "https://github.com/Arcadia-Science/arcadia-pycolor"
 
+[[tool.poetry.source]]
+name = "pypi"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/legacy/"
+
 [tool.poetry.dependencies]
-python = ">=3.9"
-numpy = ">=1.26.4"
-plotly = ">=5.17.0"
 colorspacious = ">=1.1.2"
-matplotlib = ">=3.8.4"
 ipykernel = ">=6.25.2"
+matplotlib = ">=3.7.0"
+python = ">=3.9"
 
 [tool.poetry.dev-dependencies]
 ruff = "0.4.4"
