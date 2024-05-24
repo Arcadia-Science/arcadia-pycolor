@@ -1,3 +1,5 @@
+include .env
+
 .PHONY: lint
 lint:
 	ruff check --exit-zero .
@@ -15,10 +17,20 @@ pre-commit:
 clean:
 	rm -rf dist
 
+.PHONY: build
+build: clean
+	poetry build
+
 .PHONY: test-publish
-test-publish: clean
-	poetry --build publish --repository testpypi
+test-publish: build
+	poetry publish \
+		--repository pypi_test \
+		--username __token__ \
+		--password ${POETRY_PYPI_TOKEN_PYPI_TEST}
 
 .PHONY: publish
-publish: clean
-	poetry --build publish --repository pypi
+publish: build
+	poetry publish \
+		--repository pypi \
+		--username __token__ \
+		--password ${POETRY_PYPI_TOKEN_PYPI}
