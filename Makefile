@@ -21,6 +21,8 @@ clean:
 build: clean
 	poetry build
 
+# Note: `poetry` does not appear to read the `POETRY_PYPI_TOKEN_<NAME>` environment variable,
+# so we need to pass it explicitly in the `publish` command.
 .PHONY: test-publish
 test-publish: build
 	poetry publish \

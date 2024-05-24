@@ -25,6 +25,7 @@ priority = "primary"
 
 [[tool.poetry.source]]
 name = "pypi_test"
+# Note: poetry only support the "legacy" API.
 url = "https://test.pypi.org/legacy/"
 
 [tool.poetry.dependencies]
