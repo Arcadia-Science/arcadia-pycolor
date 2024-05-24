@@ -127,7 +127,9 @@ class Gradient(Palette):
         if values:
             if not all(0 <= value <= 1 for value in values):
                 raise ValueError("All values must be between 0 and 1.")
-            elif len(colors) != len(values):
+            if not values[0] == 0 or not values[-1] == 1:
+                raise ValueError("The first value must be 0 and the last value must be 1.")
+            if len(colors) != len(values):
                 raise ValueError("The number of colors and values must be the same.")
             self.values = values
         else:
