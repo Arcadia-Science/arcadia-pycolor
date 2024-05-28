@@ -7,6 +7,7 @@ name = "arcadia-pycolor"
 version = "0.4.0"
 description = "A Python package to distribute Arcadia's color and style guidelines for figures."
 authors = [
+    "Keith Cheveralls <keith.cheveralls@arcadiascience.com>",
     "Dennis Sun <dennis.sun@arcadiascience.com>",
 ]
 readme = "README.md"
