@@ -20,40 +20,37 @@ def test_palette_name():
 
 
 @pytest.mark.parametrize(
-    "name, colors, values",
+    "values",
     [
-        (
-            "my_gradient",
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-            [0, 1],
-        ),
-        (
-            "my_gradient",
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-            None,
-        ),
+        [0, 1],
+        None,
     ],
 )
-def test_gradient_to_linear_cmap(name, colors, values):
-    grad = gradient_to_linear_cmap(Gradient(name, colors, values))
+def test_gradient_to_linear_cmap(values):
+    grad = gradient_to_linear_cmap(
+        Gradient(
+            "my_gradient",
+            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
+            values,
+        )
+    )
     assert grad(0) == (1.0, 1.0, 1.0, 1.0)
 
 
 @pytest.mark.parametrize(
-    "name, colors, values",
+    "values",
     [
-        (
-            "my_gradient",
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-            [0, 1],
-        ),
-        (
-            "my_gradient",
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-            None,
-        ),
+        [0, 1],
+        None,
     ],
 )
-def test_gradient_name(name, colors, values):
-    grad = gradient_to_linear_cmap(Gradient(name, colors, values))
+def test_gradient_name(values):
+    name = "my_gradient"
+    grad = gradient_to_linear_cmap(
+        Gradient(
+            name,
+            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
+            values,
+        )
+    )
     assert grad.name == name

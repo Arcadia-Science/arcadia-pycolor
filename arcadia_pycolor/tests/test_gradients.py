@@ -3,6 +3,8 @@ import pytest
 
 from arcadia_pycolor import Gradient, HexCode
 
+from .test_hexcode import INVALID_HEXCODES
+
 
 @pytest.mark.parametrize(
     "values",
@@ -56,18 +58,25 @@ def test_gradient_from_hexcode_list_with_wrong_number_of_values(colors, values):
 
 @pytest.mark.parametrize(
     "invalid_color",
-    ["black", 0, 1, 123456, 0.123456, "", " ", "#", None],
+    INVALID_HEXCODES,
 )
 def test_gradient_from_hexcode_list_invalid_input(invalid_color):
     with pytest.raises(ValueError):
         Gradient("some-gradient", [HexCode("black", "#000000"), invalid_color], [0, 1])
 
 
-def test_gradient_from_dict():
+@pytest.mark.parametrize(
+    "values",
+    [
+        [0, 1],
+        None,
+    ],
+)
+def test_gradient_from_dict(values):
     assert Gradient.from_dict(
         "some_gradient",
         {"white": "#FFFFFF", "black": "#000000"},
-        [0, 1],
+        values,
     ).colors == [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
 
 
