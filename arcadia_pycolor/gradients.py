@@ -1,5 +1,5 @@
 import arcadia_pycolor.colors as colors
-from arcadia_pycolor.classes import Gradient
+from arcadia_pycolor.gradient import Gradient
 
 # Perceptually Uniform Gradients
 viridis = Gradient(

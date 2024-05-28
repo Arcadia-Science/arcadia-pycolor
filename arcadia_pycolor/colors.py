@@ -1,4 +1,4 @@
-from .classes import HexCode
+from arcadia_pycolor.hexcode import HexCode
 
 # Core colors
 lightgrey = HexCode("lightgrey", "#EBEDE8")

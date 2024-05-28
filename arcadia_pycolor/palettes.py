@@ -1,6 +1,5 @@
 import arcadia_pycolor.colors as colors
-
-from .classes import Palette
+from arcadia_pycolor.palette import Palette
 
 core = Palette(
     "Core",

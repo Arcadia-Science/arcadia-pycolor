@@ -1,15 +1,8 @@
-from typing import TYPE_CHECKING
-
-import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
-
-if TYPE_CHECKING:
-    from arcadia_pycolor.classes import Gradient, Palette
-
 
 import arcadia_pycolor.colors as colors
 
@@ -163,15 +156,3 @@ def add_legend_line(legend: Legend):
     # Insert the line as a new row just below the title
     legend_vpacker = legend._legend_handle_box.get_children()[0]
     legend_vpacker.get_children().insert(0, line_area)
-
-
-def palette_to_cmap(palette: "Palette"):
-    return mcolors.ListedColormap([color.hex_code for color in palette.colors], palette.name)
-
-
-def gradient_to_linear_cmap(gradient: "Gradient"):
-    colors = [(value, color.hex_code) for value, color in zip(gradient.values, gradient.colors)]
-    return mcolors.LinearSegmentedColormap.from_list(
-        gradient.name,
-        colors=colors,
-    )
