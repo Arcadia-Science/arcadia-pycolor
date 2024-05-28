@@ -18,7 +18,11 @@ class Gradient(Palette):
         """
         super().__init__(name=name, colors=colors)
 
-        if values:
+        if values is not None:
+            if len(values) < 2:
+                raise ValueError("A gradient must have at least two values.")
+            if not all(isinstance(value, (int, float)) for value in values):
+                raise ValueError("All values must be integers or floats.")
             if not all(0 <= value <= 1 for value in values):
                 raise ValueError("All values must be between 0 and 1.")
             if not values[0] == 0 or not values[-1] == 1:
