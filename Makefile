@@ -6,7 +6,7 @@ lint:
 
 .PHONY: format
 format:
-	ruff --fix .
+	ruff check --fix .
 	ruff format .
 
 .PHONY: pre-commit
