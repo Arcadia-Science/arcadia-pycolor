@@ -3,9 +3,9 @@
 ### FONT
 font.family:            sans-serif
 font.size:              24
-font.serif:             Suisse Int'l Serif
-font.sans-serif:        Suisse Int'l
-font.monospace:         Suisee Int'l Mono
+font.serif:             Suisse Int'l Serif, Times, serif
+font.sans-serif:        Suisse Int'l, Arial, sans-serif
+font.monospace:         Suisee Int'l Mono, Courier, monospace
 font.weight:            regular
 
 ### FIGURE

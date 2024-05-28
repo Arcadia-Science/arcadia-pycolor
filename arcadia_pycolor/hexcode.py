@@ -7,6 +7,9 @@ from arcadia_pycolor.display import colorize
 
 def _is_hex_code(hex_string: str) -> bool:
     """Checks if a string is a valid HEX code."""
+    if not isinstance(hex_string, str):
+        return False
+
     match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", hex_string)
     if match:
         return True
