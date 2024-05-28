@@ -9,6 +9,9 @@ from arcadia_pycolor.utils import distribute_values
 
 def _is_hex_code(hex_string: str) -> bool:
     """Checks if a string is a valid HEX code."""
+    if not isinstance(hex_string, str):
+        return False
+
     match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", hex_string)
     if match:
         return True
@@ -124,7 +127,11 @@ class Gradient(Palette):
         """
         super().__init__(name=name, colors=colors)
 
-        if values:
+        if values is not None:
+            if len(values) < 2:
+                raise ValueError("A gradient must have at least two values.")
+            if not all(isinstance(value, (int, float)) for value in values):
+                raise ValueError("All values must be integers or floats.")
             if not all(0 <= value <= 1 for value in values):
                 raise ValueError("All values must be between 0 and 1.")
             if not values[0] == 0 or not values[-1] == 1:

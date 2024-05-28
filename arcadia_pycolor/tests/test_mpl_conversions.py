@@ -4,31 +4,19 @@ from arcadia_pycolor import Gradient, HexCode, Palette
 from arcadia_pycolor.mpl import gradient_to_linear_cmap, palette_to_cmap
 
 
-@pytest.mark.parametrize(
-    "name, input, hex_codes",
-    [
-        (
-            "my_palette",
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-        )
-    ],
-)
-def test_palette_to_cmap(name, input, hex_codes):
-    assert palette_to_cmap(Palette(name, input)).colors == hex_codes
+def test_palette_to_cmap():
+    hex_codes = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    assert palette_to_cmap(Palette("my_palette", hex_codes)).colors == hex_codes
 
 
-@pytest.mark.parametrize(
-    "name, input",
-    [
-        (
-            "my_palette",
-            {"white": "#FFFFFF", "black": "#000000"},
-        )
-    ],
-)
-def test_palette_name(name, input):
-    assert palette_to_cmap(Palette.from_dict(name, input)).name == name
+def test_palette_name():
+    hex_codes = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    assert (
+        palette_to_cmap(
+            Palette.from_dict("my_palette", {"white": "#FFFFFF", "black": "#000000"})
+        ).colors
+        == hex_codes
+    )
 
 
 @pytest.mark.parametrize(

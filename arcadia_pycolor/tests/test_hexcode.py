@@ -3,55 +3,63 @@ import pytest
 from arcadia_pycolor import HexCode
 from arcadia_pycolor.classes import _is_hex_code
 
+VALID_HEXCODES = [
+    "#FFFFFF",
+    "#FFFFFF",
+    "#FFF",
+    "#fff",
+    "#001",
+    "#000",
+    "#000000",
+    "#000001",
+    "#FfFfFf",
+    "#f90",
+    "#ff9900",
+    "#f0a2c3",
+]
+
+INVALID_HEXCODES = [
+    "#ZZZZZZ",
+    "#ZZZ",
+    "#FF",
+    "apples",
+    "123456",
+    "ffffff",
+    "white",
+    "",
+    "#",
+    "0",
+    "F",
+    0,
+    0.5,
+    None,
+    "#0000",
+]
+
 
 @pytest.mark.parametrize(
     "hex_string, is_hex_code",
-    [
-        ("#FFFFFF", True),
-        ("#FFFFFF", True),
-        ("#FFF", True),
-        ("#fff", True),
-        ("#ZZZZZZ", False),
-        ("#ZZZ", False),
-        ("#FF", False),
-        ("apples", False),
-        ("123456", False),
-        ("ffffff", False),
-        ("white", False),
-    ],
+    [(hc, True) for hc in VALID_HEXCODES] + [(hc, False) for hc in INVALID_HEXCODES],
 )
 def test_is_hex_code(hex_string, is_hex_code):
     assert _is_hex_code(hex_string) == is_hex_code
 
 
 @pytest.mark.parametrize(
-    "name, hex_code",
-    [
-        ("white", "#FFFFFF"),
-        ("white", "#ffffff"),
-        ("white", "#FFF"),
-        ("white", "#fff"),
-    ],
+    "hex_code",
+    VALID_HEXCODES,
 )
-def test_valid_hexcode(name, hex_code):
-    assert HexCode(name, hex_code) == hex_code
+def test_valid_hexcode(hex_code):
+    assert HexCode("a_hexcode", hex_code) == hex_code
 
 
 @pytest.mark.parametrize(
-    "name, hex_code",
-    [
-        ("white", "#ZZZZZZ"),
-        ("white", "#ZZZ"),
-        ("white", "#FF"),
-        ("white", "apples"),
-        ("white", "123456"),
-        ("white", "ffffff"),
-        ("white", "white"),
-    ],
+    "hex_code",
+    INVALID_HEXCODES,
 )
-def test_invalid_hexcode(name, hex_code):
-    with pytest.raises(ValueError):
-        HexCode(name, hex_code)
+def test_invalid_hexcode(hex_code):
+    with pytest.raises((ValueError, TypeError)):
+        HexCode("a_hexcode", hex_code)
 
 
 @pytest.mark.parametrize(
@@ -120,6 +128,9 @@ def test_hexcode_swatch_widths(name, hex_code, width, min_name_width, swatch):
     "name, hex_code, rgb",
     [
         ("white", "#FFFFFF", [255, 255, 255]),
+        ("near-white", "#FFFFFE", [255, 255, 254]),
+        ("near-black", "#000001", [0, 0, 1]),
+        ("darkbrownish", "#001", [0, 0, 17]),
         ("aegean", "#5088C5", [80, 136, 197]),
     ],
 )
