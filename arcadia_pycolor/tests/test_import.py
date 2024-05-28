@@ -5,12 +5,12 @@ def test_import_arcadia_pycolor():
     assert arcadia_pycolor is not None
 
     attrs = [
-        "classes",
         "colors",
         "gradients",
         "mpl",
         "palettes",
         "plot",
+        "styles",
         "Gradient",
         "HexCode",
         "Palette",

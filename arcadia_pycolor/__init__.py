@@ -10,6 +10,7 @@ __all__ = [
     "mpl",
     "palettes",
     "plot",
+    "styles",
 ]
 
 colors_all = [name for name in dir(colors) if not name.startswith("_")]
