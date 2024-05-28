@@ -2,7 +2,7 @@ import re
 
 import matplotlib.colors as mcolors
 
-from arcadia_pycolor.utils import colorize
+from arcadia_pycolor.display import colorize
 
 
 def _is_hex_code(hex_string: str) -> bool:

@@ -1,8 +1,9 @@
 import matplotlib.colors as mcolors
 
+from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import Palette
-from arcadia_pycolor.utils import colorize, distribute_values
+from arcadia_pycolor.utils import distribute_values
 
 
 class Gradient(Palette):

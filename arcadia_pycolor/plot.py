@@ -1,15 +1,11 @@
-from typing import TYPE_CHECKING, Union
-
-if TYPE_CHECKING:
-    from arcadia_pycolor.classes import Gradient
+from typing import Union
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from colorspacious import cspace_converter
 
-from arcadia_pycolor.classes import Gradient
-from arcadia_pycolor.mpl import gradient_to_linear_cmap
+from arcadia_pycolor.gradient import Gradient
 
 
 def plot_gradient_lightness(
@@ -67,7 +63,7 @@ def plot_gradient_lightness(
             colormap_as_rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]
         elif isinstance(grad, Gradient):
             name = grad.name
-            cmap = gradient_to_linear_cmap(grad)
+            cmap = grad.to_mpl_linear_cmap()
             colormap_as_rgb = cmap(x)[np.newaxis, :, :3]
 
         grad_names.append(name)

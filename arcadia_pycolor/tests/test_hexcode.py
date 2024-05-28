@@ -1,7 +1,7 @@
 import pytest
 
 from arcadia_pycolor import HexCode
-from arcadia_pycolor.classes import _is_hex_code
+from arcadia_pycolor.hexcode import _is_hex_code
 
 VALID_HEXCODES = [
     "#FFFFFF",

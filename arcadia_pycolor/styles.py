@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
-from arcadia_pycolor.classes import Gradient, Palette
-from arcadia_pycolor.mpl import gradient_to_linear_cmap
+from arcadia_pycolor.gradient import Gradient
+from arcadia_pycolor.palette import Palette
 
 from . import mplstyles
 
@@ -58,13 +58,13 @@ def _load_fonts(font_folder: str = None):
 def _load_gradients():
     for grad in arcadia_pycolor.gradients.__all__:
         if isinstance(grad, Gradient):
-            plt.register_cmap(name=grad.name, cmap=gradient_to_linear_cmap(grad))
+            plt.register_cmap(name=grad.name, cmap=grad.to_mpl_linear_cmap())
 
 
 def _load_palettes():
     for pal in arcadia_pycolor.palettes.__all__:
         if isinstance(pal, Palette):
-            plt.register_cmap(name=pal.name, cmap=gradient_to_linear_cmap(pal))
+            plt.register_cmap(name=pal.name, cmap=pal.to_mpl_cmap())
 
 
 def _load_styles(sheet: str = _MPL_STYLESHEET):
