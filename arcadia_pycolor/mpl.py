@@ -7,6 +7,7 @@ import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
+from matplotlib import colormaps
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
@@ -66,6 +67,14 @@ def monospace_yticklabels(font: str = _MONOSPACE_FONT, axis=None):
     [i.set_fontfamily(font) for i in ytick_labels]
 
 
+def monospace_ticklabels(font: str = _MONOSPACE_FONT, axis=None):
+    "Set the font of both the x and y tick labels to a monospace font."
+    ax = _catch_axis(axis)
+
+    monospace_xticklabels(font, ax)
+    monospace_yticklabels(font, ax)
+
+
 def capitalize_xticklabels(axis=None):
     "Capitalize the xtick labels."
     ax = _catch_axis(axis)
@@ -102,6 +111,14 @@ def categorical_yaxis(axis=None):
     ax = _catch_axis(axis)
 
     ax.tick_params(axis="y", which="both", pad=15, size=0)
+
+
+def categorical_axes(axis=None):
+    "Set both the x and y axes to categorical axes."
+    ax = _catch_axis(axis)
+
+    categorical_xaxis(ax)
+    categorical_yaxis(ax)
 
 
 def capitalize_ylabel(axis=None):
@@ -143,7 +160,25 @@ def capitalize_legend(legend: Legend):
     capitalize_legend_entries(legend)
 
 
-def autostyle(axis=None, mono=None, cat=None):
+def justify_legend(legend: Legend):
+    legend.set_title(legend.get_title()._text, prop=LEGEND_PARAMS["title_fontproperties"])
+    legend.set(alignment="left")
+
+
+def style_legend(legend: Legend):
+    "Apply a set of style changes to a legend."
+    capitalize_legend(legend)
+    add_legend_line(legend)
+    justify_legend(legend)
+
+
+def monospace_colorbar(axis=None):
+    ax = _catch_axis(axis)
+    if cbar := ax.collections[0].colorbar:
+        monospace_ticklabels(axis=cbar.ax)
+
+
+def autostyle(axis=None, mono=None, cat=None, cbar=False):
     "Apply a set of style changes to the most recent figure."
 
     ax = _catch_axis(axis)
@@ -153,10 +188,7 @@ def autostyle(axis=None, mono=None, cat=None):
     leg = ax.get_legend()
 
     if leg is not None:
-        capitalize_legend(leg)
-        add_legend_line(leg)
-        leg.set_title(leg.get_title()._text, prop=LEGEND_PARAMS["title_fontproperties"])
-        leg.set(alignment="left")
+        style_legend(leg)
 
     dispatch_cat = {
         "x": [categorical_xaxis, capitalize_xticklabels],
@@ -187,6 +219,9 @@ def autostyle(axis=None, mono=None, cat=None):
         pass
     else:
         print(f"Invalid mono option. Please choose from {list(dispatch_mono.keys())}.")
+
+    if cbar:
+        monospace_colorbar(ax)
 
 
 def dimensions(size: str):
@@ -235,9 +270,11 @@ def add_legend_line(legend: Legend):
     legend_vpacker = legend._legend_handle_box.get_children()[0]
     legend_vpacker.get_children().insert(0, line_area)
 
+    # TODO: Don't make the line if there's already a line in the second position.
+
 
 def _load_colors():
-    colors = {color.name: color.hex_code for color in arcadia_pycolor.palettes.all.colors}
+    colors = {"apc:" + color.name: color.hex_code for color in arcadia_pycolor.palettes.all.colors}
     mpl.cm.colors.get_named_colors_mapping().update(colors)
 
 
@@ -264,15 +301,17 @@ def _load_fonts(font_folder: str = None):
 
 
 def _load_gradients():
-    for grad in dir(arcadia_pycolor.gradients):
+    for grad in arcadia_pycolor.gradients.__dict__.values():
         if isinstance(grad, Gradient):
-            plt.register_cmap(name=grad.name, cmap=grad.to_mpl_linear_cmap())
+            if (gradname := "apc:" + grad.name) not in colormaps:
+                plt.register_cmap(name=gradname, cmap=grad.to_mpl_linear_cmap())
 
 
 def _load_palettes():
-    for pal in dir(arcadia_pycolor.palettes):
+    for pal in arcadia_pycolor.palettes.__dict__.values():
         if isinstance(pal, Palette):
-            plt.register_cmap(name=pal.name, cmap=pal.to_mpl_cmap())
+            if (palname := "apc:" + pal.name) not in colormaps:
+                plt.register_cmap(name=palname, cmap=pal.to_mpl_cmap())
 
 
 def _load_styles(sheet: str = _MPL_STYLESHEET):
