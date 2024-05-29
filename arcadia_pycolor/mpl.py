@@ -294,4 +294,4 @@ def setup(mode: str = "all", font_folder: str = None):
     elif mode in dispatch:
         dispatch[mode]()
     else:
-        print(f"Invalid mode. Please choose from {", ".join(["all"] + dispatch.keys())}.")
+        print(f"""Invalid mode. Please choose from "all", {list(dispatch.keys())}.""")
