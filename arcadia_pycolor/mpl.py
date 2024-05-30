@@ -1,8 +1,3 @@
-import os
-import platform
-from importlib import resources as impresources
-from pathlib import Path
-
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
@@ -17,8 +12,8 @@ import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.palette import Palette
+from arcadia_pycolor.style_defaults import ARCADIA_RC_PARAMS, FONT_FILTER, MONOSPACE_FONT
 
-from . import mplstyles
 from .styles import (
     FULL_S,
     FULL_W,
@@ -27,12 +22,6 @@ from .styles import (
     THREEQ_S,
     THREEQ_W,
 )
-
-_DARWIN_FONT_FOLDER = "~/Library/Fonts"
-_FONT_FILTER = "Suisse"
-_MPL_STYLESHEET = impresources.files(mplstyles) / "arcadia_2024.mplstyle"
-_MONOSPACE_FONT = "Suisse Int'l Mono"
-
 
 LEGEND_PARAMS = dict(
     alignment="left",
@@ -43,7 +32,7 @@ SAVE_WEB = dict(dpi=72, bbox_inches="tight", pad_inches=0.41)
 SAVE_PRINT = dict(dpi=300, bbox_inches="tight", pad_inches=0.41)
 
 
-def _catch_axis(axis=None):
+def _find_axis(axis=None):
     "Convenience function to catch the current axis if none is provided."
     if axis is None:
         return plt.gca()
@@ -51,25 +40,25 @@ def _catch_axis(axis=None):
         return axis
 
 
-def monospace_xticklabels(font: str = _MONOSPACE_FONT, axis=None):
+def monospace_xticklabels(font: str = MONOSPACE_FONT, axis=None):
     "Set the font of the xtick labels to a monospace font."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     xtick_labels = ax.get_xticklabels()
-    [i.set_fontfamily(font) for i in xtick_labels]
+    [label.set_fontfamily(font) for label in xtick_labels]
 
 
-def monospace_yticklabels(font: str = _MONOSPACE_FONT, axis=None):
+def monospace_yticklabels(font: str = MONOSPACE_FONT, axis=None):
     "Set the font of the ytick labels to a monospace font."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     ytick_labels = ax.get_yticklabels()
-    [i.set_fontfamily(font) for i in ytick_labels]
+    [label.set_fontfamily(font) for label in ytick_labels]
 
 
-def monospace_ticklabels(font: str = _MONOSPACE_FONT, axis=None):
+def monospace_ticklabels(font: str = MONOSPACE_FONT, axis=None):
     "Set the font of both the x and y tick labels to a monospace font."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     monospace_xticklabels(font, ax)
     monospace_yticklabels(font, ax)
@@ -77,7 +66,7 @@ def monospace_ticklabels(font: str = _MONOSPACE_FONT, axis=None):
 
 def capitalize_xticklabels(axis=None):
     "Capitalize the xtick labels."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     xticklabels = [label.get_text().capitalize() for label in ax.get_xticklabels()]
     ax.set_xticklabels(xticklabels)
@@ -85,7 +74,7 @@ def capitalize_xticklabels(axis=None):
 
 def capitalize_yticklabels(axis=None):
     "Capitalize the ytick labels."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     yticklabels = [label.get_text().capitalize() for label in ax.get_yticklabels()]
     ax.set_yticklabels(yticklabels)
@@ -93,29 +82,29 @@ def capitalize_yticklabels(axis=None):
 
 def capitalize_ticklabels(axis=None):
     "Capitalize both the x and y tick labels."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     capitalize_yticklabels(ax)
     capitalize_xticklabels(ax)
 
 
 def categorical_xaxis(axis=None):
-    "Set the x-axis to a categorical axis, removing ticks and adjusting padding."
-    ax = _catch_axis(axis)
+    "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
+    ax = _find_axis(axis)
 
     ax.tick_params(axis="x", which="both", pad=15, size=0)
 
 
 def categorical_yaxis(axis=None):
-    "Set the x-axis to a categorical axis, removing ticks and adjusting padding."
-    ax = _catch_axis(axis)
+    "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
+    ax = _find_axis(axis)
 
     ax.tick_params(axis="y", which="both", pad=15, size=0)
 
 
 def categorical_axes(axis=None):
-    "Set both the x and y axes to categorical axes."
-    ax = _catch_axis(axis)
+    "Set the style of both the x and y axes to categorical axes."
+    ax = _find_axis(axis)
 
     categorical_xaxis(ax)
     categorical_yaxis(ax)
@@ -123,21 +112,21 @@ def categorical_axes(axis=None):
 
 def capitalize_ylabel(axis=None):
     "Capitalize the y-axis label."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     ax.set_ylabel(ax.get_yaxis().get_label().get_text().capitalize())
 
 
 def capitalize_xlabel(axis=None):
     "Capitalize the x-axis label."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     ax.set_xlabel(ax.get_xaxis().get_label().get_text().capitalize())
 
 
 def capitalize_axislabels(axis=None):
     "Capitalize both the x and y axis labels."
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
 
     capitalize_xlabel(ax)
     capitalize_ylabel(ax)
@@ -173,7 +162,7 @@ def style_legend(legend: Legend):
 
 
 def monospace_colorbar(axis=None):
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
     if cbar := ax.collections[0].colorbar:
         monospace_ticklabels(axis=cbar.ax)
 
@@ -181,7 +170,7 @@ def monospace_colorbar(axis=None):
 def autostyle(axis=None, mono=None, cat=None, cbar=False):
     "Apply a set of style changes to the most recent figure."
 
-    ax = _catch_axis(axis)
+    ax = _find_axis(axis)
     capitalize_axislabels(ax)
 
     # Legend styling.
@@ -206,25 +195,20 @@ def autostyle(axis=None, mono=None, cat=None, cbar=False):
     else:
         print(f"Invalid cat option. Please choose from {list(dispatch_cat.keys())}.")
 
-    dispatch_mono = {
-        "x": monospace_xticklabels,
-        "y": monospace_yticklabels,
-    }
     if mono == "both":
-        for func in dispatch_mono.values():
-            func()
-    elif mono in dispatch_mono:
-        dispatch_mono[mono]()
-    elif mono is None:
-        pass
+        monospace_ticklabels(axis)
+    elif mono == "x":
+        monospace_xticklabels(axis)
+    elif mono == "y":
+        monospace_yticklabels(axis)
     else:
-        print(f"Invalid mono option. Please choose from {list(dispatch_mono.keys())}.")
+        print("Invalid mono option. Please choose from 'x', 'y', or 'both'.")
 
     if cbar:
         monospace_colorbar(ax)
 
 
-def dimensions(size: str):
+def get_figure_dimensions(size: str):
     "Return the dimensions of a figure given a size."
     dispatch_dict = {
         "full_w": FULL_W,
@@ -279,43 +263,28 @@ def _load_colors():
 
 
 def _load_fonts(font_folder: str = None):
-    if font_folder:
-        font_dir = Path(font_folder)
-    elif platform.system() == "Darwin":  # Darwin is the system name for macOS
-        font_dir = Path(os.path.expanduser(_DARWIN_FONT_FOLDER))
-    else:
-        print("Unsupported system. Please specify the font folder manually.")
-        raise NotImplementedError
-
-    suisse_fonts = [i for i in os.listdir(font_dir) if _FONT_FILTER in i]
-
-    if len(suisse_fonts) == 0:
-        print(f"No {_FONT_FILTER} fonts found in {font_folder}.")
-        print("Make sure you have fonts installed and try again.")
-        raise FileNotFoundError
-
-    for font in suisse_fonts:
-        font_path = font_dir / font
-        font_manager.fontManager.addfont(font_path)
-        font_manager.FontProperties(fname=font_path)
+    for fontpath in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
+        if FONT_FILTER.lower() in fontpath.lower():
+            font_manager.fontManager.addfont(fontpath)
+            font_manager.FontProperties(fname=fontpath)
 
 
 def _load_gradients():
-    for grad in arcadia_pycolor.gradients.__dict__.values():
-        if isinstance(grad, Gradient):
-            if (gradname := "apc:" + grad.name) not in colormaps:
-                plt.register_cmap(name=gradname, cmap=grad.to_mpl_linear_cmap())
+    for object in arcadia_pycolor.gradients.__dict__.values():
+        if isinstance(object, Gradient):
+            if (gradient_name := f"apc:{object.name}") not in colormaps:
+                plt.register_cmap(name=gradient_name, cmap=object.to_mpl_linear_cmap())
 
 
 def _load_palettes():
-    for pal in arcadia_pycolor.palettes.__dict__.values():
-        if isinstance(pal, Palette):
-            if (palname := "apc:" + pal.name) not in colormaps:
-                plt.register_cmap(name=palname, cmap=pal.to_mpl_cmap())
+    for object in arcadia_pycolor.palettes.__dict__.values():
+        if isinstance(object, Palette):
+            if (palette_name := f"apc:{object.name}") not in colormaps:
+                plt.register_cmap(name=palette_name, cmap=object.to_mpl_cmap())
 
 
-def _load_styles(sheet: str = _MPL_STYLESHEET):
-    plt.style.use(sheet)
+def _load_styles():
+    plt.rcParams.update(ARCADIA_RC_PARAMS)
 
 
 def setup(mode: str = "all", font_folder: str = None):

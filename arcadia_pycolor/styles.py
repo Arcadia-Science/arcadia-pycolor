@@ -1,7 +1,0 @@
-# Units in inches when dpi is 72
-SAVEFIG_PAD = 0.41
-FULL_W = (20.8333, 10.6161)
-FULL_S = (10.2029, 9.3712)
-THREEQ_W = (14.5833, 7.0833)
-THREEQ_S = (7.0904, 6.6946)
-HALF_S = (10.4167, 9.9928)

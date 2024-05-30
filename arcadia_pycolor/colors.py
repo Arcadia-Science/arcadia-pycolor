@@ -67,6 +67,7 @@ yucca = HexCode("yucca", "#1E4812")
 pitaya = HexCode("pitaya", "#C74970")
 soil = HexCode("soil", "#4D2500")
 umber = HexCode("umber", "#A85E28")
+parchment = HexCode("parchment", "#FDF8F2")
 
 # Other named colors
 white = HexCode("white", "#FFFFFF")
