@@ -30,7 +30,7 @@ def test_gradient_to_linear_cmap(values):
         "my_gradient",
         [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
         values,
-    ).to_mpl_linear_cmap()
+    ).to_mpl_cmap()
     assert grad(0) == (1.0, 1.0, 1.0, 1.0)
 
 
@@ -47,5 +47,5 @@ def test_gradient_name(values):
         name,
         [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
         values,
-    ).to_mpl_linear_cmap()
+    ).to_mpl_cmap()
     assert grad.name == name
