@@ -49,7 +49,7 @@ class Gradient(Palette):
 
         """
         # Calculate the color for each step in the gradient
-        cmap = self.to_mpl_linear_cmap()
+        cmap = self.to_mpl_cmap()
 
         # Get the color for each step in the gradient
         colors = [HexCode(i, mcolors.to_hex(cmap(i / steps))) for i in range(steps)]

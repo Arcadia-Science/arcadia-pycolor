@@ -78,8 +78,8 @@ def set_ticklabel_monospaced(font: str = MONOSPACE_FONT, axis=None):
     "Set the font of both the x and y tick labels to a monospace font."
     ax = _find_axis(axis)
 
-    set_xticklabel_monospaced(font, ax)
-    set_yticklabel_monospaced(font, ax)
+    set_xticklabel_monospaced(ax)
+    set_yticklabel_monospaced(ax)
 
 
 def capitalize_xticklabels(axis=None):
@@ -308,8 +308,13 @@ def load_fonts(font_folder: str = None):
 
 
 def load_colormaps():
-    "Load Arcadia's palettes and gradients into the matplotlib list of named colormaps with the prefix 'apc:'."
-    cmaps = arcadia_pycolor.palettes.__dict__.values() + arcadia_pycolor.gradients.__dict__.values()
+    """
+    Load Arcadia's palettes and gradients into the matplotlib list of named colormaps
+    with the prefix 'apc:'.
+    """
+    cmaps = list(arcadia_pycolor.palettes.__dict__.values()) + list(
+        arcadia_pycolor.gradients.__dict__.values()
+    )
     for object in cmaps:
         if isinstance(object, Palette):
             if (gradient_name := f"apc:{object.name}") not in colormaps:

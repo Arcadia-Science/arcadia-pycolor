@@ -63,7 +63,7 @@ def plot_gradient_lightness(
             colormap_as_rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]
         elif isinstance(grad, Gradient):
             name = grad.name
-            cmap = grad.to_mpl_linear_cmap()
+            cmap = grad.to_mpl_cmap()
             colormap_as_rgb = cmap(x)[np.newaxis, :, :3]
 
         grad_names.append(name)
