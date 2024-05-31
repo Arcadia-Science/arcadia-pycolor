@@ -69,7 +69,7 @@ class Gradient(Palette):
             ]
         )
 
-    def to_mpl_linear_cmap(self):
+    def to_mpl_cmap(self):
         colors = [(value, color.hex_code) for value, color in zip(self.values, self.colors)]
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,

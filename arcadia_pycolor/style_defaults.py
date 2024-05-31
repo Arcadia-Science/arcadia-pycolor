@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
 import arcadia_pycolor.colors as colors
-import arcadia_pycolor.palettes as palettes
 import arcadia_pycolor.gradients as gradients
+import arcadia_pycolor.palettes as palettes
 
 ### Sizing and spacing ###
 # Units in inches when dpi is 72
@@ -17,10 +17,20 @@ THREEQ_W = (14.5833, 7.0833)
 THREEQ_S = (7.0904, 6.6946)
 HALF_S = (10.4167, 9.9928)
 
+# Dictionary of common figure sizes.
+FIGURE_SIZES = {
+    "full_w": FULL_W,
+    "full_s": FULL_S,
+    "threeq_w": THREEQ_W,
+    "threeq_s": THREEQ_S,
+    "half_s": HALF_S,
+}
 
 ### Fonts ###
 # Font family to look for in the font folder.
 FONT_FILTER = "Suisse"
+
+DEFAULT_FONT = "Suisse Int'l"
 
 # Font family to use for monospace fonts.
 MONOSPACE_FONT = "Suisse Int'l Mono"
