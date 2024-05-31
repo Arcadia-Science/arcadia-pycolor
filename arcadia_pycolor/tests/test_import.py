@@ -10,7 +10,7 @@ def test_import_arcadia_pycolor():
         "mpl",
         "palettes",
         "plot",
-        "styles",
+        "style_defaults",
         "Gradient",
         "HexCode",
         "Palette",

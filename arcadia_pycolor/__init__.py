@@ -1,4 +1,4 @@
-from arcadia_pycolor import colors, gradients, mpl, palettes, plot, styles
+from arcadia_pycolor import colors, gradients, mpl, palettes, plot, style_defaults
 
 from .colors import *
 from .gradient import *
@@ -10,7 +10,7 @@ __all__ = [
     "mpl",
     "palettes",
     "plot",
-    "styles",
+    "style_defaults",
 ]
 
 colors_all = [name for name in dir(colors) if not name.startswith("_")]
