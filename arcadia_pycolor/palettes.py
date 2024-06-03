@@ -1,6 +1,5 @@
 import arcadia_pycolor.colors as colors
-
-from .classes import Palette
+from arcadia_pycolor.palette import Palette
 
 core = Palette(
     "Core",
@@ -59,6 +58,46 @@ light_accent_expanded = Palette(
     [colors.mint, colors.wish, colors.satin, colors.taupe, colors.mars, colors.denim],
 )
 
+accent_ordered = Palette(
+    "AccentOrdered",
+    [
+        colors.aegean,
+        colors.amber,
+        colors.canary,
+        colors.lime,
+        colors.aster,
+        colors.rose,
+        colors.seaweed,
+        colors.dragon,
+        colors.vitalblue,
+        colors.chateau,
+        colors.marineblue,
+        colors.tangerine,
+    ],
+)
+
+light_ordered = Palette(
+    "LightOrdered",
+    [
+        colors.bluesky,
+        colors.dress,
+        colors.oat,
+        colors.sage,
+        colors.periwinkle,
+        colors.denim,
+        colors.taupe,
+        colors.mars,
+        colors.blossom,
+        colors.mint,
+        colors.wish,
+        colors.satin,
+    ],
+)
+
+accent_all_ordered = accent_ordered + light_ordered
+accent_all_ordered.name = "AccentAllOrdered"
+
+
 other = Palette(
     "Other",
     [
@@ -77,6 +116,7 @@ other = Palette(
         colors.pitaya,
         colors.soil,
         colors.umber,
+        colors.parchment,
     ],
 )
 
