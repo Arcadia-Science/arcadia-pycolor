@@ -24,8 +24,8 @@ LEGEND_PARAMS = dict(
     title_fontproperties={"weight": "semibold", "size": "26"},
 )
 
-SAVE_WEB = dict(dpi=72, bbox_inches="tight", pad_inches=0.41)
-SAVE_PRINT = dict(dpi=300, bbox_inches="tight", pad_inches=0.41)
+SAVEFIG_KWARGS_WEB = dict(dpi=72, bbox_inches="tight", pad_inches=0.41)
+SAVEFIG_KWARGS_PRINT = dict(dpi=300, bbox_inches="tight", pad_inches=0.41)
 
 
 def _find_axis(axis=None):
@@ -36,7 +36,14 @@ def _find_axis(axis=None):
         return axis
 
 
-def set_yticklabel_fonts(axis=None, font: str = DEFAULT_FONT):
+def save_figure(context: str = "web", **savefig_kwargs):
+    "Save the current figure with the default settings for web."
+    kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
+    kwargs.update(**savefig_kwargs)
+    plt.savefig(**kwargs)
+
+
+def set_yticklabel_font(axis=None, font: str = DEFAULT_FONT):
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
@@ -44,7 +51,7 @@ def set_yticklabel_fonts(axis=None, font: str = DEFAULT_FONT):
     [label.set_fontfamily(font) for label in ytick_labels]
 
 
-def set_xticklabel_fonts(axis=None, font: str = DEFAULT_FONT):
+def set_xticklabel_font(axis=None, font: str = DEFAULT_FONT):
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
@@ -52,29 +59,29 @@ def set_xticklabel_fonts(axis=None, font: str = DEFAULT_FONT):
     [label.set_fontfamily(font) for label in xtick_labels]
 
 
-def set_ticklabel_fonts(axis=None, font: str = DEFAULT_FONT):
+def set_ticklabel_font(axis=None, font: str = DEFAULT_FONT):
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
-    set_xticklabel_fonts(ax, font)
-    set_yticklabel_fonts(ax, font)
+    set_xticklabel_font(ax, font)
+    set_yticklabel_font(ax, font)
 
 
 def set_xticklabel_monospaced(axis=None):
     "Set the font of the xtick labels to a monospace font."
     ax = _find_axis(axis)
 
-    set_xticklabel_fonts(ax, MONOSPACE_FONT)
+    set_xticklabel_font(ax, MONOSPACE_FONT)
 
 
 def set_yticklabel_monospaced(axis=None):
     "Set the font of the ytick labels to a monospace font."
     ax = _find_axis(axis)
 
-    set_yticklabel_fonts(ax, MONOSPACE_FONT)
+    set_yticklabel_font(ax, MONOSPACE_FONT)
 
 
-def set_ticklabel_monospaced(font: str = MONOSPACE_FONT, axis=None):
+def set_ticklabel_monospaced(axis=None):
     "Set the font of both the x and y tick labels to a monospace font."
     ax = _find_axis(axis)
 
@@ -210,10 +217,8 @@ def style_axis(axis=None, monospaced_axes=None, categorical_axes=None, colorbar_
         style_legend(legend)
 
     if categorical_axes == "both":
-        set_xaxis_categorical(axis)
-        capitalize_xticklabels(axis)
-        set_yaxis_categorical(axis)
-        capitalize_yticklabels(axis)
+        set_axes_categorical(axis)
+        capitalize_ticklabels(axis)
     elif categorical_axes == "x":
         set_xaxis_categorical(axis)
         capitalize_xticklabels(axis)
@@ -300,7 +305,13 @@ def load_colors():
 
 
 def load_fonts(font_folder: str = None):
-    "Detect and load Suisse-family fonts installed on the system into matplotlib."
+    """
+    Detect and load Suisse-family fonts installed on the system into matplotlib.
+
+    Args:
+        font_folder (str, optional): the folder to search for fonts in.
+            Uses the default system font folder if None.
+    """
     for fontpath in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
         if FONT_FILTER.lower() in fontpath.lower():
             font_manager.fontManager.addfont(fontpath)

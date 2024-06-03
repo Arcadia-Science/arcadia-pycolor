@@ -19,11 +19,11 @@ HALF_S = (10.4167, 9.9928)
 
 # Dictionary of common figure sizes.
 FIGURE_SIZES = {
-    "full_w": FULL_W,
-    "full_s": FULL_S,
-    "threeq_w": THREEQ_W,
-    "threeq_s": THREEQ_S,
-    "half_s": HALF_S,
+    "full_wide": FULL_W,
+    "full_small": FULL_S,
+    "threeq_wide": THREEQ_W,
+    "threeq_small": THREEQ_S,
+    "half_small": HALF_S,
 }
 
 ### Fonts ###
