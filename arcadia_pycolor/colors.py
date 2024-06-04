@@ -1,4 +1,4 @@
-from .classes import HexCode
+from arcadia_pycolor.hexcode import HexCode
 
 # Core colors
 lightgrey = HexCode("lightgrey", "#EBEDE8")
@@ -67,6 +67,7 @@ yucca = HexCode("yucca", "#1E4812")
 pitaya = HexCode("pitaya", "#C74970")
 soil = HexCode("soil", "#4D2500")
 umber = HexCode("umber", "#A85E28")
+parchment = HexCode("parchment", "#FDF8F2")
 
 # Other named colors
 white = HexCode("white", "#FFFFFF")

@@ -1,17 +1,18 @@
-from arcadia_pycolor import classes, colors, gradients, mpl, palettes, plot
+from arcadia_pycolor import colors, gradients, mpl, palettes, plot, style_defaults
 
-from .classes import *
 from .colors import *
+from .gradient import *
+from .hexcode import *
+from .palette import *
 
 __all__ = [
     "gradients",
     "mpl",
     "palettes",
     "plot",
+    "style_defaults",
 ]
 
-classes_all = [name for name in dir(classes) if not name.startswith("_")]
 colors_all = [name for name in dir(colors) if not name.startswith("_")]
 
-__all__.extend(classes_all)
 __all__.extend(colors_all)

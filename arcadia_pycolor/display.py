@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from arcadia_pycolor.classes import HexCode
+    from arcadia_pycolor.hexcode import HexCode
 
 
 def colorize(
