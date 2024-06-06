@@ -36,17 +36,22 @@ DEFAULT_FONT = "Suisse Int'l"
 MONOSPACE_FONT = "Suisse Int'l Mono"
 
 
+# Specifications for categorical axes.
+CATEGORICAL_AXIS_TICKLENGTH = 0
+CATEGORICAL_AXIS_TICKPADDING = 7
+
+
 ### rcParams ###
 ARCADIA_RC_PARAMS = {
     # Fonts
     "font.family": "sans-serif",
-    "font.size": 24,
+    "font.size": 15,
     "font.serif": "Suisse Works",
     "font.sans-serif": "Suisse Int'l",
     "font.monospace": "Suisse Int'l Mono",
     "font.weight": "regular",
     # Figure
-    "figure.titlesize": 26,
+    "figure.titlesize": 16.5,
     "figure.titleweight": "medium",
     "figure.facecolor": colors.parchment,
     "figure.edgecolor": "none",
@@ -60,12 +65,12 @@ ARCADIA_RC_PARAMS = {
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
     "axes.prop_cycle": plt.cycler(color=palettes.accent_all_ordered.colors),
-    "axes.titlesize": 24,
+    "axes.titlesize": 16.5,
     "axes.titleweight": "medium",
-    "axes.labelsize": 24,
+    "axes.labelsize": 15,
     "axes.labelweight": "medium",
     "axes.labelcolor": colors.black,
-    "axes.labelpad": 15,
+    "axes.labelpad": 7,
     "axes.spines.left": True,
     "axes.spines.bottom": True,
     "axes.spines.right": False,
@@ -77,27 +82,27 @@ ARCADIA_RC_PARAMS = {
     "polaraxes.grid": True,
     "axes3d.grid": True,
     # Ticks
-    "xtick.major.size": 15,
-    "xtick.minor.size": 7.5,
+    "xtick.major.size": 4.5,
+    "xtick.minor.size": 2.5,
     "xtick.major.width": 1,
     "xtick.minor.width": 1,
-    "xtick.major.pad": 8,
-    "xtick.minor.pad": 8,
+    "xtick.major.pad": 4,
+    "xtick.minor.pad": 4,
     "xtick.color": colors.black,
-    "xtick.labelsize": 24,
-    "ytick.major.size": 15,
-    "ytick.minor.size": 7.5,
+    "xtick.labelsize": 15,
+    "ytick.major.size": 4.5,
+    "ytick.minor.size": 2.5,
     "ytick.major.width": 1,
     "ytick.minor.width": 1,
-    "ytick.major.pad": 8,
-    "ytick.minor.pad": 8,
+    "ytick.major.pad": 4,
+    "ytick.minor.pad": 4,
     "ytick.color": colors.black,
-    "ytick.labelsize": 24,
+    "ytick.labelsize": 15,
     # Legend
     "legend.loc": "best",
     "legend.frameon": False,
-    "legend.title_fontsize": 26,
-    "legend.fontsize": 24,
+    "legend.title_fontsize": 16.5,
+    "legend.fontsize": 15,
     "legend.framealpha": 0,
     "legend.borderpad": 0,
     "legend.borderaxespad": 0,
