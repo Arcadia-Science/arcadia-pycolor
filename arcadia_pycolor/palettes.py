@@ -139,3 +139,24 @@ all = (
     core + neutral + accent + light_accent + accent_expanded + light_accent_expanded + other + named
 )
 all.name = "All"
+
+_all_palettes = [
+    core,
+    neutral,
+    accent,
+    light_accent,
+    accent_expanded,
+    light_accent_expanded,
+    accent_ordered,
+    light_ordered,
+    accent_all_ordered,
+    other,
+    named,
+    all,
+]
+
+
+def display_all():
+    for palette in _all_palettes:
+        print(palette.name)
+        print(palette.swatch())

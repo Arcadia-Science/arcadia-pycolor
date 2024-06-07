@@ -134,3 +134,32 @@ lillies = Gradient(
     [colors.depths, colors.seaweed, colors.paper, colors.tangerine, colors.umber, colors.soil],
     [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
 )
+
+
+_all_gradients = [
+    viridis,
+    magma,
+    cividis,
+    reds,
+    oranges,
+    yellows,
+    greens,
+    teals,
+    blues,
+    purples,
+    magentas,
+    aegean_amber,
+    aster_canary,
+    lime_rose,
+    seaweed_tangerine,
+    poppies,
+    pansies,
+    dahlias,
+    lillies,
+]
+
+
+def display_all():
+    for gradient in _all_gradients:
+        print(gradient.name)
+        print(gradient.swatch())

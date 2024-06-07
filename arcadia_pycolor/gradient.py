@@ -45,7 +45,7 @@ class Gradient(Palette):
 
         Args:
             gradient (Gradient): the Gradient object to display
-            steps (int): the number of swatches to display in the gradient
+            steps (int): the number of swatdches to display in the gradient
 
         """
         # Calculate the color for each step in the gradient
@@ -57,6 +57,29 @@ class Gradient(Palette):
         swatches = [colorize(" ", bg_color=c) for c in colors]
 
         return "".join(swatches)
+
+    def reversed(self):
+        return Gradient(
+            name=f"{self.name}_r",
+            colors=self.colors[::-1],
+            values=[1 - value for value in self.values[::-1]],
+        )
+
+    def resample(self, steps=5):
+        """
+        Resamples the gradient, returning a Palette with the specified number of steps.
+        """
+        gradient = self.to_mpl_cmap()
+        values = distribute_values(steps)
+        colors = [
+            HexCode(name=f"{self.name}_{i}", hex_code=mcolors.to_hex(gradient(value)))
+            for i, value in enumerate(values)
+        ]
+
+        return Palette(
+            name=f"{self.name}_resampled_{steps}",
+            colors=colors,
+        )
 
     def __repr__(self):
         longest_name_length = self._get_longest_name_length()
