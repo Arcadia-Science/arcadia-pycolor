@@ -109,6 +109,8 @@ class Gradient(Palette):
         new_colors = []
         new_values = []
 
+        # If the first gradient ends with the same color as the start of the second gradient,
+        # drop the repeated color.
         if self.colors[-1] == other.colors[0]:
             new_colors = self.colors + other.colors[1:]
             new_values = rescale_and_concatenate_values(self.values, other.values[1:])
