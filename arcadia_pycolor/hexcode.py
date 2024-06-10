@@ -39,6 +39,9 @@ class HexCode(str):
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
     def to_cam02ucs(self):
+        """Returns a tuple of CAM02-UCS values for the color, where
+        the first value is the lightness (J) and the second and third values
+        are the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness)."""
         # Convert RGB255 to RGB1
         rgb = [i / 255 for i in self.to_rgb()]
 

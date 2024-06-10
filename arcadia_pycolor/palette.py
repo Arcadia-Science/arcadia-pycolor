@@ -26,7 +26,7 @@ class Palette:
         return cls(name, hex_codes)
 
     def swatch(self):
-        swatches = [colorize("  ", bg_color=c) for c in self.colors]
+        swatches = [colorize("  ", bg_color=color) for color in self.colors]
 
         return "".join(swatches)
 

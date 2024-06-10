@@ -1,3 +1,5 @@
+from typing import Iterable, Union
+
 import numpy as np
 
 
@@ -8,9 +10,15 @@ def distribute_values(num_points: int, min_val: float = 0.0, max_val: float = 1.
 
 
 def interpolate_x_values(y_values: list, round_digits=3):
+    """Takes a list of y-values and returns a list of x-values that are
+    linearly interpolated between 0 and 1; the first and last y-values
+    correspond to x-values of 0 and 1, respectively."""
     # Retrieve first and last values.
-    x0, y0 = 0, y_values[0]
-    x1, y1 = 1, y_values[-1]
+    x0 = 0
+    y0 = y_values[0]
+
+    x1 = 1
+    y1 = y_values[-1]
 
     # Calculate the slope (m) of the line through the two points.
     m = (y1 - y0) / (x1 - x0)
@@ -22,17 +30,22 @@ def interpolate_x_values(y_values: list, round_digits=3):
     return x_values
 
 
-# Copied from https://stackoverflow.com/questions/4983258
-def is_non_decreasing(L):
-    return all(x <= y for x, y in zip(L, L[1:]))
+def is_non_decreasing(values: Union[Iterable[int], Iterable[float]]) -> bool:
+    """Determine if the numbers in `values` are in strictly non-decreasing order.
+    Copied from https://stackoverflow.com/questions/4983258.
+    """
+    return all(x <= y for x, y in zip(values, values[1:], strict=False))
 
 
-def is_non_increasing(L):
-    return all(x >= y for x, y in zip(L, L[1:]))
+def is_non_increasing(values: Union[Iterable[int], Iterable[float]]) -> bool:
+    """Determine if the numbers in `values` are in strictly non-increasing order.
+    Copied from https://stackoverflow.com/questions/4983258.
+    """
+    return all(x >= y for x, y in zip(values, values[1:], strict=False))
 
 
-def is_monotonic(L):
-    return is_non_decreasing(L) or is_non_increasing(L)
+def is_monotonic(values: Union[Iterable[int], Iterable[float]]) -> bool:
+    return is_non_decreasing(values) or is_non_increasing(values)
 
 
 def rescale_and_concatenate_values(list1: list[float], list2: list[float]):

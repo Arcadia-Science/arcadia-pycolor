@@ -50,7 +50,7 @@ class Gradient(Palette):
 
         Args:
             gradient (Gradient): the Gradient object to display
-            steps (int): the number of swatdches to display in the gradient
+            steps (int): the number of swatches to display in the gradient
 
         """
         # Calculate the color for each step in the gradient
@@ -63,14 +63,14 @@ class Gradient(Palette):
 
         return "".join(swatches)
 
-    def reversed(self):
+    def reverse(self):
         return Gradient(
             name=f"{self.name}_r",
             colors=self.colors[::-1],
             values=[1 - value for value in self.values[::-1]],
         )
 
-    def resample(self, steps=5):
+    def resample_as_palette(self, steps=5):
         """
         Resamples the gradient, returning a Palette with the specified number of steps.
         """
@@ -111,12 +111,9 @@ class Gradient(Palette):
 
         # If the first gradient ends with the same color as the start of the second gradient,
         # drop the repeated color.
-        if self.colors[-1] == other.colors[0]:
-            new_colors = self.colors + other.colors[1:]
-            new_values = rescale_and_concatenate_values(self.values, other.values[1:])
-        else:
-            new_colors = self.colors + other.colors
-            new_values = rescale_and_concatenate_values(self.values, other.values)
+        offset = 1 if self.colors[-1] == other.colors[0] else 0
+        new_colors = self.colors + other.colors[offset:]
+        new_values = rescale_and_concatenate_values(self.values, other.values[offset:])
 
         return Gradient(
             name=f"{self.name}_{other.name}",

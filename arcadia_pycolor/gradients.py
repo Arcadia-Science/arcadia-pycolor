@@ -157,9 +157,3 @@ _all_gradients = [
     dahlias,
     lillies,
 ]
-
-
-def display_all():
-    for gradient in _all_gradients:
-        print(gradient.name)
-        print(gradient.swatch())

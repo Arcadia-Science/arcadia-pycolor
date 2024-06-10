@@ -154,9 +154,3 @@ _all_palettes = [
     named,
     all,
 ]
-
-
-def display_all():
-    for palette in _all_palettes:
-        print(palette.name)
-        print(palette.swatch())
