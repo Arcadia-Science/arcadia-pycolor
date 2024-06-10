@@ -3,7 +3,12 @@ import matplotlib.colors as mcolors
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import Palette
-from arcadia_pycolor.utils import distribute_values, interpolate_x_values
+from arcadia_pycolor.utils import (
+    distribute_values,
+    interpolate_x_values,
+    is_monotonic,
+    rescale_and_concatenate_values,
+)
 
 
 class Gradient(Palette):
@@ -81,16 +86,39 @@ class Gradient(Palette):
             colors=colors,
         )
 
-    def interpolate(self):
+    def interpolate_lightness(self):
         """
-        Interpolates the gradient to new values.
+        Interpolates the gradient to new values based on lightness.
         """
+
+        if len(self.colors) < 3:
+            raise ValueError("Interpolation requires at least three colors.")
+        if not is_monotonic(self.values):
+            raise ValueError("Lightness must be monotonically increasing or decreasing.")
+
         lightness_values = [color.to_cam02ucs()[0] for color in self.colors]
         new_values = interpolate_x_values(lightness_values)
 
         return Gradient(
             name=f"{self.name}_interpolated",
             colors=self.colors,
+            values=new_values,
+        )
+
+    def __add__(self, other: "Gradient"):
+        new_colors = []
+        new_values = []
+
+        if self.colors[-1] == other.colors[0]:
+            new_colors = self.colors + other.colors[1:]
+            new_values = rescale_and_concatenate_values(self.values, other.values[1:])
+        else:
+            new_colors = self.colors + other.colors
+            new_values = rescale_and_concatenate_values(self.values, other.values)
+
+        return Gradient(
+            name=f"{self.name}_{other.name}",
+            colors=new_colors,
             values=new_values,
         )
 

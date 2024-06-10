@@ -20,3 +20,22 @@ def interpolate_x_values(y_values: list, round_digits=3):
     x_values = [np.round((y - y0) / m, round_digits) for y in y_values]
 
     return x_values
+
+
+# Copied from https://stackoverflow.com/questions/4983258
+def is_non_decreasing(L):
+    return all(x <= y for x, y in zip(L, L[1:]))
+
+
+def is_non_increasing(L):
+    return all(x >= y for x, y in zip(L, L[1:]))
+
+
+def is_monotonic(L):
+    return is_non_decreasing(L) or is_non_increasing(L)
+
+
+def rescale_and_concatenate_values(list1: list[float], list2: list[float]):
+    rescaled_list1 = [0.5 * x for x in list1]
+    rescaled_list2 = [0.5 * x + 0.5 for x in list2]
+    return rescaled_list1 + rescaled_list2
