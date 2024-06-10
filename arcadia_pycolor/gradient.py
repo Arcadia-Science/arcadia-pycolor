@@ -3,7 +3,7 @@ import matplotlib.colors as mcolors
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import Palette
-from arcadia_pycolor.utils import distribute_values
+from arcadia_pycolor.utils import distribute_values, interpolate_x_values
 
 
 class Gradient(Palette):
@@ -79,6 +79,19 @@ class Gradient(Palette):
         return Palette(
             name=f"{self.name}_resampled_{steps}",
             colors=colors,
+        )
+
+    def interpolate(self):
+        """
+        Interpolates the gradient to new values.
+        """
+        lightness_values = [color.to_cam02ucs()[0] for color in self.colors]
+        new_values = interpolate_x_values(lightness_values)
+
+        return Gradient(
+            name=f"{self.name}_interpolated",
+            colors=self.colors,
+            values=new_values,
         )
 
     def __repr__(self):
