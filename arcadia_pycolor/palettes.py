@@ -140,17 +140,4 @@ all = (
 )
 all.name = "All"
 
-_all_palettes = [
-    core,
-    neutral,
-    accent,
-    light_accent,
-    accent_expanded,
-    light_accent_expanded,
-    accent_ordered,
-    light_ordered,
-    accent_all_ordered,
-    other,
-    named,
-    all,
-]
+_all_palettes = [obj for obj in globals().values() if isinstance(obj, Palette)]

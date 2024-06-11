@@ -33,7 +33,7 @@ def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict:
     return cvd_space
 
 
-def simulate_color_deficiency(
+def simulate_color(
     colors: Union[HexCode, list[HexCode]], cvd_type: str = "d", severity: int = 100
 ) -> Union[HexCode, list[HexCode]]:
     """
@@ -65,26 +65,20 @@ def simulate_color_deficiency(
         return returned_colors
 
 
-def display_all_color_deficiencies(
-    colors: Union[HexCode | list[HexCode]], severity: int = 100
-) -> None:
+def display_all_color(color: HexCode, severity: int = 100) -> None:
     """
-    Display all color vision deficiency types for a single HexCode or list of HexCodes.
+    Display all color vision deficiency types for a single HexCode.
 
     Args:
         color (HexCode): color to simulate color vision deficiency on.
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
-    cvd_colors = [colors] + [
-        simulate_color_deficiency(colors, cvd_type, severity) for cvd_type in CVD_TYPES
-    ]
+    cvd_colors = [color] + [simulate_color(color, cvd_type, severity) for cvd_type in CVD_TYPES]
     for cvd_color in cvd_colors:
         print(cvd_color.swatch())
 
 
-def simulate_palette_deficiency(
-    palette: Palette, cvd_type: str = "d", severity: int = 100
-) -> Palette:
+def simulate_palette(palette: Palette, cvd_type: str = "d", severity: int = 100) -> Palette:
     """
     Simulates color vision deficiency on a Palette.
 
@@ -93,13 +87,13 @@ def simulate_palette_deficiency(
         cvd_type (str): 'd' for deuteranomaly, 'p' for protanomaly, and 't' for tritanomaly.
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
-    cvd_hex_colors = simulate_color_deficiency(palette.colors, cvd_type=cvd_type, severity=severity)
+    cvd_hex_colors = simulate_color(palette.colors, cvd_type=cvd_type, severity=severity)
     cvd_palette = Palette(f"{palette.name}_{cvd_type}", cvd_hex_colors)
 
     return cvd_palette
 
 
-def display_all_palette_deficiencies(palette: Palette, severity: int = 100) -> None:
+def display_all_palette(palette: Palette, severity: int = 100) -> None:
     """
     Display all color vision deficiency types for a Palette.
 
@@ -108,14 +102,14 @@ def display_all_palette_deficiencies(palette: Palette, severity: int = 100) -> N
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
     cvd_palettes = [palette] + [
-        simulate_palette_deficiency(palette, cvd_type, severity) for cvd_type in CVD_TYPES
+        simulate_palette(palette, cvd_type, severity) for cvd_type in CVD_TYPES
     ]
     for palette in cvd_palettes:
         print(palette.name)
         print(palette.swatch())
 
 
-def simulate_gradient_deficiency(gradient: Gradient, cvd_type="d", severity: int = 100) -> Gradient:
+def simulate_gradient(gradient: Gradient, cvd_type="d", severity: int = 100) -> Gradient:
     """
     Simulates color vision deficiency on a Gradient.
 
@@ -124,15 +118,13 @@ def simulate_gradient_deficiency(gradient: Gradient, cvd_type="d", severity: int
         cvd_type (str): 'd' for deuteranomaly, 'p' for protanomaly, and 't' for tritanomaly.
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
-    cvd_hex_colors = simulate_color_deficiency(
-        gradient.colors, cvd_type=cvd_type, severity=severity
-    )
+    cvd_hex_colors = simulate_color(gradient.colors, cvd_type=cvd_type, severity=severity)
     cvd_gradient = Gradient(f"{gradient.name}_{cvd_type}", cvd_hex_colors, gradient.values)
 
     return cvd_gradient
 
 
-def display_all_gradient_deficiencies(gradient: Gradient, severity: int = 100) -> None:
+def display_all_gradient(gradient: Gradient, severity: int = 100) -> None:
     """
     Display all color vision deficiency types for a Gradient.
 
@@ -141,16 +133,15 @@ def display_all_gradient_deficiencies(gradient: Gradient, severity: int = 100) -
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
     cvd_gradients = [gradient] + [
-        simulate_gradient_deficiency(gradient, cvd_type, severity) for cvd_type in CVD_TYPES
+        simulate_gradient(gradient, cvd_type, severity) for cvd_type in CVD_TYPES
     ]
     for grad in cvd_gradients:
         print(grad.name)
         print(grad.swatch())
 
 
-def simulate_gradient_lightness(gradient: Gradient, severity: int = 100, **kwargs):
+def display_all_gradient_lightness(gradient: Gradient, severity: int = 100, **kwargs):
     plot_gradient_lightness(
-        [gradient]
-        + [simulate_gradient_deficiency(gradient, cvd_type, severity) for cvd_type in CVD_TYPES],
+        [gradient] + [simulate_gradient(gradient, cvd_type, severity) for cvd_type in CVD_TYPES],
         **kwargs,
     )

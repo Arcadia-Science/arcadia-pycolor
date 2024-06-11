@@ -135,25 +135,4 @@ lillies = Gradient(
     [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
 )
 
-
-_all_gradients = [
-    viridis,
-    magma,
-    cividis,
-    reds,
-    oranges,
-    yellows,
-    greens,
-    teals,
-    blues,
-    purples,
-    magentas,
-    aegean_amber,
-    aster_canary,
-    lime_rose,
-    seaweed_tangerine,
-    poppies,
-    pansies,
-    dahlias,
-    lillies,
-]
+_all_gradients = [obj for obj in globals().values() if isinstance(obj, Gradient)]
