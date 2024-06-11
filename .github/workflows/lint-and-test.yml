@@ -1,16 +1,17 @@
-name: lint
+name: lint-and-test
 
 on:
   push:
     branches:
       - main
+      - feat/*
   pull_request:
     branches:
       - main
       - feat/*
 
 jobs:
-  lint:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

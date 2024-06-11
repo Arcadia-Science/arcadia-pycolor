@@ -6,6 +6,8 @@ import numpy as np
 from colorspacious import cspace_converter
 
 from arcadia_pycolor.gradient import Gradient
+from arcadia_pycolor.gradients import _all_gradients
+from arcadia_pycolor.palettes import _all_palettes
 
 
 def plot_gradient_lightness(
@@ -107,3 +109,15 @@ def plot_gradient_lightness(
         return fig
 
     plt.show()
+
+
+def display_all_gradients():
+    for gradient in _all_gradients:
+        print(gradient.name)
+        print(gradient.swatch())
+
+
+def display_all_palettes():
+    for palette in _all_palettes:
+        print(palette.name)
+        print(palette.swatch())
