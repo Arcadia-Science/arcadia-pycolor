@@ -334,7 +334,7 @@ def load_colormaps():
         # Register the reversed version of the gradient as well.
         if isinstance(object, Gradient):
             if (colormap_name := f"apc:{object.name}_r") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=object.reversed().to_mpl_cmap())
+                plt.register_cmap(name=colormap_name, cmap=object.reverse().to_mpl_cmap())
 
 
 def load_styles():
