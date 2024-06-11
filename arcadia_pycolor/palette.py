@@ -30,6 +30,12 @@ class Palette:
 
         return "".join(swatches)
 
+    def reverse(self):
+        return Palette(
+            name=f"{self.name}_r",
+            colors=self.colors[::-1],
+        )
+
     def __repr__(self):
         longest_name_length = self._get_longest_name_length()
 
