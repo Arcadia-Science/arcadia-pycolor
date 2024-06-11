@@ -86,10 +86,10 @@ def simulate_palette_deficiency(
     palette: Palette, cvd_type: str = "d", severity: int = 100
 ) -> Palette:
     """
-    Simulates color vision deficiency on a list of colors.
+    Simulates color vision deficiency on a Palette.
 
     Args:
-        colors (list): list of colors to simulate color vision deficiency on.
+        palette (Palette): Palette object on which to simulate color vision deficiency.
         cvd_type (str): 'd' for deuteranomaly, 'p' for protanomaly, and 't' for tritanomaly.
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
@@ -101,11 +101,10 @@ def simulate_palette_deficiency(
 
 def display_all_palette_deficiencies(palette: Palette, severity: int = 100) -> None:
     """
-    Simulates color vision deficiency on a list of colors.
+    Display all color vision deficiency types for a Palette.
 
     Args:
-        colors (list): list of colors to simulate color vision deficiency on.
-        cvd_type (str): 'd' for deuteranomaly, 'p' for protanomaly, and 't' for tritanomaly.
+        palette (Palette): Palette object on which to simulate color vision deficiency.
         severity (int): severity of the color vision deficiency, from 0 to 100.
     """
     cvd_palettes = [palette] + [
@@ -118,7 +117,7 @@ def display_all_palette_deficiencies(palette: Palette, severity: int = 100) -> N
 
 def simulate_gradient_deficiency(gradient: Gradient, cvd_type="d", severity: int = 100) -> Gradient:
     """
-    Simulates color vision deficiency on a gradient.
+    Simulates color vision deficiency on a Gradient.
 
     Args:
         gradient (Gradient): the Gradient object to display
@@ -135,7 +134,7 @@ def simulate_gradient_deficiency(gradient: Gradient, cvd_type="d", severity: int
 
 def display_all_gradient_deficiencies(gradient: Gradient, severity: int = 100) -> None:
     """
-    Simulates color vision deficiency on a gradient.
+    Display all color vision deficiency types for a Gradient.
 
     Args:
         gradient (Gradient): the Gradient object to display
