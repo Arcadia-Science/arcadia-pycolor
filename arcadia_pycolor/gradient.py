@@ -3,7 +3,12 @@ import matplotlib.colors as mcolors
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import Palette
-from arcadia_pycolor.utils import distribute_values
+from arcadia_pycolor.utils import (
+    distribute_values,
+    interpolate_x_values,
+    is_monotonic,
+    rescale_and_concatenate_values,
+)
 
 
 class Gradient(Palette):
@@ -57,6 +62,64 @@ class Gradient(Palette):
         swatches = [colorize(" ", bg_color=c) for c in colors]
 
         return "".join(swatches)
+
+    def reverse(self):
+        return Gradient(
+            name=f"{self.name}_r",
+            colors=self.colors[::-1],
+            values=[1 - value for value in self.values[::-1]],
+        )
+
+    def resample_as_palette(self, steps=5):
+        """
+        Resamples the gradient, returning a Palette with the specified number of steps.
+        """
+        gradient = self.to_mpl_cmap()
+        values = distribute_values(steps)
+        colors = [
+            HexCode(name=f"{self.name}_{i}", hex_code=mcolors.to_hex(gradient(value)))
+            for i, value in enumerate(values)
+        ]
+
+        return Palette(
+            name=f"{self.name}_resampled_{steps}",
+            colors=colors,
+        )
+
+    def interpolate_lightness(self):
+        """
+        Interpolates the gradient to new values based on lightness.
+        """
+
+        if len(self.colors) < 3:
+            raise ValueError("Interpolation requires at least three colors.")
+        if not is_monotonic(self.values):
+            raise ValueError("Lightness must be monotonically increasing or decreasing.")
+
+        lightness_values = [color.to_cam02ucs()[0] for color in self.colors]
+        new_values = interpolate_x_values(lightness_values)
+
+        return Gradient(
+            name=f"{self.name}_interpolated",
+            colors=self.colors,
+            values=new_values,
+        )
+
+    def __add__(self, other: "Gradient"):
+        new_colors = []
+        new_values = []
+
+        # If the first gradient ends with the same color as the start of the second gradient,
+        # drop the repeated color.
+        offset = 1 if self.colors[-1] == other.colors[0] else 0
+        new_colors = self.colors + other.colors[offset:]
+        new_values = rescale_and_concatenate_values(self.values, other.values[offset:])
+
+        return Gradient(
+            name=f"{self.name}_{other.name}",
+            colors=new_colors,
+            values=new_values,
+        )
 
     def __repr__(self):
         longest_name_length = self._get_longest_name_length()

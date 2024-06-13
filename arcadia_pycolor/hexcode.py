@@ -1,6 +1,7 @@
 import re
 
 import matplotlib.colors as mcolors
+from colorspacious import cspace_converter
 
 from arcadia_pycolor.display import colorize
 
@@ -36,6 +37,18 @@ class HexCode(str):
     def to_rgb(self):
         """Returns a tuple of RGB values for the color."""
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
+
+    def to_cam02ucs(self):
+        """Returns a tuple of CAM02-UCS values for the color, where
+        the first value is the lightness (J) and the second and third values
+        are the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness)."""
+        # Convert RGB255 to RGB1
+        rgb = [i / 255 for i in self.to_rgb()]
+
+        # Convert RGB1 to CAM02-UCS
+        cam02ucs = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+
+        return cam02ucs
 
     def swatch(self, width: int = 2, min_name_width: int = None):
         """

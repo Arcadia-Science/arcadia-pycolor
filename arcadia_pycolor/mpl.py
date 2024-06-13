@@ -9,6 +9,7 @@ from matplotlib.offsetbox import DrawingArea
 import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
+from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
     ARCADIA_RC_PARAMS,
@@ -328,8 +329,12 @@ def load_colormaps():
     )
     for object in cmaps:
         if isinstance(object, Palette):
-            if (gradient_name := f"apc:{object.name}") not in colormaps:
-                plt.register_cmap(name=gradient_name, cmap=object.to_mpl_cmap())
+            if (colormap_name := f"apc:{object.name}") not in colormaps:
+                plt.register_cmap(name=colormap_name, cmap=object.to_mpl_cmap())
+        # Register the reversed version of the gradient as well.
+        if isinstance(object, Gradient):
+            if (colormap_name := f"apc:{object.name}_r") not in colormaps:
+                plt.register_cmap(name=colormap_name, cmap=object.reverse().to_mpl_cmap())
 
 
 def load_styles():

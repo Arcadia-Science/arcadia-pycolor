@@ -1,4 +1,4 @@
-from arcadia_pycolor import colors, gradients, mpl, palettes, plot, style_defaults
+from arcadia_pycolor import colors, cvd, gradients, mpl, palettes, plot, style_defaults
 
 from .colors import *
 from .gradient import *
@@ -6,6 +6,7 @@ from .hexcode import *
 from .palette import *
 
 __all__ = [
+    "cvd",
     "gradients",
     "mpl",
     "palettes",
