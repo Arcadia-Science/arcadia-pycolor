@@ -13,6 +13,8 @@ from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
     ARCADIA_RC_PARAMS,
+    CATEGORICAL_AXIS_TICKLENGTH,
+    CATEGORICAL_AXIS_TICKPADDING,
     DEFAULT_FONT,
     FIGURE_PADDING,
     FIGURE_SIZES,
@@ -22,7 +24,7 @@ from arcadia_pycolor.style_defaults import (
 
 LEGEND_PARAMS = dict(
     alignment="left",
-    title_fontproperties={"weight": "semibold", "size": "26"},
+    title_fontproperties={"weight": "semibold", "size": ARCADIA_RC_PARAMS["legend.title_fontsize"]},
 )
 
 SAVEFIG_KWARGS_WEB = dict(dpi=72, bbox_inches="tight", pad_inches=0.41)
@@ -118,14 +120,24 @@ def set_xaxis_categorical(axis=None):
     "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
     ax = _find_axis(axis)
 
-    ax.tick_params(axis="x", which="both", pad=15, size=0)
+    ax.tick_params(
+        axis="x",
+        which="both",
+        pad=CATEGORICAL_AXIS_TICKPADDING,
+        size=CATEGORICAL_AXIS_TICKLENGTH,
+    )
 
 
 def set_yaxis_categorical(axis=None):
     "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
     ax = _find_axis(axis)
 
-    ax.tick_params(axis="y", which="both", pad=15, size=0)
+    ax.tick_params(
+        axis="y",
+        which="both",
+        pad=CATEGORICAL_AXIS_TICKPADDING,
+        size=CATEGORICAL_AXIS_TICKLENGTH,
+    )
 
 
 def set_axes_categorical(axis=None):
