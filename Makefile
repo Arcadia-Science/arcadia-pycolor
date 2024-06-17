@@ -4,7 +4,7 @@ include .env
 lint:
 	ruff check --exit-zero .
 	ruff format --check .
-	pyright .
+	pyright --project pyproject.toml .
 
 .PHONY: format
 format:
