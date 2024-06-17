@@ -1,4 +1,5 @@
 import re
+from typing import Union
 
 import matplotlib.colors as mcolors
 from colorspacious import cspace_converter
@@ -18,7 +19,7 @@ def _is_hex_code(hex_string: str) -> bool:
 
 
 class HexCode(str):
-    def __new__(cls, name: str, hex_code: str):
+    def __new__(cls, name: str, hex_code: str) -> "HexCode":
         """
         A HexCode object stores a color's name and HEX code.
 
@@ -34,14 +35,32 @@ class HexCode(str):
         obj.hex_code = hex_code
         return obj
 
-    def to_rgb(self):
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, value: str) -> None:
+        self._name = value
+
+    @property
+    def hex_code(self) -> str:
+        return self._hex_code
+
+    @hex_code.setter
+    def hex_code(self, value: str) -> None:
+        self._hex_code = value
+
+    def to_rgb(self) -> list[int]:
         """Returns a tuple of RGB values for the color."""
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
     def to_cam02ucs(self):
-        """Returns a tuple of CAM02-UCS values for the color, where
+        """
+        Returns a tuple of CAM02-UCS values for the color, where
         the first value is the lightness (J) and the second and third values
-        are the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness)."""
+        are the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness).
+        """
         # Convert RGB255 to RGB1
         rgb = [i / 255 for i in self.to_rgb()]
 
@@ -50,7 +69,7 @@ class HexCode(str):
 
         return cam02ucs
 
-    def swatch(self, width: int = 2, min_name_width: int = None):
+    def swatch(self, width: int = 2, min_name_width: Union[int, None] = None) -> str:
         """
         Returns a color swatch with the specified width and color name.
 
@@ -79,8 +98,8 @@ class HexCode(str):
 
         return output
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.swatch()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.hex_code

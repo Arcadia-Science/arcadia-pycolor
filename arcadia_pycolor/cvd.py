@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, overload
 
 import matplotlib as mpl
 import numpy as np
@@ -33,6 +33,16 @@ def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict:
     return cvd_space
 
 
+@overload
+def simulate_color(colors: HexCode, cvd_type: str = "d", severity: int = 100) -> HexCode: ...
+
+
+@overload
+def simulate_color(
+    colors: list[HexCode], cvd_type: str = "d", severity: int = 100
+) -> list[HexCode]: ...
+
+
 def simulate_color(
     colors: Union[HexCode, list[HexCode]], cvd_type: str = "d", severity: int = 100
 ) -> Union[HexCode, list[HexCode]]:
@@ -47,12 +57,10 @@ def simulate_color(
     cvd_space = _make_cvd_dict(cvd_type=cvd_type, severity=severity)
 
     if not isinstance(colors, list):
-        processed_colors = [colors]
-    else:
-        processed_colors = colors
+        colors = [colors]
 
     returned_colors = []
-    for color in processed_colors:
+    for color in colors:
         rgb_color = color.to_rgb()
         cvd_color_name = f"{color.name}_{cvd_type}"
         cvd_rgb_color = np.clip(cspace_convert(rgb_color, cvd_space, "sRGB1") / 255, 0, 1)
@@ -61,8 +69,7 @@ def simulate_color(
 
     if len(returned_colors) == 1:
         return returned_colors[0]
-    else:
-        return returned_colors
+    return returned_colors
 
 
 def display_all_color(color: HexCode, severity: int = 100) -> None:

@@ -9,7 +9,7 @@ def distribute_values(num_points: int, min_val: float = 0.0, max_val: float = 1.
     return np.linspace(min_val, max_val, num_points).tolist()
 
 
-def interpolate_x_values(y_values: list[float], round_digits=3) -> list[float]:
+def interpolate_x_values(y_values: list[float], round_digits: int = 3) -> list[float]:
     """Takes a list of y-values and returns a list of x-values that are
     linearly interpolated between 0 and 1; the first and last y-values
     correspond to x-values of 0 and 1, respectively."""
@@ -34,14 +34,14 @@ def is_non_decreasing(values: Union[Iterable[int], Iterable[float]]) -> bool:
     """Determine if the numbers in `values` are in strictly non-decreasing order.
     Copied from https://stackoverflow.com/questions/4983258.
     """
-    return all(x <= y for x, y in zip(values, values[1:], strict=False))
+    return all(x <= y for x, y in zip(values, values[1:]))
 
 
 def is_non_increasing(values: Union[Iterable[int], Iterable[float]]) -> bool:
     """Determine if the numbers in `values` are in strictly non-increasing order.
     Copied from https://stackoverflow.com/questions/4983258.
     """
-    return all(x >= y for x, y in zip(values, values[1:], strict=False))
+    return all(x >= y for x, y in zip(values, values[1:]))
 
 
 def is_monotonic(values: Union[Iterable[int], Iterable[float]]) -> bool:

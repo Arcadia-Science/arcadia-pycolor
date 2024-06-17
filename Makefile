@@ -3,6 +3,8 @@ include .env
 .PHONY: lint
 lint:
 	ruff check --exit-zero .
+	ruff format --check .
+	pyright .
 
 .PHONY: format
 format:

@@ -12,7 +12,7 @@ from arcadia_pycolor.palettes import _all_palettes
 
 def plot_gradient_lightness(
     gradients: Union["Gradient", str, list[Union["Gradient", str]]],
-    title: str = None,
+    title: Union[str, None] = None,
     horizontal_spacing: float = 1.1,
     steps: int = 100,
     figsize: tuple[float, float] = (4, 4),
@@ -50,25 +50,25 @@ def plot_gradient_lightness(
     locs = []  # Locations for text labels.
 
     fig, ax = plt.subplots(figsize=figsize, layout="constrained")
-    grad_names = []
+    gradient_names = []
 
     if not isinstance(gradients, list):
         gradients = [gradients]
 
-    for j, grad in enumerate(gradients):
-        if isinstance(grad, str):
-            name = grad
+    for j, gradient in enumerate(gradients):
+        if isinstance(gradient, str):
+            name = gradient
             if name not in mpl.colormaps:
                 print(f"Colormap {name} not found in Matplotlib colormaps.")
                 continue
             cmap = mpl.cm.get_cmap(name)
             colormap_as_rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]
-        elif isinstance(grad, Gradient):
-            name = grad.name
-            cmap = grad.to_mpl_cmap()
+        elif isinstance(gradient, Gradient):
+            name = gradient.name
+            cmap = gradient.to_mpl_cmap()
             colormap_as_rgb = cmap(x)[np.newaxis, :, :3]
 
-        grad_names.append(name)
+        gradient_names.append(name)
 
         # Get RGB values for colormap and convert the colormap in
         # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
@@ -99,7 +99,7 @@ def plot_gradient_lightness(
     ticker = mpl.ticker.FixedLocator(locs)
     ax.xaxis.set_major_locator(ticker)
     ax.xaxis.set_tick_params(rotation=tickrotation)
-    ax.set_xticklabels(labels=grad_names)
+    ax.set_xticklabels(labels=gradient_names)
     ax.set_ylabel("Lightness $L^*$", fontsize=12)
 
     if title is not None:
