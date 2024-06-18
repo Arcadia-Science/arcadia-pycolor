@@ -78,7 +78,7 @@ no-lines-before = ["future", "standard-library"]
 [tool.pyright]
 include = ["."]
 # TODO: add type hints for the tests.
-exclude = ["**/__pycache__", "**/tests/**"]
+exclude = ["**/tests/**"]
 typeCheckingMode = "strict"
 # Allow unknown types to avoid a large number of errors with matplotlib.
 reportUnknownArgumentType = false
