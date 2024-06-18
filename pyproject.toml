@@ -79,8 +79,4 @@ no-lines-before = ["future", "standard-library"]
 include = ["."]
 # TODO: add type hints for the tests.
 exclude = ["**/tests/**"]
-typeCheckingMode = "strict"
-# Allow unknown types to avoid a large number of errors with matplotlib.
-reportUnknownArgumentType = false
-reportUnknownVariableType = false
-reportUnknownMemberType = false
+typeCheckingMode = "basic"

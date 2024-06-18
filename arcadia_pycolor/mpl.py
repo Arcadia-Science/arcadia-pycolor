@@ -7,7 +7,7 @@ from matplotlib import colormaps  # type: ignore
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
-from matplotlib.pyplot import Axes
+from matplotlib.pyplot import Axes  # type: ignore
 
 import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
