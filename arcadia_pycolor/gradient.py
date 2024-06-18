@@ -16,7 +16,8 @@ from arcadia_pycolor.utils import (
 class Gradient(ColorSequence["Gradient"]):
     def __init__(self, name: str, colors: list[Any], values: Union[list[Any], None] = None):
         """
-        A Gradient object stores a collection of Color objects and their corresponding values.
+        A Gradient is a sequence of pairs of HexCode objects and numeric values
+        from 0 to 1 that represent the position of each color in the gradient.
 
         Args:
             name (str): the name of the gradient

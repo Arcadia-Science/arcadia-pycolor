@@ -12,10 +12,10 @@ T = TypeVar("T", bound="ColorSequence")
 class ColorSequence(abc.ABC, Generic[T]):
     def __init__(self, name: str, colors: list[Any]):
         """
-        A Palette object stores a collection of HexCode objects.
+        A color sequence is an ordered sequence of HexCode objects.
 
         Args:
-            name (str): the name of the color palette
+            name (str): the name of the sequence.
             colors (list): a list of HexCode objects.
         """
         self.name = name
@@ -26,7 +26,9 @@ class ColorSequence(abc.ABC, Generic[T]):
         self.colors = colors
 
     def _get_longest_name_length(self) -> int:
-        "Convenience function to get the length of the longest color name in a palette."
+        """
+        Convenience function to get the length of the longest color name in the sequence.
+        """
         return max(len(color.name) for color in self.colors)
 
     @abc.abstractmethod
@@ -51,6 +53,10 @@ class ColorSequence(abc.ABC, Generic[T]):
 
 
 class Palette(ColorSequence["Palette"]):
+    """
+    A Palette is a discrete ordered sequence of HexCode objects.
+    """
+
     def __init__(self, name: str, colors: list[Any]):
         super().__init__(name, colors)
 
