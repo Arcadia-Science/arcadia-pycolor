@@ -78,4 +78,9 @@ no-lines-before = ["future", "standard-library"]
 
 [tool.pyright]
 include = ["."]
-typeCheckingMode = "basic"
+exclude = ["**/__pycache__", "**/tests/**"]
+typeCheckingMode = "strict"
+# allow unknown types.
+reportUnknownArgumentType = false
+reportUnknownVariableType = false
+reportUnknownMemberType = false

@@ -1,13 +1,13 @@
 import re
-from typing import Union
+from typing import Any, Union
 
 import matplotlib.colors as mcolors
-from colorspacious import cspace_converter
+from colorspacious import cspace_converter  # type: ignore
 
 from arcadia_pycolor.display import colorize
 
 
-def _is_hex_code(hex_string: str) -> bool:
+def _is_hex_code(hex_string: Any) -> bool:
     """Checks if a string is a valid HEX code."""
     if not isinstance(hex_string, str):
         return False
@@ -55,7 +55,7 @@ class HexCode(str):
         """Returns a tuple of RGB values for the color."""
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
-    def to_cam02ucs(self):
+    def to_cam02ucs(self) -> list[float]:
         """
         Returns a tuple of CAM02-UCS values for the color, where
         the first value is the lightness (J) and the second and third values

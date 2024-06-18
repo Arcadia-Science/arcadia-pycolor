@@ -1,8 +1,8 @@
-from typing import Union, overload
+from typing import Any, Union, overload
 
 import matplotlib as mpl
 import numpy as np
-from colorspacious import cspace_convert
+from colorspacious import cspace_convert  # type: ignore
 
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.hexcode import HexCode
@@ -12,7 +12,7 @@ from arcadia_pycolor.plot import plot_gradient_lightness
 CVD_TYPES = {"d": "deuteranomaly", "p": "protanomaly", "t": "tritanomaly"}
 
 
-def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict:
+def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict[str, str]:
     """
     Makes a dictionary for colorspacious to simulate color vision deficiency.
 
@@ -116,7 +116,7 @@ def display_all_palette(palette: Palette, severity: int = 100) -> None:
         print(palette.swatch())
 
 
-def simulate_gradient(gradient: Gradient, cvd_type="d", severity: int = 100) -> Gradient:
+def simulate_gradient(gradient: Gradient, cvd_type: str = "d", severity: int = 100) -> Gradient:
     """
     Simulates color vision deficiency on a Gradient.
 
@@ -147,7 +147,7 @@ def display_all_gradient(gradient: Gradient, severity: int = 100) -> None:
         print(grad.swatch())
 
 
-def display_all_gradient_lightness(gradient: Gradient, severity: int = 100, **kwargs):
+def display_all_gradient_lightness(gradient: Gradient, severity: int = 100, **kwargs: Any) -> None:
     plot_gradient_lightness(
         [gradient] + [simulate_gradient(gradient, cvd_type, severity) for cvd_type in CVD_TYPES],
         **kwargs,

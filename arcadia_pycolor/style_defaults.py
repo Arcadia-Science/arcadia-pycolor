@@ -64,7 +64,7 @@ ARCADIA_RC_PARAMS = {
     "axes.grid": False,
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
-    "axes.prop_cycle": plt.cycler(color=palettes.accent_all_ordered.colors),
+    "axes.prop_cycle": plt.cycler(color=palettes.accent_all_ordered.colors),  # type: ignore
     "axes.titlesize": 16.5,
     "axes.titleweight": "medium",
     "axes.labelsize": 15,
