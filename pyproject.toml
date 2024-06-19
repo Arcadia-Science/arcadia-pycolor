@@ -32,7 +32,7 @@ url = "https://test.pypi.org/legacy/"
 [tool.poetry.dependencies]
 colorspacious = ">=1.1.2"
 ipykernel = ">=6.25.2"
-matplotlib = "3.9"
+matplotlib = ">=3.7.0"
 python = ">=3.9"
 
 [tool.poetry.group.dev.dependencies]
