@@ -1,9 +1,10 @@
-from typing import Union
+from typing import Union, cast
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from colorspacious import cspace_converter  # type: ignore
+from numpy.typing import NDArray
 
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.gradients import all_gradients
@@ -47,10 +48,12 @@ def plot_gradient_lightness(
     # Indices to step through colormap.
     x = np.linspace(0.0, 1.0, steps)
 
-    locs = []  # Locations for text labels.
+    # Locations for text labels.
+    locs: list[float] = []
 
-    fig, ax = plt.subplots(figsize=figsize, layout="constrained")
-    gradient_names = []
+    fig, ax = plt.subplots(figsize=figsize, layout="constrained")  # type: ignore
+
+    gradient_names: list[str] = []
 
     # Check separately for single strings and single Gradient objects in order to avoid type errors.
     if isinstance(gradients, str):
@@ -69,7 +72,7 @@ def plot_gradient_lightness(
         elif isinstance(gradient, Gradient):  # type: ignore
             name = gradient.name
             cmap = gradient.to_mpl_cmap()
-            colormap_as_rgb = cmap(x)[np.newaxis, :, :3]
+            colormap_as_rgb = cast(NDArray[np.float64], cmap(x))[np.newaxis, :, :3]
         else:
             raise TypeError("gradients must be a list of Gradient objects or strings.")
 
@@ -77,7 +80,9 @@ def plot_gradient_lightness(
 
         # Get RGB values for colormap and convert the colormap in
         # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
-        colormap_as_lab = cspace_converter("sRGB1", "CAM02-UCS")(colormap_as_rgb)
+        colormap_as_lab = cast(
+            NDArray[np.float64], cspace_converter("sRGB1", "CAM02-UCS")(colormap_as_rgb)
+        )
 
         # Plot colormap L values.  Do separately for each category
         # so each plot can be pretty.  To make scatter markers change
@@ -113,7 +118,7 @@ def plot_gradient_lightness(
     if return_fig:
         return fig
 
-    plt.show()
+    plt.show()  # type: ignore
 
 
 def display_all_gradients():

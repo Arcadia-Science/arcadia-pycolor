@@ -1,4 +1,4 @@
-from typing import Any, Literal, Union
+from typing import Any, Literal, Union, cast
 
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
@@ -46,7 +46,7 @@ def save_figure(context: str = "web", **savefig_kwargs: dict[Any, Any]) -> None:
     "Save the current figure with the default settings for web."
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
     kwargs.update(**savefig_kwargs)  # type: ignore
-    plt.savefig(**kwargs)
+    plt.savefig(**kwargs)  # type: ignore
 
 
 def set_yticklabel_font(axis: Union[Axes, None] = None, font: str = DEFAULT_FONT) -> None:
@@ -236,7 +236,7 @@ def style_axis(
     # Legend styling.
     legend = ax.get_legend()
 
-    if legend is not None:
+    if legend is not None:  # type: ignore
         style_legend(legend)
 
     if categorical_axes == "both":
@@ -285,7 +285,7 @@ def add_legend_line(legend: Legend):
 
     x0 = legend._legend_handle_box.get_window_extent()._points[0][0]  # type: ignore
     x1 = legend._legend_handle_box.get_window_extent()._points[1][0]  # type: ignore
-    bbox_length = abs(x1 - x0)
+    bbox_length = abs(cast(float, x1 - x0))
 
     # We must create a drawing area to insert the line into the legend,
     # otherwise we encounter issues at draw time.
@@ -310,7 +310,7 @@ def add_legend_line(legend: Legend):
     legend_vpacker = legend._legend_handle_box.get_children()[0]  # type: ignore
 
     # The children of the VPacker object are HPacker objects wrapping the legend handle and text.
-    entries = legend_vpacker.get_children()
+    entries = legend_vpacker.get_children()  # type: ignore
 
     # Check that we haven't already put a drawing area within the legend.
     # This should catch if we've already added the legend line

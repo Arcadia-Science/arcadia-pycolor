@@ -32,7 +32,7 @@ url = "https://test.pypi.org/legacy/"
 [tool.poetry.dependencies]
 colorspacious = ">=1.1.2"
 ipykernel = ">=6.25.2"
-matplotlib = ">=3.7.0"
+matplotlib = "3.9"
 python = ">=3.9"
 
 [tool.poetry.group.dev.dependencies]
@@ -76,7 +76,12 @@ order-by-type = true
 no-lines-before = ["future", "standard-library"]
 
 [tool.pyright]
+typeCheckingMode = "basic"
 include = ["."]
+
 # TODO: add type hints for the tests.
 exclude = ["**/tests/**"]
-typeCheckingMode = "basic"
+
+# Even with matplotlib excluded, pyright still reports errors for some internal matplotlib objects;
+# most of these are untyped `kwargs` which are reported as 'unknown member' errors.
+reportUnknownMemberType = false

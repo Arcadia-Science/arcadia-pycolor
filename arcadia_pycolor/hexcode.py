@@ -1,5 +1,5 @@
 import re
-from typing import Any, Union
+from typing import Any, Union, cast
 
 import matplotlib.colors as mcolors
 from colorspacious import cspace_converter  # type: ignore
@@ -61,11 +61,11 @@ class HexCode(str):
         the first value is the lightness (J) and the second and third values
         are the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness).
         """
-        # Convert RGB255 to RGB1
+        # Convert RGB255 to RGB1.
         rgb = [i / 255 for i in self.to_rgb()]
 
-        # Convert RGB1 to CAM02-UCS
-        cam02ucs = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+        # Convert RGB1 to CAM02-UCS.
+        cam02ucs = cast(list[float], cspace_converter("sRGB1", "CAM02-UCS")(rgb))
 
         return cam02ucs
 
