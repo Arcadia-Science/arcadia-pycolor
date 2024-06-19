@@ -15,6 +15,10 @@ format:
 pre-commit:
 	pre-commit run --all-files
 
+.PHONY: test
+test:
+	pytest -v .
+
 .PHONY: clean
 clean:
 	rm -rf dist
