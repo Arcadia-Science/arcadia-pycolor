@@ -66,7 +66,8 @@ def simulate_color(
         cvd_color_name = f"{color.name}_{cvd_type}"
         cvd_color = cast(NDArray[np.int64], cspace_convert(rgb_color, cvd_space, "sRGB1"))
         cvd_color = np.clip(cvd_color / 255, 0, 1)
-        cvd_hexcode = HexCode(name=cvd_color_name, hex_code=mpl.colors.to_hex(cvd_color))  # type: ignore
+        hex_code = mpl.colors.to_hex(cvd_color)  # type: ignore
+        cvd_hexcode = HexCode(name=cvd_color_name, hex_code=hex_code)
         returned_colors.append(cvd_hexcode)
 
     if len(returned_colors) == 1:

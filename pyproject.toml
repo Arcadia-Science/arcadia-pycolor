@@ -82,6 +82,6 @@ include = ["."]
 # TODO: add type hints for the tests.
 exclude = ["**/tests/**"]
 
-# Even with matplotlib excluded, pyright still reports errors for some internal matplotlib objects;
-# most of these are untyped `kwargs` which are reported as 'unknown member' errors.
+# Pyright reports a lot of unknown-member errors for matplotlib objects.
+# For now, rather than add even more `type: ignore` comments, we'll just disable these errors.
 reportUnknownMemberType = false
