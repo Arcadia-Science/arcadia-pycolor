@@ -1,18 +1,19 @@
-from typing import Union
+from typing import Union, cast
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-from colorspacious import cspace_converter
+from colorspacious import cspace_converter  # type: ignore
+from numpy.typing import NDArray
 
 from arcadia_pycolor.gradient import Gradient
-from arcadia_pycolor.gradients import _all_gradients
-from arcadia_pycolor.palettes import _all_palettes
+from arcadia_pycolor.gradients import all_gradients
+from arcadia_pycolor.palettes import all_palettes
 
 
 def plot_gradient_lightness(
-    gradients: Union["Gradient", str, list[Union["Gradient", str]]],
-    title: str = None,
+    gradients: Union["Gradient", str, list["Gradient"], list[str]],
+    title: Union[str, None] = None,
     horizontal_spacing: float = 1.1,
     steps: int = 100,
     figsize: tuple[float, float] = (4, 4),
@@ -47,32 +48,41 @@ def plot_gradient_lightness(
     # Indices to step through colormap.
     x = np.linspace(0.0, 1.0, steps)
 
-    locs = []  # Locations for text labels.
+    # Locations for text labels.
+    locs: list[float] = []
 
-    fig, ax = plt.subplots(figsize=figsize, layout="constrained")
-    grad_names = []
+    fig, ax = plt.subplots(figsize=figsize, layout="constrained")  # type: ignore
 
-    if not isinstance(gradients, list):
+    gradient_names: list[str] = []
+
+    # Check separately for single strings and single Gradient objects in order to avoid type errors.
+    if isinstance(gradients, str):
+        gradients = [gradients]
+    elif isinstance(gradients, Gradient):
         gradients = [gradients]
 
-    for j, grad in enumerate(gradients):
-        if isinstance(grad, str):
-            name = grad
-            if name not in mpl.colormaps:
+    for ind, gradient in enumerate(gradients):
+        if isinstance(gradient, str):
+            name = gradient
+            if name not in mpl.colormaps:  # type: ignore
                 print(f"Colormap {name} not found in Matplotlib colormaps.")
                 continue
-            cmap = mpl.cm.get_cmap(name)
-            colormap_as_rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]
-        elif isinstance(grad, Gradient):
-            name = grad.name
-            cmap = grad.to_mpl_cmap()
-            colormap_as_rgb = cmap(x)[np.newaxis, :, :3]
+            cmap = mpl.cm.get_cmap(name)  # type: ignore
+            colormap_as_rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]  # type: ignore
+        elif isinstance(gradient, Gradient):  # type: ignore
+            name = gradient.name
+            cmap = gradient.to_mpl_cmap()
+            colormap_as_rgb = cast(NDArray[np.float64], cmap(x))[np.newaxis, :, :3]
+        else:
+            raise TypeError("gradients must be a list of Gradient objects or strings.")
 
-        grad_names.append(name)
+        gradient_names.append(name)
 
         # Get RGB values for colormap and convert the colormap in
         # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
-        colormap_as_lab = cspace_converter("sRGB1", "CAM02-UCS")(colormap_as_rgb)
+        colormap_as_lab = cast(
+            NDArray[np.float64], cspace_converter("sRGB1", "CAM02-UCS")(colormap_as_rgb)
+        )
 
         # Plot colormap L values.  Do separately for each category
         # so each plot can be pretty.  To make scatter markers change
@@ -82,24 +92,24 @@ def plot_gradient_lightness(
         y_ = colormap_as_lab[0, :, 0]
         c_ = x
 
-        dc = horizontal_spacing  # cmaps horizontal spacing
-        ax.scatter(x + j * dc, y_, c=c_, cmap=cmap, s=markersize, linewidths=0.0)
+        x_offset = ind * horizontal_spacing
+        ax.scatter(x + x_offset, y_, c=c_, cmap=cmap, s=markersize, linewidths=0.0)
 
         if cmap_type == "linear":
-            # Store locations for colormap labels
-            locs.append(x[-1] + j * dc)
+            # Store locations for colormap labels.
+            locs.append(x[-1] + x_offset)
         else:
-            locs.append(x[int(np.round(steps / 2))] + j * dc)
+            locs.append(x[int(np.round(steps / 2))] + x_offset)
 
     # Lightness goes from 0 to 100.
     ax.set_ylim(0.0, 100.0)
 
     # Set up labels for colormaps
     ax.xaxis.set_ticks_position("top")
-    ticker = mpl.ticker.FixedLocator(locs)
+    ticker = mpl.ticker.FixedLocator(locs)  # type: ignore
     ax.xaxis.set_major_locator(ticker)
     ax.xaxis.set_tick_params(rotation=tickrotation)
-    ax.set_xticklabels(labels=grad_names)
+    ax.set_xticklabels(labels=gradient_names)
     ax.set_ylabel("Lightness $L^*$", fontsize=12)
 
     if title is not None:
@@ -108,16 +118,16 @@ def plot_gradient_lightness(
     if return_fig:
         return fig
 
-    plt.show()
+    plt.show()  # type: ignore
 
 
 def display_all_gradients():
-    for gradient in _all_gradients:
+    for gradient in all_gradients:
         print(gradient.name)
         print(gradient.swatch())
 
 
 def display_all_palettes():
-    for palette in _all_palettes:
+    for palette in all_palettes:
         print(palette.name)
         print(palette.swatch())

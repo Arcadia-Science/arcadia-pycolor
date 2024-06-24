@@ -1,8 +1,9 @@
-from typing import Union
+from typing import Any, Union, cast, overload
 
 import matplotlib as mpl
 import numpy as np
-from colorspacious import cspace_convert
+from colorspacious import cspace_convert  # type: ignore
+from numpy.typing import NDArray
 
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.hexcode import HexCode
@@ -12,7 +13,7 @@ from arcadia_pycolor.plot import plot_gradient_lightness
 CVD_TYPES = {"d": "deuteranomaly", "p": "protanomaly", "t": "tritanomaly"}
 
 
-def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict:
+def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict[str, str]:
     """
     Makes a dictionary for colorspacious to simulate color vision deficiency.
 
@@ -33,6 +34,16 @@ def _make_cvd_dict(cvd_type: str, severity: int = 100) -> dict:
     return cvd_space
 
 
+@overload
+def simulate_color(colors: HexCode, cvd_type: str = "d", severity: int = 100) -> HexCode: ...
+
+
+@overload
+def simulate_color(
+    colors: list[HexCode], cvd_type: str = "d", severity: int = 100
+) -> list[HexCode]: ...
+
+
 def simulate_color(
     colors: Union[HexCode, list[HexCode]], cvd_type: str = "d", severity: int = 100
 ) -> Union[HexCode, list[HexCode]]:
@@ -47,22 +58,21 @@ def simulate_color(
     cvd_space = _make_cvd_dict(cvd_type=cvd_type, severity=severity)
 
     if not isinstance(colors, list):
-        processed_colors = [colors]
-    else:
-        processed_colors = colors
+        colors = [colors]
 
-    returned_colors = []
-    for color in processed_colors:
+    returned_colors: list[HexCode] = []
+    for color in colors:
         rgb_color = color.to_rgb()
         cvd_color_name = f"{color.name}_{cvd_type}"
-        cvd_rgb_color = np.clip(cspace_convert(rgb_color, cvd_space, "sRGB1") / 255, 0, 1)
-        cvd_hexcode = HexCode(name=cvd_color_name, hex_code=mpl.colors.to_hex(cvd_rgb_color))
+        cvd_color = cast(NDArray[np.int64], cspace_convert(rgb_color, cvd_space, "sRGB1"))
+        cvd_color = np.clip(cvd_color / 255, 0, 1)
+        hex_code = mpl.colors.to_hex(cvd_color)  # type: ignore
+        cvd_hexcode = HexCode(name=cvd_color_name, hex_code=hex_code)
         returned_colors.append(cvd_hexcode)
 
     if len(returned_colors) == 1:
         return returned_colors[0]
-    else:
-        return returned_colors
+    return returned_colors
 
 
 def display_all_color(color: HexCode, severity: int = 100) -> None:
@@ -109,7 +119,7 @@ def display_all_palette(palette: Palette, severity: int = 100) -> None:
         print(palette.swatch())
 
 
-def simulate_gradient(gradient: Gradient, cvd_type="d", severity: int = 100) -> Gradient:
+def simulate_gradient(gradient: Gradient, cvd_type: str = "d", severity: int = 100) -> Gradient:
     """
     Simulates color vision deficiency on a Gradient.
 
@@ -140,7 +150,7 @@ def display_all_gradient(gradient: Gradient, severity: int = 100) -> None:
         print(grad.swatch())
 
 
-def display_all_gradient_lightness(gradient: Gradient, severity: int = 100, **kwargs):
+def display_all_gradient_lightness(gradient: Gradient, severity: int = 100, **kwargs: Any) -> None:
     plot_gradient_lightness(
         [gradient] + [simulate_gradient(gradient, cvd_type, severity) for cvd_type in CVD_TYPES],
         **kwargs,

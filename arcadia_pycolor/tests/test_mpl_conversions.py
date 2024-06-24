@@ -5,7 +5,7 @@ from arcadia_pycolor import Gradient, HexCode, Palette
 
 def test_palette_to_cmap():
     hex_codes = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
-    assert Palette("my_palette", hex_codes).to_mpl_cmap().colors == hex_codes
+    assert Palette("my_palette", hex_codes).to_mpl_cmap().colors == hex_codes  # type: ignore
 
 
 def test_palette_name():
@@ -13,7 +13,7 @@ def test_palette_name():
     assert (
         Palette.from_dict("my_palette", {"white": "#FFFFFF", "black": "#000000"})
         .to_mpl_cmap()
-        .colors
+        .colors  # type: ignore
         == hex_codes
     )
 

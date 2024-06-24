@@ -16,4 +16,4 @@ __all__ = [
 
 colors_all = [name for name in dir(colors) if not name.startswith("_")]
 
-__all__.extend(colors_all)
+__all__.extend(colors_all)  # type: ignore

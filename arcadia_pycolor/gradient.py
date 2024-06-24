@@ -1,8 +1,10 @@
+from typing import Any, Union
+
 import matplotlib.colors as mcolors
 
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
-from arcadia_pycolor.palette import Palette
+from arcadia_pycolor.palette import ColorSequence, Palette
 from arcadia_pycolor.utils import (
     distribute_values,
     interpolate_x_values,
@@ -11,10 +13,11 @@ from arcadia_pycolor.utils import (
 )
 
 
-class Gradient(Palette):
-    def __init__(self, name: str, colors: list[HexCode], values: list[float] = None):
+class Gradient(ColorSequence["Gradient"]):
+    def __init__(self, name: str, colors: list[Any], values: Union[list[Any], None] = None):
         """
-        A Gradient object stores a collection of Color objects and their corresponding values.
+        A Gradient is a sequence of pairs of HexCode objects and numeric values
+        from 0 to 1 that represent the position of each color in the gradient.
 
         Args:
             name (str): the name of the gradient
@@ -40,11 +43,13 @@ class Gradient(Palette):
             self.values = distribute_values(len(self.colors))
 
     @classmethod
-    def from_dict(cls, name: str, colors: dict[str, str], values: list[float] = None):
+    def from_dict(
+        cls, name: str, colors: dict[str, str], values: Union[list[float], None] = None
+    ) -> "Gradient":
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes, values)
 
-    def swatch(self, steps=21):
+    def swatch(self, steps: int = 21) -> str:
         """
         Returns a gradient swatch with the specified number of steps.
 
@@ -57,20 +62,23 @@ class Gradient(Palette):
         cmap = self.to_mpl_cmap()
 
         # Get the color for each step in the gradient
-        colors = [HexCode(i, mcolors.to_hex(cmap(i / steps))) for i in range(steps)]
+        colors = [
+            HexCode(name=str(ind), hex_code=mcolors.to_hex(cmap(ind / steps)))
+            for ind in range(steps)
+        ]
 
         swatches = [colorize(" ", bg_color=c) for c in colors]
 
         return "".join(swatches)
 
-    def reverse(self):
+    def reverse(self) -> "Gradient":
         return Gradient(
             name=f"{self.name}_r",
             colors=self.colors[::-1],
             values=[1 - value for value in self.values[::-1]],
         )
 
-    def resample_as_palette(self, steps=5):
+    def resample_as_palette(self, steps: int = 5) -> Palette:
         """
         Resamples the gradient, returning a Palette with the specified number of steps.
         """
@@ -86,7 +94,7 @@ class Gradient(Palette):
             colors=colors,
         )
 
-    def interpolate_lightness(self):
+    def interpolate_lightness(self) -> "Gradient":
         """
         Interpolates the gradient to new values based on lightness.
         """
@@ -105,7 +113,10 @@ class Gradient(Palette):
             values=new_values,
         )
 
-    def __add__(self, other: "Gradient"):
+    def __add__(self, other: "Gradient") -> "Gradient":
+        """
+        Return the sum of two gradients by concatenating their colors and values.
+        """
         new_colors = []
         new_values = []
 
@@ -121,7 +132,7 @@ class Gradient(Palette):
             values=new_values,
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         longest_name_length = self._get_longest_name_length()
 
         return "\n".join(
