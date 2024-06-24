@@ -1,3 +1,5 @@
+from typing import Union
+
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
@@ -13,13 +15,16 @@ from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
     ARCADIA_RC_PARAMS,
+    BASE_DPI,
     CATEGORICAL_AXIS_TICKLENGTH,
     CATEGORICAL_AXIS_TICKPADDING,
     DEFAULT_FONT,
     FIGURE_PADDING,
     FIGURE_SIZES,
     FONT_FILTER,
+    LEGEND_SEPARATOR_LINEWIDTH,
     MONOSPACE_FONT,
+    MONOSPACE_FONT_SIZE,
 )
 
 LEGEND_PARAMS = dict(
@@ -27,8 +32,8 @@ LEGEND_PARAMS = dict(
     title_fontproperties={"weight": "semibold", "size": ARCADIA_RC_PARAMS["legend.title_fontsize"]},
 )
 
-SAVEFIG_KWARGS_WEB = dict(dpi=72, bbox_inches="tight", pad_inches=0.41)
-SAVEFIG_KWARGS_PRINT = dict(dpi=300, bbox_inches="tight", pad_inches=0.41)
+SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, bbox_inches="tight", pad_inches=FIGURE_PADDING)
+SAVEFIG_KWARGS_PRINT = dict(dpi=300, bbox_inches="tight", pad_inches=FIGURE_PADDING)
 
 
 def _find_axis(axis=None):
@@ -46,42 +51,44 @@ def save_figure(context: str = "web", **savefig_kwargs):
     plt.savefig(**kwargs)
 
 
-def set_yticklabel_font(axis=None, font: str = DEFAULT_FONT):
+def set_yticklabel_font(axis=None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None):
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
     ytick_labels = ax.get_yticklabels()
     [label.set_fontfamily(font) for label in ytick_labels]
+    ax.yaxis.set_tick_params(labelsize=font_size)
 
 
-def set_xticklabel_font(axis=None, font: str = DEFAULT_FONT):
+def set_xticklabel_font(axis=None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None):
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
     xtick_labels = ax.get_xticklabels()
     [label.set_fontfamily(font) for label in xtick_labels]
+    ax.xaxis.set_tick_params(labelsize=font_size)
 
 
-def set_ticklabel_font(axis=None, font: str = DEFAULT_FONT):
+def set_ticklabel_font(axis=None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None):
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
-    set_xticklabel_font(ax, font)
-    set_yticklabel_font(ax, font)
+    set_xticklabel_font(ax, font, font_size)
+    set_yticklabel_font(ax, font, font_size)
 
 
 def set_xticklabel_monospaced(axis=None):
     "Set the font of the xtick labels to a monospace font."
     ax = _find_axis(axis)
 
-    set_xticklabel_font(ax, MONOSPACE_FONT)
+    set_xticklabel_font(ax, MONOSPACE_FONT, MONOSPACE_FONT_SIZE)
 
 
 def set_yticklabel_monospaced(axis=None):
     "Set the font of the ytick labels to a monospace font."
     ax = _find_axis(axis)
 
-    set_yticklabel_font(ax, MONOSPACE_FONT)
+    set_yticklabel_font(ax, MONOSPACE_FONT, MONOSPACE_FONT_SIZE)
 
 
 def set_ticklabel_monospaced(axis=None):
@@ -267,7 +274,7 @@ def get_figure_dimensions(size: str):
     return tuple(x - 2 * FIGURE_PADDING for x in FIGURE_SIZES[size])
 
 
-def add_legend_line(legend: Legend):
+def add_legend_line(legend: Legend, linewidth=LEGEND_SEPARATOR_LINEWIDTH):
     "Add a horizontal line with 'chateau' color below the legend title."
     # Determine the width of the legend in pixels
 
@@ -286,7 +293,7 @@ def add_legend_line(legend: Legend):
         [0, bbox_length],  # length
         [0],  # height
         color=legend_line_color,
-        linewidth=2,
+        linewidth=linewidth,
         linestyle="-",
         transform=line_area.get_transform(),
     )
