@@ -52,7 +52,9 @@ def save_figure(context: str = "web", **savefig_kwargs: dict[Any, Any]) -> None:
     plt.savefig(**kwargs)  # type: ignore
 
 
-def set_yticklabel_font(axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None) -> None:
+def set_yticklabel_font(
+    axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+) -> None:
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
@@ -62,7 +64,9 @@ def set_yticklabel_font(axis: Union[Axes, None] = None, font: str = DEFAULT_FONT
     ax.yaxis.set_tick_params(labelsize=font_size)
 
 
-def set_xticklabel_font(axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None) -> None:
+def set_xticklabel_font(
+    axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+) -> None:
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
@@ -72,7 +76,9 @@ def set_xticklabel_font(axis: Union[Axes, None] = None, font: str = DEFAULT_FONT
     ax.xaxis.set_tick_params(labelsize=font_size)
 
 
-def set_ticklabel_font(axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None) -> None:
+def set_ticklabel_font(
+    axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+) -> None:
     "Set the font of the x and y tick labels."
     ax = _find_axis(axis)
 
@@ -210,7 +216,7 @@ def style_legend(legend: Legend):
     justify_legend_text(legend)
 
 
-def set_colorbar_ticklabel_monospaced(axis: Axes):
+def set_colorbar_ticklabel_monospaced(axis: Union[Axes, None] = None):
     "Set the font of the colorbar tick labels to Suisse Int'l Mono."
 
     ax = _find_axis(axis)
@@ -359,8 +365,10 @@ def load_colormaps() -> None:
         if isinstance(object, Palette):
             if (colormap_name := f"apc:{object.name}") not in colormaps:
                 plt.register_cmap(name=colormap_name, cmap=object.to_mpl_cmap())  # type: ignore
-        # Register the reversed version of the gradient as well.
+        # If it's a gradient, register both the forward and reversed version.
         if isinstance(object, Gradient):
+            if (colormap_name := f"apc:{object.name}") not in colormaps:
+                plt.register_cmap(name=colormap_name, cmap=object.to_mpl_cmap())  # type: ignore
             if (colormap_name := f"apc:{object.name}_r") not in colormaps:
                 plt.register_cmap(name=colormap_name, cmap=object.reverse().to_mpl_cmap())  # type: ignore
 

@@ -65,7 +65,7 @@ ARCADIA_RC_PARAMS = {
     # Figure
     "figure.titlesize": 16,
     "figure.titleweight": "medium",
-    "figure.facecolor": colors.parchment,
+    "figure.facecolor": colors.white,
     "figure.edgecolor": "none",
     "figure.frameon": False,
     "figure.dpi": BASE_DPI,
@@ -76,7 +76,7 @@ ARCADIA_RC_PARAMS = {
     "axes.grid": False,
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
-    "axes.prop_cycle": plt.cycler(color=palettes.accent_all_ordered.colors), # type: ignore
+    "axes.prop_cycle": plt.cycler(color=palettes.accent_all_ordered.colors),  # type: ignore
     "axes.titlesize": 16.5,
     "axes.titleweight": "medium",
     "axes.labelsize": BASE_FONT_SIZE,
