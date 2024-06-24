@@ -140,4 +140,4 @@ all = (
 )
 all.name = "All"
 
-_all_palettes = [obj for obj in globals().values() if isinstance(obj, Palette)]
+all_palettes = [obj for obj in globals().values() if isinstance(obj, Palette)]

@@ -3,6 +3,8 @@ include .env
 .PHONY: lint
 lint:
 	ruff check --exit-zero .
+	ruff format --check .
+	pyright --project pyproject.toml .
 
 .PHONY: format
 format:
@@ -12,6 +14,10 @@ format:
 .PHONY: pre-commit
 pre-commit:
 	pre-commit run --all-files
+
+.PHONY: test
+test:
+	pytest -v .
 
 .PHONY: clean
 clean:

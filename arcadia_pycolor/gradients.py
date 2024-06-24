@@ -135,4 +135,4 @@ lillies = Gradient(
     [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
 )
 
-_all_gradients = [obj for obj in globals().values() if isinstance(obj, Gradient)]
+all_gradients = [obj for obj in globals().values() if isinstance(obj, Gradient)]
