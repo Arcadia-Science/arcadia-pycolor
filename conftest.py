@@ -36,5 +36,5 @@ def output_dirpath(pytestconfig, tmp_path_factory):
 
     user_provided_output_dirpath = pytestconfig.getoption("output_dirpath")
     if user_provided_output_dirpath is not None:
-        shutil.rmtree(user_provided_output_dirpath)
+        shutil.rmtree(user_provided_output_dirpath, ignore_errors=True)
         shutil.copytree(tmp_path, user_provided_output_dirpath)

@@ -20,10 +20,10 @@ conda create -n arcadia-pycolor -f envs/dev.yml
 conda activate arcadia-pycolor
 ```
 
-Then, install dependencies:
+Then, install dependencies, including the development dependencies:
 
 ```bash
-poetry install --no-root
+poetry install --no-root --with=dev
 ```
 
 Finally, install the package in editable mode:
@@ -31,6 +31,19 @@ Finally, install the package in editable mode:
 ```bash
 pip install -e .
 ```
+
+## Testing
+
+We use pytest for testing. The tests are found in the `arcadia_pycolor/tests/` subpackage. To run the tests, simply run `pytest` from the root directory of the repository.
+
+Some of the tests generate plots whose correctness is difficult to validate programmatically. Therefore, when changes are made to the style defaults or to the auto-styling methods in `arcadia_pycolor.mpl`, it is important to manually inspect these plots to verify that no unintended changes have been introduced. To do so, there is a custom `--output-dirpath` pytest option that can be used to save the test plots to a local directory. For example, to save the test plots to a directory called `test-outputs`, run:
+
+```bash
+pytest --output-dirpath ./test-outputs
+```
+
+The directory passed to `--output-dirpath` will be created if it does not already exist and will be overwritten if it does exist. The test plots will be saved in this directory as PDF files with the same names as the test functions that generated them.
+
 
 ## Releasing the package on PyPI
 
