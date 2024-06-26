@@ -42,8 +42,13 @@ Some of the tests generate plots whose correctness is difficult to validate prog
 pytest --output-dirpath ./test-outputs
 ```
 
-The directory passed to `--output-dirpath` will be created if it does not already exist and will be overwritten if it does exist. The test plots will be saved in this directory as PDF files with the same names as the test functions that generated them.
+The directory passed to `--output-dirpath` will be created if it does not already exist and will be overwritten if it does exist. The test plots will be saved in this directory as PDF files with the same names as the test functions that generated them. The tests are parametrized by the pre-defined figure sizes in `arcadia_pycolor.style_defaults`, so there will be one file for each test and each figure size.
 
+Hint: you can use pytest's `-k` option to filter the tests that are run if you only need to generate certain plots. This can be convenient for faster feedback during development. For example, to run only the tests that generate barplots, run:
+
+```bash
+pytest -k barplots --output-dirpath ./test-outputs
+```
 
 ## Releasing the package on PyPI
 
