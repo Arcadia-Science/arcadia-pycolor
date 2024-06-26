@@ -4,8 +4,8 @@ from arcadia_pycolor.gradient import Gradient
 # Perceptually Uniform Gradients
 magma = Gradient(
     "magma",
-    [colors.pitch, colors.tanzanite, colors.heather, colors.tumbleweed, colors.wheat],
-    [0, 0.347, 0.581, 0.833, 1],
+    [colors.concord, colors.tanzanite, colors.heather, colors.tumbleweed, colors.wheat],
+    [0, 0.217, 0.498, 0.799, 1],
 )
 
 viridis = Gradient(
@@ -24,6 +24,12 @@ sunset = Gradient(
     "sunset",
     [colors.soil, colors.umber, colors.tumbleweed, colors.topaz, colors.wheat],
     [0, 0.421, 0.793, 0.946, 1],
+)
+
+wine = Gradient(
+    "wine",
+    [colors.redwood, colors.dragon, colors.tangerine, colors.dawn],
+    [0, 0.451, 0.828, 1],
 )
 
 lisafrank = Gradient(
