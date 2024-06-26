@@ -3,7 +3,6 @@ from typing import Any, Literal, Union, cast
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
-from matplotlib import colormaps  # type: ignore
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
@@ -13,7 +12,7 @@ import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
-from arcadia_pycolor.palette import Palette
+from arcadia_pycolor.palette import ColorSequence
 from arcadia_pycolor.style_defaults import (
     ARCADIA_RC_PARAMS,
     CATEGORICAL_AXIS_TICKLENGTH,
@@ -209,7 +208,7 @@ def set_colorbar_ticklabel_monospaced(axis: Axes):
     "Set the font of the colorbar tick labels to Suisse Int'l Mono."
 
     ax = _find_axis(axis)
-    if cbar := ax.collections[0].colorbar:
+    if cbar := ax.collections[0].colorbar:  # type: ignore
         set_ticklabel_monospaced(axis=cbar.ax)
 
 
@@ -347,17 +346,22 @@ def load_colormaps() -> None:
     Load Arcadia's palettes and gradients into the matplotlib list of named colormaps
     with the prefix 'apc:'.
     """
-    cmaps = list(arcadia_pycolor.palettes.__dict__.values()) + list(
-        arcadia_pycolor.gradients.__dict__.values()
-    )
-    for object in cmaps:
-        if isinstance(object, Palette):
-            if (colormap_name := f"apc:{object.name}") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=object.to_mpl_cmap())  # type: ignore
+    colormaps = [
+        object
+        for object in (
+            list(arcadia_pycolor.palettes.__dict__.values())
+            + list(arcadia_pycolor.gradients.__dict__.values())
+        )
+        if isinstance(object, ColorSequence)
+    ]
+
+    for colormap in colormaps:
+        if (colormap_name := f"apc:{colormap.name}") not in colormaps:
+            plt.register_cmap(name=colormap_name, cmap=colormap.to_mpl_cmap())  # type: ignore
         # Register the reversed version of the gradient as well.
         if isinstance(object, Gradient):
-            if (colormap_name := f"apc:{object.name}_r") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=object.reverse().to_mpl_cmap())  # type: ignore
+            if (colormap_name := f"apc:{colormap.name}_r") not in colormaps:
+                plt.register_cmap(name=colormap_name, cmap=colormap.reverse().to_mpl_cmap())  # type: ignore
 
 
 def load_styles() -> None:
