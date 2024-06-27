@@ -3,7 +3,8 @@ from typing import Any, Literal, Union, cast
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
-from matplotlib import colormaps  # type: ignore
+from matplotlib import colormaps as mpl_colormaps
+from matplotlib.axis import XAxis, YAxis
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
@@ -13,7 +14,7 @@ import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
-from arcadia_pycolor.palette import Palette
+from arcadia_pycolor.palette import ColorSequence
 from arcadia_pycolor.style_defaults import (
     ARCADIA_RC_PARAMS,
     BASE_DPI,
@@ -132,6 +133,13 @@ def capitalize_ticklabels(axis: Union[Axes, None] = None):
     capitalize_xticklabels(ax)
 
 
+def add_commas_to_axis_tick_labels(axis: Union[XAxis, YAxis]):
+    """
+    Add commas to the numbers used for axis tick labels.
+    """
+    axis.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: format(int(x), ",")))  # type: ignore
+
+
 def set_xaxis_categorical(axis: Union[Axes, None] = None):
     "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
     ax = _find_axis(axis)
@@ -220,7 +228,7 @@ def set_colorbar_ticklabel_monospaced(axis: Union[Axes, None] = None):
     "Set the font of the colorbar tick labels to Suisse Int'l Mono."
 
     ax = _find_axis(axis)
-    if cbar := ax.collections[0].colorbar:
+    if cbar := ax.collections[0].colorbar:  # type: ignore
         set_ticklabel_monospaced(axis=cbar.ax)
 
 
@@ -358,19 +366,23 @@ def load_colormaps() -> None:
     Load Arcadia's palettes and gradients into the matplotlib list of named colormaps
     with the prefix 'apc:'.
     """
-    cmaps = list(arcadia_pycolor.palettes.__dict__.values()) + list(
-        arcadia_pycolor.gradients.__dict__.values()
-    )
-    for object in cmaps:
-        if isinstance(object, Palette):
-            if (colormap_name := f"apc:{object.name}") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=object.to_mpl_cmap())  # type: ignore
-        # If it's a gradient, register both the forward and reversed version.
-        if isinstance(object, Gradient):
-            if (colormap_name := f"apc:{object.name}") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=object.to_mpl_cmap())  # type: ignore
-            if (colormap_name := f"apc:{object.name}_r") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=object.reverse().to_mpl_cmap())  # type: ignore
+    arcadia_colormaps = [
+        object
+        for object in (
+            list(arcadia_pycolor.palettes.__dict__.values())
+            + list(arcadia_pycolor.gradients.__dict__.values())
+        )
+        if isinstance(object, ColorSequence)
+    ]
+
+    for arcadia_colormap in arcadia_colormaps:
+        if (colormap_name := f"apc:{arcadia_colormap.name}") not in mpl_colormaps:
+            plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.to_mpl_cmap())  # type: ignore
+        # Register the reversed version of gradients but not palettes
+        # to be consistent with matplotlib.
+        if isinstance(arcadia_colormap, Gradient):
+            if (colormap_name := f"apc:{arcadia_colormap.name}_r") not in mpl_colormaps:
+                plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.reverse().to_mpl_cmap())  # type: ignore
 
 
 def load_styles() -> None:
