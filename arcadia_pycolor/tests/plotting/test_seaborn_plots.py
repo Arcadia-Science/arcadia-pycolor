@@ -8,9 +8,6 @@ import arcadia_pycolor as apc
 
 
 def _load_iris_data():
-    """
-    Load the iris dataset and create a DataFrame.
-    """
     iris = datasets.load_iris()
     iris_data = pd.DataFrame(iris.data)  # type: ignore
     iris_data.columns = [name.replace(" (cm)", "") for name in iris.feature_names]  # type: ignore
@@ -18,7 +15,7 @@ def _load_iris_data():
     return iris_data
 
 
-SCATTERPLOT_DATA = _load_iris_data()
+DATASET = _load_iris_data()
 
 
 def plot_seaborn_scatterplot(ax):
@@ -31,7 +28,7 @@ def plot_seaborn_scatterplot(ax):
         "virginica": apc.seaweed,
     }
     sns.scatterplot(
-        data=SCATTERPLOT_DATA,
+        data=DATASET,
         x="sepal length",
         y="sepal width",
         hue="species",
@@ -52,7 +49,7 @@ def plot_seaborn_violinplot(ax):
         "virginica": apc.seaweed,
     }
     sns.violinplot(
-        data=SCATTERPLOT_DATA,
+        data=DATASET,
         x="species",
         y="sepal width",
         hue="species",
@@ -68,7 +65,6 @@ def plot_seaborn_violinplot(ax):
     [plot_seaborn_scatterplot, plot_seaborn_violinplot],
 )
 def test_seaborn_plots(output_dirpath, plotting_function, figure_size):
-    fig, ax = plt.subplots(figsize=apc.mpl.get_figure_dimensions(figure_size), layout="constrained")
+    _, ax = plt.subplots(figsize=apc.mpl.get_figure_dimensions(figure_size), layout="constrained")
     plotting_function(ax)
     apc.mpl.save_figure(fname=(output_dirpath / f"{plotting_function.__name__}_{figure_size}.pdf"))
-    plt.close(fig)

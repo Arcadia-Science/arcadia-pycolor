@@ -37,7 +37,9 @@ def test_plot_stacked_barplot(output_dirpath, figure_size):
 
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(reversed(handles), reversed(labels))
-    ax.get_legend().set_title("Viability")
+    legend = ax.get_legend()
+    assert legend is not None
+    legend.set_title("Viability")
 
     apc.mpl.style_axis(ax, categorical_axes="x", monospaced_axes="y")
     apc.mpl.save_figure(fname=(output_dirpath / f"test_plot_stacked_barplot_{figure_size}.pdf"))
@@ -47,7 +49,7 @@ def test_plot_stacked_barplot(output_dirpath, figure_size):
 def test_plot_multiple_line_plot(output_dirpath, figure_size):
     """
     Plot multiple line plots using custom mocked data and colors from the Arcadia palette.
-    Note: the line plots are not stacked; they are plotted on separate axes.
+    Note: the line plots are not stacked; they are independently plotted on separate axes.
     """
     lines = np.random.rand(10, 20)
     fig, axes = plt.subplots(
