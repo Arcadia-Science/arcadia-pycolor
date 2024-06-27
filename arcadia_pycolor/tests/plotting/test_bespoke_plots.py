@@ -43,6 +43,7 @@ def test_plot_stacked_barplot(output_dirpath, figure_size):
 
     apc.mpl.style_axis(ax, categorical_axes="x", monospaced_axes="y")
     apc.mpl.save_figure(fname=(output_dirpath / f"test_plot_stacked_barplot_{figure_size}.pdf"))
+    plt.close(fig)
 
 
 @pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
@@ -76,6 +77,7 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
     fig.supylabel("Brightness")
     fig.subplots_adjust(hspace=0)
     apc.mpl.save_figure(fname=(output_dirpath / f"test_plot_multiple_line_plot_{figure_size}.pdf"))
+    plt.close(fig)
 
 
 @pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
@@ -118,3 +120,4 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     apc.mpl.save_figure(
         fname=(output_dirpath / f"test_plot_heatmaps_with_seaborn_{figure_size}.pdf")
     )
+    plt.close(fig)

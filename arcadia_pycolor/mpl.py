@@ -3,6 +3,7 @@ from typing import Any, Literal, Union, cast
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
+from matplotlib import colormaps as mpl_colormaps
 from matplotlib.axis import XAxis, YAxis
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
@@ -354,7 +355,7 @@ def load_colormaps() -> None:
     Load Arcadia's palettes and gradients into the matplotlib list of named colormaps
     with the prefix 'apc:'.
     """
-    colormaps = [
+    arcadia_colormaps = [
         object
         for object in (
             list(arcadia_pycolor.palettes.__dict__.values())
@@ -363,13 +364,14 @@ def load_colormaps() -> None:
         if isinstance(object, ColorSequence)
     ]
 
-    for colormap in colormaps:
-        if (colormap_name := f"apc:{colormap.name}") not in colormaps:
-            plt.register_cmap(name=colormap_name, cmap=colormap.to_mpl_cmap())  # type: ignore
-        # Register the reversed version of the gradient as well.
-        if isinstance(object, Gradient):
-            if (colormap_name := f"apc:{colormap.name}_r") not in colormaps:
-                plt.register_cmap(name=colormap_name, cmap=colormap.reverse().to_mpl_cmap())  # type: ignore
+    for arcadia_colormap in arcadia_colormaps:
+        if (colormap_name := f"apc:{arcadia_colormap.name}") not in mpl_colormaps:
+            plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.to_mpl_cmap())  # type: ignore
+        # Register the reversed version of gradients but not palettes
+        # to be consistent with matplotlib.
+        if isinstance(arcadia_colormap, Gradient):
+            if (colormap_name := f"apc:{arcadia_colormap.name}_r") not in mpl_colormaps:
+                plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.reverse().to_mpl_cmap())  # type: ignore
 
 
 def load_styles() -> None:
