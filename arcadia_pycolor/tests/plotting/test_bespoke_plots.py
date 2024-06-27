@@ -103,7 +103,7 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
         random_data - 0.5,
         ax=axs[1],
         square=True,
-        cmap="apc:pansies",
+        cmap="apc:purple_green",
         cbar_kws={"label": "Intensity"},
     )
 
