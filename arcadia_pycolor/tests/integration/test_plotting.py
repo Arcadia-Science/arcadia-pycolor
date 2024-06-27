@@ -9,10 +9,10 @@ from arcadia_pycolor import mpl
 
 FIGURE_SIZES = [
     "full_wide",
-    "full_small",
-    "threeq_wide",
-    "threeq_small",
-    "half_small",
+    "full_square",
+    "float_wide",
+    "float_square",
+    "half_square",
 ]
 
 BARPLOT_DATA = {
