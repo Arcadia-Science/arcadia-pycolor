@@ -3,6 +3,7 @@ from typing import Any, Literal, Union, cast
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
+from matplotlib.axis import XAxis, YAxis
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
@@ -118,6 +119,13 @@ def capitalize_ticklabels(axis: Union[Axes, None] = None):
 
     capitalize_yticklabels(ax)
     capitalize_xticklabels(ax)
+
+
+def add_commas_to_axis_tick_labels(axis: Union[XAxis, YAxis]):
+    """
+    Add commas to the numbers used for axis tick labels.
+    """
+    axis.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: format(int(x), ",")))  # type: ignore
 
 
 def set_xaxis_categorical(axis: Union[Axes, None] = None):

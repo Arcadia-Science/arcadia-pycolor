@@ -1,4 +1,3 @@
-import matplotlib
 import pytest
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -58,14 +57,7 @@ BARPLOT_ERRORS = [
 ]
 
 
-def _add_commas_to_axis_tick_labels(axis):
-    """
-    Add commas to the numbers used for axis tick labels.
-    """
-    axis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, _: format(int(x), ",")))  # type: ignore
-
-
-def _add_line_returns_to_sample_ids(sample_ids):
+def _word_wrap_sample_ids(sample_ids):
     return [sample_id.replace(" ", "\n") for sample_id in sample_ids]
 
 
@@ -73,11 +65,11 @@ def plot_vertical_barplot_with_matplotlib_with_error_bars(ax):
     """
     Plot a vertical barplot using Matplotlib with error bars.
     """
-    sample_ids = _add_line_returns_to_sample_ids(BARPLOT_SAMPLE_IDS)
+    sample_ids = _word_wrap_sample_ids(BARPLOT_SAMPLE_IDS)
     plt.bar(sample_ids, BARPLOT_NUM_READS, color=apc.aster)
     apc.mpl.style_axis(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
-    _add_commas_to_axis_tick_labels(ax.get_yaxis())
+    apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
 
     plt.errorbar(sample_ids, BARPLOT_NUM_READS, yerr=BARPLOT_ERRORS, fmt="none", color=apc.crow)
     plt.ylabel("Number of reads")
@@ -92,7 +84,7 @@ def plot_horizontal_barplot_with_matplotlib_with_error_bars(ax):
     plt.barh(BARPLOT_SAMPLE_IDS, BARPLOT_NUM_READS, color=apc.aster)
     apc.mpl.style_axis(ax, monospaced_axes="x")
     apc.mpl.set_yaxis_categorical()
-    _add_commas_to_axis_tick_labels(ax.get_xaxis())
+    apc.mpl.add_commas_to_axis_tick_labels(ax.get_xaxis())
     plt.xticks(rotation=30, ha="right")
 
     plt.errorbar(
@@ -114,13 +106,13 @@ def plot_vertical_barplot_with_matplotlib_with_categories(ax):
     colors = [category_to_color[category] for category in sample_categories]
 
     plt.bar(
-        _add_line_returns_to_sample_ids(BARPLOT_SAMPLE_IDS),
+        _word_wrap_sample_ids(BARPLOT_SAMPLE_IDS),
         BARPLOT_NUM_READS,
         color=colors,
     )
     apc.mpl.style_axis(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
-    _add_commas_to_axis_tick_labels(ax.get_yaxis())
+    apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
     plt.ylabel("Number of reads")
     plt.xlabel("Sample")
 
@@ -130,7 +122,7 @@ def plot_vertical_barplot_with_seaborn(ax):
     Plot a vertical barplot using Seaborn.
     """
     sns.barplot(
-        x=_add_line_returns_to_sample_ids(BARPLOT_SAMPLE_IDS),
+        x=_word_wrap_sample_ids(BARPLOT_SAMPLE_IDS),
         y=BARPLOT_NUM_READS,
         color=apc.aster,
         # Seaborn by default desaturates the colors. This prevents that.
@@ -139,7 +131,7 @@ def plot_vertical_barplot_with_seaborn(ax):
     )
     apc.mpl.style_axis(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
-    _add_commas_to_axis_tick_labels(ax.get_yaxis())
+    apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
     plt.ylabel("Number of reads")
     plt.xlabel("Sample")
 
@@ -152,7 +144,7 @@ def plot_horizontal_barplot_with_seaborn(ax):
     sns.barplot(x=BARPLOT_NUM_READS, y=BARPLOT_SAMPLE_IDS, color=apc.aster, saturation=1, ax=ax)
     apc.mpl.style_axis(ax, monospaced_axes="x")
     apc.mpl.set_yaxis_categorical()
-    _add_commas_to_axis_tick_labels(ax.get_xaxis())
+    apc.mpl.add_commas_to_axis_tick_labels(ax.get_xaxis())
     plt.xticks(rotation=30, ha="right")
     plt.xlabel("Number of reads")
     plt.ylabel("Sample")
@@ -169,7 +161,7 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
     )
 
     sns.barplot(
-        x=_add_line_returns_to_sample_ids(BARPLOT_SAMPLE_IDS),
+        x=_word_wrap_sample_ids(BARPLOT_SAMPLE_IDS),
         y=BARPLOT_NUM_READS,
         color=apc.aster,
         hue=sample_categories,
@@ -180,8 +172,7 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
 
     apc.mpl.style_axis(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
-
-    _add_commas_to_axis_tick_labels(ax.get_yaxis())
+    apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
 
     plt.xlabel("Number of reads")
     plt.ylabel("Sample")
