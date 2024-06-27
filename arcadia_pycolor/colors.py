@@ -1,73 +1,95 @@
 from arcadia_pycolor.hexcode import HexCode
 
-# Core colors
-lightgrey = HexCode("lightgrey", "#EBEDE8")
-shell = HexCode("shell", "#EDE0D6")
-dawn = HexCode("dawn", "#F8F4F1")
-seafoam = HexCode("seafoam", "#F9FCF0")
-tangerine = HexCode("tangerine", "#FFB984")
-pitch = HexCode("pitch", "#09090A")
-charcoal = HexCode("charcoal", "#484B50")
-marineblue = HexCode("marineblue", "#8A99AD")
-forest = HexCode("forest", "#596F74")
-
-# Neutral colors
-zephyr = HexCode("zephyr", "#F4FBFF")
-paleazure = HexCode("paleazure", "#F7F9FD")
-lichen = HexCode("lichen", "#F7FBEF")
-orchid = HexCode("orchid", "#FFFDF7")
-buff = HexCode("buff", "#FFFBF8")
-bark = HexCode("bark", "#8F8885")
-slate = HexCode("slate", "#43413F")
-crow = HexCode("crow", "#292928")
-
-# Accent colors
+# Primary colors
 aegean = HexCode("aegean", "#5088C5")
 amber = HexCode("amber", "#F28360")
 seaweed = HexCode("seaweed", "#3B9886")
 canary = HexCode("canary", "#F7B846")
 aster = HexCode("aster", "#7A77AB")
 rose = HexCode("rose", "#F898AE")
-
-# Light accent colors
-bluesky = HexCode("bluesky", "#C6E7F4")
-dress = HexCode("dress", "#F8C5C1")
-sage = HexCode("sage", "#B5BEA4")
-oat = HexCode("oat", "#F5E4BE")
-periwinkle = HexCode("periwinkle", "#DCBFFC")
-blossom = HexCode("blossom", "#F5CBE4")
-
-# Accent expanded colors
+vital = HexCode("vital", "#73B5E3")
+tangerine = HexCode("tangerine", "#FFB984")
 lime = HexCode("lime", "#97CD78")
-vitalblue = HexCode("vitalblue", "#73B5E3")
-chateau = HexCode("chateau", "#BAB0A8")
 dragon = HexCode("dragon", "#C85152")
-
-# Light accent expanded colors
-mint = HexCode("mint", "#D1EADF")
+oat = HexCode("oat", "#F5E4BE")
 wish = HexCode("wish", "#BABEE0")
-satin = HexCode("satin", "#F1E8DA")
-taupe = HexCode("taupe", "#DAD3C7")
-mars = HexCode("mars", "#DA9085")
+
+# Secondary colors
+sky = HexCode("sky", "#C6E7F4")
+dress = HexCode("dress", "#F8C5C1")
+taupe = HexCode("taupe", "#DBD1C3")
 denim = HexCode("denim", "#B6C8D4")
+sage = HexCode("sage", "#B5BEA4")
+marine = HexCode("marine", "#8A99AD")
+mars = HexCode("mars", "#DA9085")
+shell = HexCode("shell", "#EDE0D6")
+
+# Neutral colors
+lightgrey = HexCode("lightgrey", "#EBEDE8")
+chateau = HexCode("chateau", "#BAB0A8")
+bark = HexCode("bark", "#8F8885")
+slate = HexCode("slate", "#43413F")
+charcoal = HexCode("charcoal", "#484B50")
+crow = HexCode("crow", "#292928")
+forest = HexCode("forest", "#596F74")
+pitch = HexCode("pitch", "#09090A")
+
+# Background colors
+parchment = HexCode("parchment", "#FDF8F2")
+zephyr = HexCode("zephyr", "#F4FBFF")
+lichen = HexCode("lichen", "#F7FBEF")
+dawn = HexCode("dawn", "#F8F4F1")
+
+# Shades
+lapis = HexCode("lapis", "#2B65A1")
+dusk = HexCode("dusk", "#094468")
+cinnabar = HexCode("cinnabar", "#9E3F41")
+melon = HexCode("melon", "#FFD0B0")
+sun = HexCode("sun", "#FFD364")
+mustard = HexCode("mustard", "#D68D22")
+umber = HexCode("umber", "#A85E28")
+iris = HexCode("iris", "#DCDFEF")
+tanzanite = HexCode("darkpurple", "#54448C")
+glass = HexCode("glass", "#C3E2DB")
+teal = HexCode("teal", "#6FBCAD")
+asparagus = HexCode("asparagus", "#2A6B5E")
+depths = HexCode("depths", "#09473E")
+putty = HexCode("putty", "#FFE3D4")
+candy = HexCode("candy", "#E2718F")
+azalea = HexCode("azalea", "#C14C70")
+stone = HexCode("stone", "#EDE6DA")
+mud = HexCode("mud", "#635C5A")
+ice = HexCode("ice", "#E6EAED")
+dove = HexCode("dove", "#CAD4DB")
+cloud = HexCode("cloud", "#ABBAC4")
+steel = HexCode("steel", "#687787")
+fern = HexCode("fern", "#47784A")
+edamame = HexCode("edamame", "#C1E1AE")
+matcha = HexCode("matcha", "#71AC5A")
+yucca = HexCode("yucca", "#1E4812")
+
+# Gradient colors
+concord = HexCode("concord", "#341E60")
+heather = HexCode("heather", "#A96789")
+tumbleweed = HexCode("tumbleweed", "#E9A482")
+wheat = HexCode("wheat", "#F5DFB2")
+shire = HexCode("shire", "#4E7F72")
+topaz = HexCode("topaz", "#FFCC7B")
+space = HexCode("space", "#282A49")
+butter = HexCode("butter", "#FFFDBD")
+terracotta = HexCode("terracotta", "#964222")
+blush = HexCode("blush", "#FFF3F4")
+lilac = HexCode("lilac", "#6862AB")
+ghost = HexCode("ghost", "#FCF7FF")
+redwood = HexCode("redwood", "#52180A")
 
 # Other Arcadia colors
-concord = HexCode("concord", "#341E60")
-grape = HexCode("grape", "#5A4596")
-taffy = HexCode("taffy", "#E87485")
 brightgrey = HexCode("brightgrey", "#EAEAEA")
 paper = HexCode("paper", "#FCFCFC")
-redwood = HexCode("redwood", "#52180A")
-cocoa = HexCode("cocoa", "#4D2C03")
-royal = HexCode("royal", "#3F2D5C")
-carmine = HexCode("carmine", "#471122")
-depths = HexCode("depths", "#09473E")
-bluegrass = HexCode("bluegrass", "#458F99")
-yucca = HexCode("yucca", "#1E4812")
-pitaya = HexCode("pitaya", "#C74970")
+
 soil = HexCode("soil", "#4D2500")
-umber = HexCode("umber", "#A85E28")
-parchment = HexCode("parchment", "#FDF8F2")
+blossom = HexCode("blossom", "#F5CBE4")
+mint = HexCode("mint", "#D1EADF")
 
 # Other named colors
 white = HexCode("white", "#FFFFFF")
