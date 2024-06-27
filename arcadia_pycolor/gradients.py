@@ -16,14 +16,14 @@ viridis = Gradient(
 
 verde = Gradient(
     "verde",
-    [colors.depths, colors.shire, colors.topaz, colors.flesh],
+    [colors.depths, colors.shire, colors.topaz, colors.putty],
     [0, 0.357, 0.909, 1],
 )
 
 sunset = Gradient(
     "sunset",
-    [colors.soil, colors.umber, colors.tumbleweed, colors.topaz, colors.wheat],
-    [0, 0.421, 0.793, 0.946, 1],
+    [colors.soil, colors.umber, colors.tumbleweed, colors.topaz, colors.putty],
+    [0.0, 0.407, 0.767, 0.915, 1.0],
 )
 
 wine = Gradient(

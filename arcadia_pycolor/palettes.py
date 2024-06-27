@@ -1,65 +1,59 @@
 import arcadia_pycolor.colors as colors
 from arcadia_pycolor.palette import Palette
 
-core = Palette(
-    "Core",
+primary = Palette(
+    "Primary",
     [
-        colors.lightgrey,
-        colors.shell,
-        colors.dawn,
-        colors.seafoam,
+        colors.aegean,
+        colors.amber,
+        colors.seaweed,
+        colors.canary,
+        colors.aster,
+        colors.rose,
+        colors.vital,
         colors.tangerine,
-        colors.pitch,
-        colors.charcoal,
-        colors.marineblue,
-        colors.forest,
+        colors.lime,
+        colors.dragon,
+        colors.oat,
+        colors.wish,
+    ],
+)
+
+secondary = Palette(
+    "Secondary",
+    [
+        colors.sky,
+        colors.dress,
+        colors.taupe,
+        colors.denim,
+        colors.sage,
+        colors.marine,
+        colors.mars,
+        colors.shell,
     ],
 )
 
 neutral = Palette(
     "Neutral",
     [
-        colors.zephyr,
-        colors.paleazure,
-        colors.lichen,
-        colors.orchid,
-        colors.buff,
+        colors.lightgrey,
+        colors.chateau,
         colors.bark,
         colors.slate,
+        colors.charcoal,
         colors.crow,
+        colors.forest,
+        colors.pitch,
     ],
 )
 
-accent = Palette(
-    "Accent",
-    [colors.aegean, colors.amber, colors.seaweed, colors.canary, colors.aster, colors.rose],
+background = Palette(
+    "Background",
+    [colors.parchment, colors.zephyr, colors.lichen, colors.dawn],
 )
 
-light_accent = Palette(
-    "LightAccent",
-    [colors.bluesky, colors.dress, colors.sage, colors.oat, colors.periwinkle, colors.blossom],
-)
-
-# tangerine and marineblue are included in both the core and accent expanded palettes.
-accent_expanded = Palette(
-    "AccentExpanded",
-    [
-        colors.lime,
-        colors.vitalblue,
-        colors.tangerine,
-        colors.chateau,
-        colors.marineblue,
-        colors.dragon,
-    ],
-)
-
-light_accent_expanded = Palette(
-    "LightAccentExpanded",
-    [colors.mint, colors.wish, colors.satin, colors.taupe, colors.mars, colors.denim],
-)
-
-accent_ordered = Palette(
-    "AccentOrdered",
+primary_ordered = Palette(
+    "PrimaryOrdered",
     [
         colors.aegean,
         colors.amber,
@@ -69,69 +63,95 @@ accent_ordered = Palette(
         colors.rose,
         colors.seaweed,
         colors.dragon,
-        colors.vitalblue,
-        colors.chateau,
-        colors.marineblue,
+        colors.vital,
         colors.tangerine,
-    ],
-)
-
-light_ordered = Palette(
-    "LightOrdered",
-    [
-        colors.bluesky,
-        colors.dress,
         colors.oat,
-        colors.sage,
-        colors.periwinkle,
-        colors.denim,
-        colors.taupe,
-        colors.mars,
-        colors.blossom,
-        colors.mint,
         colors.wish,
-        colors.satin,
     ],
 )
 
-accent_all_ordered = accent_ordered + light_ordered
-accent_all_ordered.name = "AccentAllOrdered"
+secondary_ordered = Palette(
+    "SecondaryOrdered",
+    [
+        colors.sky,
+        colors.dress,
+        colors.taupe,
+        colors.sage,
+        colors.denim,
+        colors.mars,
+        colors.shell,
+        colors.marine,
+    ],
+)
 
+all_ordered = primary_ordered + secondary_ordered
+all_ordered.name = "AllOrdered"
+
+blue_shades = Palette(
+    "BlueShades",
+    [colors.dusk, colors.lapis, colors.aegean, colors.vital, colors.sky],
+)
+
+red_shades = Palette(
+    "RedShades",
+    [colors.cinnabar, colors.dragon, colors.amber, colors.tangerine, colors.melon],
+)
+
+yellow_shades = Palette(
+    "YellowShades",
+    [colors.umber, colors.mustard, colors.canary, colors.sun, colors.oat],
+)
+
+purple_shades = Palette(
+    "PurpleShades",
+    [colors.concord, colors.tanzanite, colors.aster, colors.wish, colors.iris],
+)
+
+teal_shades = Palette(
+    "TealShades",
+    [colors.depths, colors.asparagus, colors.seaweed, colors.teal, colors.glass],
+)
+
+pink_shades = Palette(
+    "PinkShades",
+    [colors.azalea, colors.candy, colors.rose, colors.dress, colors.putty],
+)
+
+brown_shades = Palette(
+    "BrownShades",
+    [colors.mud, colors.bark, colors.chateau, colors.taupe, colors.stone],
+)
+
+grey_shades = Palette(
+    "GreyShades",
+    [colors.steel, colors.marine, colors.cloud, colors.dove, colors.ice],
+)
+
+green_shades = Palette(
+    "GreenShades",
+    [colors.yucca, colors.fern, colors.matcha, colors.lime, colors.edamame],
+)
 
 other = Palette(
     "Other",
     [
         colors.concord,
-        colors.grape,
-        colors.taffy,
         colors.brightgrey,
         colors.paper,
         colors.redwood,
-        colors.cocoa,
-        colors.royal,
-        colors.carmine,
         colors.depths,
-        colors.bluegrass,
-        colors.yucca,
-        colors.pitaya,
         colors.soil,
         colors.umber,
         colors.parchment,
-        colors.tanzanite,
         colors.heather,
         colors.tumbleweed,
         colors.wheat,
         colors.shire,
         colors.topaz,
-        colors.flesh,
         colors.space,
         colors.butter,
         colors.terracotta,
-        colors.asparagus,
-        colors.cinnabar,
         colors.blush,
-        colors.lapis,
-        colors.fern,
         colors.lilac,
         colors.ghost,
     ],
@@ -152,9 +172,23 @@ named = Palette(
 )
 
 # All palettes
-all = (
-    core + neutral + accent + light_accent + accent_expanded + light_accent_expanded + other + named
+all = primary + secondary + neutral + background + other + named
+shades = (
+    blue_shades
+    + red_shades
+    + yellow_shades
+    + purple_shades
+    + teal_shades
+    + pink_shades
+    + brown_shades
+    + grey_shades
+    + green_shades
+)
+all = all + Palette(
+    name="shades", colors=[color for color in shades.colors if color not in all.colors]
 )
 all.name = "All"
+
+del shades
 
 all_palettes = [obj for obj in globals().values() if isinstance(obj, Palette)]
