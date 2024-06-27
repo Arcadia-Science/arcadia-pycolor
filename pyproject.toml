@@ -32,7 +32,8 @@ url = "https://test.pypi.org/legacy/"
 [tool.poetry.dependencies]
 colorspacious = ">=1.1.2"
 ipykernel = ">=6.25.2"
-matplotlib = ">=3.7.0"
+# There is a bug in `LinearSegmentedColormap` in matplotlib 3.8.0.
+matplotlib = ">=3.7,<3.9,!=3.8.0"
 python = ">=3.9"
 
 [tool.poetry.group.dev.dependencies]
@@ -40,6 +41,9 @@ ruff = "0.4.4"
 pytest = "8.2.1"
 pre-commit = "3.5.0"
 pyright = "^1.1.367"
+pandas = "^2.2.2"
+seaborn = "^0.13.2"
+scikit-learn = "^1.5.0"
 
 [tool.ruff]
 # The directories to consider when resolving first- vs. third-party imports.
