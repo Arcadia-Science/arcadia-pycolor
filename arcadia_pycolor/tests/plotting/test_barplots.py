@@ -107,15 +107,16 @@ def plot_vertical_barplot_with_matplotlib_with_categories(ax):
     Plot a vertical barplot using Matplotlib with bar colors based on categories
     derived from the sample IDs.
     """
-    color_labels = [sample_id.split(" ")[0] for sample_id in BARPLOT_SAMPLE_IDS]
-    color_dict = dict(
-        zip(set(color_labels), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose])
+    sample_categories = [sample_id.split(" ")[0] for sample_id in BARPLOT_SAMPLE_IDS]
+    category_to_color = dict(
+        zip(set(sample_categories), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose])
     )
+    colors = [category_to_color[category] for category in sample_categories]
 
     plt.bar(
         _add_line_returns_to_sample_ids(BARPLOT_SAMPLE_IDS),
         BARPLOT_NUM_READS,
-        color=color_dict.values(),
+        color=colors,
     )
     apc.mpl.style_axis(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
@@ -162,17 +163,17 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
     Plot a vertical barplot using Seaborn with bar colors based on categories
     derived from the sample IDs.
     """
-    color_labels = [sample_id.split(" ")[0] for sample_id in BARPLOT_SAMPLE_IDS]
-    color_dict = dict(
-        zip(set(color_labels), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose])
+    sample_categories = [sample_id.split(" ")[0] for sample_id in BARPLOT_SAMPLE_IDS]
+    category_to_color = dict(
+        zip(set(sample_categories), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose])
     )
 
     sns.barplot(
         x=_add_line_returns_to_sample_ids(BARPLOT_SAMPLE_IDS),
         y=BARPLOT_NUM_READS,
         color=apc.aster,
-        hue=color_labels,
-        palette=color_dict,
+        hue=sample_categories,
+        palette=category_to_color,
         saturation=1,
         ax=ax,
     )
