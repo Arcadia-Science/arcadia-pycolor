@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Literal, Union, cast
 
 import matplotlib as mpl
@@ -29,6 +30,9 @@ from arcadia_pycolor.style_defaults import (
     MONOSPACE_FONT_SIZE,
     PRINT_DPI,
 )
+
+# Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
+logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
 LEGEND_PARAMS = dict(
     alignment="left",
@@ -382,12 +386,14 @@ def load_colormaps() -> None:
 
     for arcadia_colormap in arcadia_colormaps:
         if (colormap_name := f"apc:{arcadia_colormap.name}") not in mpl_colormaps:
-            plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.to_mpl_cmap())  # type: ignore
+            mpl.colormaps.register(name=colormap_name, cmap=arcadia_colormap.to_mpl_cmap())
         # Register the reversed version of gradients but not palettes
         # to be consistent with matplotlib.
         if isinstance(arcadia_colormap, Gradient):
             if (colormap_name := f"apc:{arcadia_colormap.name}_r") not in mpl_colormaps:
-                plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.reverse().to_mpl_cmap())  # type: ignore
+                mpl.colormaps.register(
+                    name=colormap_name, cmap=arcadia_colormap.reverse().to_mpl_cmap()
+                )
 
 
 def load_styles() -> None:
