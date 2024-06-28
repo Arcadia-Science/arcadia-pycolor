@@ -51,6 +51,17 @@ def _find_axis(axis: Union[Axes, None] = None) -> Axes:
         return axis
 
 
+def _arcadia_fonts_found() -> bool:
+    "Check if the Arcadia fonts are available to matplotlib."
+    arcadia_fonts = [
+        font_name
+        for font_name in font_manager.fontManager.get_font_names()
+        if FONT_FILTER in font_name
+    ]
+    # TODO(KC): can we specify the number of fonts that should be found?
+    return len(arcadia_fonts) > 0
+
+
 def save_figure(context: str = "web", **savefig_kwargs: dict[Any, Any]) -> None:
     "Save the current figure with the default settings for web."
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
@@ -368,6 +379,12 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
         if FONT_FILTER.lower() in fontpath.lower():
             font_manager.fontManager.addfont(fontpath)
             font_manager.FontProperties(fname=fontpath)
+
+    if not _arcadia_fonts_found():
+        print(
+            "Warning: The Arcadia fonts were not found. "
+            "The default matplotlib fonts will be used instead."
+        )
 
 
 def load_colormaps() -> None:
