@@ -45,15 +45,13 @@ def plot_gradient_lightness(
         return_fig (bool): whether or not to return the figure as an object
     """
 
+    fig, ax = plt.subplots(figsize=figsize, layout="constrained")  # type: ignore
+
     # Indices to step through colormap.
     x = np.linspace(0.0, 1.0, steps)
 
-    # Locations for text labels.
-    locs: list[float] = []
-
-    fig, ax = plt.subplots(figsize=figsize, layout="constrained")  # type: ignore
-
-    gradient_names: list[str] = []
+    xaxis_tick_labels: list[str] = []
+    xaxis_tick_locations: list[float] = []
 
     # Check separately for single strings and single Gradient objects in order to avoid type errors.
     if isinstance(gradients, str):
@@ -63,62 +61,56 @@ def plot_gradient_lightness(
 
     for ind, gradient in enumerate(gradients):
         if isinstance(gradient, str):
-            name = gradient
-            if name not in mpl.colormaps:  # type: ignore
-                print(f"Colormap {name} not found in Matplotlib colormaps.")
+            gradient_name = gradient
+            if gradient_name not in mpl.colormaps:  # type: ignore
+                print(f"Colormap {gradient_name} not found in Matplotlib colormaps.")
                 continue
-            cmap = mpl.cm.get_cmap(name)  # type: ignore
-            colormap_as_rgb = mpl.colormaps[name](x)[np.newaxis, :, :3]  # type: ignore
-        elif isinstance(gradient, Gradient):  # type: ignore
-            name = gradient.name
+            cmap = mpl.colormaps[gradient_name]
+        elif isinstance(gradient, Gradient):
+            gradient_name = gradient.name
             cmap = gradient.to_mpl_cmap()
-            colormap_as_rgb = cast(NDArray[np.float64], cmap(x))[np.newaxis, :, :3]
         else:
             raise TypeError("gradients must be a list of Gradient objects or strings.")
 
-        gradient_names.append(name)
+        xaxis_tick_labels.append(gradient_name)
+        cmap_as_rgb = cast(NDArray[np.float64], cmap(x)[np.newaxis, :, :3])
+        cmap_as_lab = cast(NDArray[np.float64], cspace_converter("sRGB1", "CAM02-UCS")(cmap_as_rgb))
 
-        # Get RGB values for colormap and convert the colormap in
-        # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
-        colormap_as_lab = cast(
-            NDArray[np.float64], cspace_converter("sRGB1", "CAM02-UCS")(colormap_as_rgb)
-        )
-
-        # Plot colormap L values.  Do separately for each category
-        # so each plot can be pretty.  To make scatter markers change
-        # color along plot:
-        # https://stackoverflow.com/q/8202605/
-
-        y_ = colormap_as_lab[0, :, 0]
+        # Plot colormap lightness values. Do this separately for each category
+        # so each plot can be pretty.
+        # Note: `lab[0, :, 0]` is the lightness.
+        y_ = cmap_as_lab[0, :, 0]
         c_ = x
 
         x_offset = ind * horizontal_spacing
+
+        # To make scatter markers change color along plot: https://stackoverflow.com/q/8202605/.
         ax.scatter(x + x_offset, y_, c=c_, cmap=cmap, s=markersize, linewidths=0.0)
 
+        # Store locations for colormap labels.
         if cmap_type == "linear":
-            # Store locations for colormap labels.
-            locs.append(x[-1] + x_offset)
+            xaxis_tick_locations.append(x[-1] + x_offset)
         else:
-            locs.append(x[int(np.round(steps / 2))] + x_offset)
+            xaxis_tick_locations.append(x[int(np.round(steps / 2))] + x_offset)
 
     # Lightness goes from 0 to 100.
     ax.set_ylim(0.0, 100.0)
 
-    # Set up labels for colormaps
+    # Set up labels for colormaps.
     ax.xaxis.set_ticks_position("top")
-    ticker = mpl.ticker.FixedLocator(locs)  # type: ignore
-    ax.xaxis.set_major_locator(ticker)
+    xaxis_tick_locator = mpl.ticker.FixedLocator(xaxis_tick_locations)  # type: ignore
+    ax.xaxis.set_major_locator(xaxis_tick_locator)
     ax.xaxis.set_tick_params(rotation=tickrotation)
-    ax.set_xticklabels(labels=gradient_names)
+    ax.set_xticklabels(labels=xaxis_tick_labels)
     ax.set_ylabel("Lightness $L^*$", fontsize=12)
 
     if title is not None:
         ax.set_xlabel(title, fontsize=14)
 
+    plt.show()  # type: ignore
+
     if return_fig:
         return fig
-
-    plt.show()  # type: ignore
 
 
 def display_all_gradients():

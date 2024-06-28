@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Literal, Union, cast
 
 import matplotlib as mpl
@@ -30,6 +31,9 @@ from arcadia_pycolor.style_defaults import (
     PRINT_DPI,
 )
 
+# Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
+logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
+
 LEGEND_PARAMS = dict(
     alignment="left",
     title_fontproperties={"weight": "semibold", "size": ARCADIA_RC_PARAMS["legend.title_fontsize"]},
@@ -45,6 +49,17 @@ def _find_axis(axis: Union[Axes, None] = None) -> Axes:
         return plt.gca()
     else:
         return axis
+
+
+def _arcadia_fonts_found() -> bool:
+    "Check if the Arcadia fonts are available to matplotlib."
+    arcadia_fonts = [
+        font_name
+        for font_name in font_manager.fontManager.get_font_names()
+        if FONT_FILTER in font_name
+    ]
+    # TODO(KC): can we specify the number of fonts that should be found?
+    return len(arcadia_fonts) > 0
 
 
 def save_figure(context: str = "web", **savefig_kwargs: dict[Any, Any]) -> None:
@@ -365,6 +380,12 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
             font_manager.fontManager.addfont(fontpath)
             font_manager.FontProperties(fname=fontpath)
 
+    if not _arcadia_fonts_found():
+        print(
+            "Warning: The Arcadia fonts were not found. "
+            "The default matplotlib fonts will be used instead."
+        )
+
 
 def load_colormaps() -> None:
     """
@@ -382,12 +403,14 @@ def load_colormaps() -> None:
 
     for arcadia_colormap in arcadia_colormaps:
         if (colormap_name := f"apc:{arcadia_colormap.name}") not in mpl_colormaps:
-            plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.to_mpl_cmap())  # type: ignore
+            mpl.colormaps.register(name=colormap_name, cmap=arcadia_colormap.to_mpl_cmap())
         # Register the reversed version of gradients but not palettes
         # to be consistent with matplotlib.
         if isinstance(arcadia_colormap, Gradient):
             if (colormap_name := f"apc:{arcadia_colormap.name}_r") not in mpl_colormaps:
-                plt.register_cmap(name=colormap_name, cmap=arcadia_colormap.reverse().to_mpl_cmap())  # type: ignore
+                mpl.colormaps.register(
+                    name=colormap_name, cmap=arcadia_colormap.reverse().to_mpl_cmap()
+                )
 
 
 def load_styles() -> None:
