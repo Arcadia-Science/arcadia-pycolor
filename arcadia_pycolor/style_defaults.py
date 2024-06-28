@@ -7,9 +7,10 @@ import arcadia_pycolor.palettes as palettes
 ### Sizing and spacing ###
 # Units in inches when dpi is 72
 BASE_DPI = 72
+PRINT_DPI = 300
 
-# Padding to get ~20px padding around the figure.
-FIGURE_PADDING = 0.27777
+FIGURE_PADDING_PIXELS = 20
+FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
 FULL_WIDE = (13.33333, 5.27777)
@@ -149,7 +150,7 @@ ARCADIA_RC_PARAMS = {
     # Saving figures
     "savefig.format": "pdf",
     "savefig.transparent": True,
-    "savefig.pad_inches": FIGURE_PADDING,
+    "savefig.pad_inches": FIGURE_PADDING_INCHES,
     "savefig.dpi": BASE_DPI,
     "pdf.fonttype": 42,
     "pdf.compression": 0,
