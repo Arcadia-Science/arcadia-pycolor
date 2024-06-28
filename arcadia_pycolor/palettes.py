@@ -185,7 +185,7 @@ shades = (
     + green_shades
 )
 all_colors = all_colors + Palette(
-    name="Shades", colors=[color for color in shades.colors if color not in all.colors]
+    name="Shades", colors=[color for color in shades.colors if color not in all_colors.colors]
 )
 all_colors.name = "AllColors"
 
