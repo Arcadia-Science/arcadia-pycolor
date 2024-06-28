@@ -2,137 +2,87 @@ import arcadia_pycolor.colors as colors
 from arcadia_pycolor.gradient import Gradient
 
 # Perceptually Uniform Gradients
-viridis = Gradient(
-    "viridis",
-    [colors.concord, colors.grape, colors.aegean, colors.lime, colors.yellow],
-    [0, 0.23, 0.49, 0.77, 1],
-)
-
 magma = Gradient(
     "magma",
-    [colors.pitch, colors.grape, colors.taffy, colors.tangerine, colors.oat],
-    [0, 0.38, 0.72, 0.9, 1],
+    [colors.concord, colors.tanzanite, colors.heather, colors.tumbleweed, colors.wheat],
+    [0, 0.217, 0.498, 0.799, 1],
 )
 
-cividis = Gradient(
-    "cividis",
-    [colors.crow, colors.forest, colors.canary, colors.satin],
-    [0, 0.39, 0.85, 1],
+viridis = Gradient(
+    "viridis",
+    [colors.space, colors.aegean, colors.lime, colors.butter],
+    [0, 0.468, 0.746, 1],
+)
+
+verde = Gradient(
+    "verde",
+    [colors.depths, colors.shire, colors.topaz, colors.putty],
+    [0, 0.357, 0.909, 1],
+)
+
+sunset = Gradient(
+    "sunset",
+    [colors.soil, colors.umber, colors.tumbleweed, colors.topaz, colors.putty],
+    [0.0, 0.407, 0.767, 0.915, 1.0],
+)
+
+wine = Gradient(
+    "wine",
+    [colors.redwood, colors.dragon, colors.tangerine, colors.dawn],
+    [0, 0.451, 0.828, 1],
+)
+
+lisafrank = Gradient(
+    "lisafrank",
+    [colors.depths, colors.aegean, colors.wish, colors.blossom],
+    [0, 0.484, 0.862, 1],
 )
 
 # Strong Monocolor Gradients
 reds = Gradient(
     "reds",
-    [colors.redwood, colors.dragon, colors.amber, colors.paper],
-    [0.0, 0.43, 0.64, 1.0],
+    [colors.cinnabar, colors.dragon, colors.blush],
+    [0.0, 0.212, 1.0],
 )
 
 oranges = Gradient(
     "oranges",
-    [colors.soil, colors.umber, colors.tangerine, colors.paper],
-    [0.0, 0.38, 0.8, 1.0],
-)
-
-yellows = Gradient(
-    "yellows",
-    [colors.cocoa, colors.canary, colors.oat, colors.paper],
-    [0.0, 0.76, 0.9, 1.0],
+    [colors.terracotta, colors.tangerine, colors.dawn],
+    [0.0, 0.761, 1.0],
 )
 
 greens = Gradient(
     "greens",
-    [colors.yucca, colors.lime, colors.paper],
-    [0, 0.7, 1],
+    [colors.fern, colors.lime, colors.lichen],
+    [0, 0.622, 1],
 )
 
-teals = Gradient(
-    "teals",
-    [colors.depths, colors.seaweed, colors.paper],
-    [0, 0.42, 1],
+sages = Gradient(
+    "sages",
+    [colors.asparagus, colors.sage, colors.lichen],
+    [0, 0.641, 1],
 )
 
 blues = Gradient(
     "blues",
-    [colors.concord, colors.aegean, colors.vitalblue, colors.paper],
-    [0, 0.47, 0.66, 1.0],
+    [colors.lapis, colors.aegean, colors.zephyr],
+    [0, 0.254, 1.0],
 )
 
 purples = Gradient(
     "purples",
-    [colors.royal, colors.aster, colors.wish, colors.paper],
-    [0, 0.4, 0.74, 1.0],
-)
-
-magentas = Gradient(
-    "magentas",
-    [colors.carmine, colors.pitaya, colors.rose, colors.paper],
-    [0, 0.44, 0.73, 1],
-)
-
-# Weak Bicolor Gradients
-aegean_amber = Gradient(
-    "aegean_amber",
-    [colors.aegean, colors.paper, colors.amber],
-    [0, 0.5, 1],
-)
-
-aster_canary = Gradient(
-    "aster_canary",
-    [colors.aster, colors.paper, colors.canary],
-    [0, 0.5, 1],
-)
-
-lime_rose = Gradient(
-    "lime_rose",
-    [colors.lime, colors.paper, colors.rose],
-    [0, 0.5, 1],
-)
-
-seaweed_tangerine = Gradient(
-    "seaweed_tangerine",
-    [colors.seaweed, colors.paper, colors.tangerine],
-    [0, 0.5, 1],
+    [colors.lilac, colors.aster, colors.ghost],
+    [0, 0.144, 1.0],
 )
 
 # Strong Bicolor Gradients
-poppies = Gradient(
-    "poppies",
-    [
-        colors.concord,
-        colors.aegean,
-        colors.vitalblue,
-        colors.paper,
-        colors.amber,
-        colors.dragon,
-        colors.redwood,
-    ],
-    [0, 0.235, 0.33, 0.5, 0.68, 0.785, 1.0],
-)
+orange_sage = oranges + sages.reverse()
+orange_sage.name = "orange_sage"
 
-pansies = Gradient(
-    "pansies",
-    [
-        colors.royal,
-        colors.aster,
-        colors.wish,
-        colors.paper,
-        colors.oat,
-        colors.canary,
-        colors.cocoa,
-    ],
-    [0, 0.2, 0.37, 0.5, 0.55, 0.62, 1.0],
-)
+red_blue = reds + blues.reverse()
+red_blue.name = "red_blue"
 
-dahlias = Gradient(
-    "dahlias",
-    [colors.yucca, colors.lime, colors.paper, colors.rose, colors.pitaya, colors.carmine],
-    [0, 0.35, 0.5, 0.635, 0.78, 1.0],
-)
-
-lillies = Gradient(
-    "lillies",
-    [colors.depths, colors.seaweed, colors.paper, colors.tangerine, colors.umber, colors.soil],
-    [0.0, 0.21, 0.5, 0.6, 0.81, 1.0],
-)
+purple_green = purples + greens.reverse()
+purple_green.name = "purple_green"
 
 all_gradients = [obj for obj in globals().values() if isinstance(obj, Gradient)]

@@ -6,71 +6,84 @@ import arcadia_pycolor.palettes as palettes
 
 ### Sizing and spacing ###
 # Units in inches when dpi is 72
+BASE_DPI = 72
+PRINT_DPI = 300
 
-# Padding to get ~30px padding around the figure.
-FIGURE_PADDING = 0.41
+FIGURE_PADDING_PIXELS = 20
+FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
-FULL_W = (20.8333, 10.6161)
-FULL_S = (10.2029, 9.3712)
-THREEQ_W = (14.5833, 7.0833)
-THREEQ_S = (7.0904, 6.6946)
-HALF_S = (10.4167, 9.9928)
+FULL_WIDE = (13.33333, 5.27777)
+FULL_SQUARE = (6.52777, 6.52777)
+FLOAT_WIDE = (9.16667, 5.27777)
+FLOAT_SQUARE = (4.44444, 4.44444)
+HALF_SQUARE = (6.38888, 6.38888)
 
 # Dictionary of common figure sizes.
 FIGURE_SIZES = {
-    "full_wide": FULL_W,
-    "full_small": FULL_S,
-    "threeq_wide": THREEQ_W,
-    "threeq_small": THREEQ_S,
-    "half_small": HALF_S,
+    "full_wide": FULL_WIDE,
+    "full_square": FULL_SQUARE,
+    "float_wide": FLOAT_WIDE,
+    "float_square": FLOAT_SQUARE,
+    "half_square": HALF_SQUARE,
 }
 
 ### Fonts ###
 # Font family to look for in the font folder.
 FONT_FILTER = "Suisse"
-
 DEFAULT_FONT = "Suisse Int'l"
+
+# Base font size for text.
+BASE_FONT_SIZE = 15
+TITLE_FONT_SIZE = 16
 
 # Font family to use for monospace fonts.
 MONOSPACE_FONT = "Suisse Int'l Mono"
-
+MONOSPACE_FONT_SIZE = 14.5
 
 # Specifications for categorical axes.
 CATEGORICAL_AXIS_TICKLENGTH = 0
-CATEGORICAL_AXIS_TICKPADDING = 7
+CATEGORICAL_AXIS_TICKPADDING = 10
+
+### Legends ###
+LEGEND_SEPARATOR_LINEWIDTH = 1.5
+
+### Axes ###
+NUMERICAL_AXIS_TICKLENGTH = 5
+NUMERICAL_AXIS_TICKPADDING = 5
+LINEWEIGHT = 0.75
 
 
 ### rcParams ###
 ARCADIA_RC_PARAMS = {
     # Fonts
     "font.family": "sans-serif",
-    "font.size": 15,
+    "font.size": BASE_FONT_SIZE,
     "font.serif": "Suisse Works",
     "font.sans-serif": "Suisse Int'l",
     "font.monospace": "Suisse Int'l Mono",
     "font.weight": "regular",
     # Figure
-    "figure.titlesize": 16.5,
+    "figure.titlesize": TITLE_FONT_SIZE,
     "figure.titleweight": "medium",
-    "figure.facecolor": colors.parchment,
+    "figure.facecolor": colors.white,
     "figure.edgecolor": "none",
     "figure.frameon": False,
-    "figure.dpi": 72,
+    "figure.dpi": BASE_DPI,
     # Axes
     "axes.facecolor": "none",
     "axes.edgecolor": colors.black,
-    "axes.linewidth": 1,
+    "axes.linewidth": LINEWEIGHT,
     "axes.grid": False,
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
-    "axes.prop_cycle": plt.cycler(color=palettes.accent_all_ordered.colors),  # type: ignore
-    "axes.titlesize": 16.5,
+    "axes.prop_cycle": plt.cycler(color=palettes.all_ordered.colors),  # type: ignore
+    "axes.titlesize": TITLE_FONT_SIZE,
     "axes.titleweight": "medium",
-    "axes.labelsize": 15,
+    "axes.labelsize": BASE_FONT_SIZE,
     "axes.labelweight": "medium",
     "axes.labelcolor": colors.black,
-    "axes.labelpad": 7,
+    "axes.labelpad": 10,
     "axes.spines.left": True,
     "axes.spines.bottom": True,
     "axes.spines.right": False,
@@ -82,27 +95,27 @@ ARCADIA_RC_PARAMS = {
     "polaraxes.grid": True,
     "axes3d.grid": True,
     # Ticks
-    "xtick.major.size": 4.5,
-    "xtick.minor.size": 2.5,
-    "xtick.major.width": 1,
-    "xtick.minor.width": 1,
-    "xtick.major.pad": 4,
-    "xtick.minor.pad": 4,
+    "xtick.major.size": NUMERICAL_AXIS_TICKLENGTH,
+    "xtick.minor.size": NUMERICAL_AXIS_TICKLENGTH / 2,
+    "xtick.major.width": LINEWEIGHT,
+    "xtick.minor.width": LINEWEIGHT,
+    "xtick.major.pad": NUMERICAL_AXIS_TICKPADDING,
+    "xtick.minor.pad": NUMERICAL_AXIS_TICKPADDING,
     "xtick.color": colors.black,
-    "xtick.labelsize": 15,
-    "ytick.major.size": 4.5,
-    "ytick.minor.size": 2.5,
-    "ytick.major.width": 1,
-    "ytick.minor.width": 1,
-    "ytick.major.pad": 4,
-    "ytick.minor.pad": 4,
+    "xtick.labelsize": BASE_FONT_SIZE,
+    "ytick.major.size": NUMERICAL_AXIS_TICKLENGTH,
+    "ytick.minor.size": NUMERICAL_AXIS_TICKLENGTH / 2,
+    "ytick.major.width": LINEWEIGHT,
+    "ytick.minor.width": LINEWEIGHT,
+    "ytick.major.pad": NUMERICAL_AXIS_TICKPADDING,
+    "ytick.minor.pad": NUMERICAL_AXIS_TICKPADDING,
     "ytick.color": colors.black,
-    "ytick.labelsize": 15,
+    "ytick.labelsize": BASE_FONT_SIZE,
     # Legend
     "legend.loc": "best",
     "legend.frameon": False,
-    "legend.title_fontsize": 16.5,
-    "legend.fontsize": 15,
+    "legend.title_fontsize": TITLE_FONT_SIZE,
+    "legend.fontsize": BASE_FONT_SIZE,
     "legend.framealpha": 0,
     "legend.borderpad": 0,
     "legend.borderaxespad": 0,
@@ -129,7 +142,7 @@ ARCADIA_RC_PARAMS = {
     "markers.fillstyle": "full",
     "pcolor.shading": "auto",
     # Patches
-    "patch.linewidth": 0,
+    "patch.linewidth": 0,  # Removes edge on patches.
     "patch.facecolor": colors.aegean,
     "patch.edgecolor": colors.aegean,
     "patch.force_edgecolor": False,
@@ -137,8 +150,8 @@ ARCADIA_RC_PARAMS = {
     # Saving figures
     "savefig.format": "pdf",
     "savefig.transparent": True,
-    "savefig.pad_inches": FIGURE_PADDING,
-    "savefig.dpi": 72,
+    "savefig.pad_inches": FIGURE_PADDING_INCHES,
+    "savefig.dpi": BASE_DPI,
     "pdf.fonttype": 42,
     "pdf.compression": 0,
     "ps.fonttype": 42,
