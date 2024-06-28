@@ -172,7 +172,7 @@ named = Palette(
 )
 
 # All palettes
-all = primary + secondary + neutral + background + other + named
+all_colors = primary + secondary + neutral + background + other + named
 shades = (
     blue_shades
     + red_shades
@@ -184,11 +184,10 @@ shades = (
     + grey_shades
     + green_shades
 )
-all = all + Palette(
-    name="shades", colors=[color for color in shades.colors if color not in all.colors]
+all_colors = all_colors + Palette(
+    name="Shades", colors=[color for color in shades.colors if color not in all_colors.colors]
 )
-all.name = "All"
+all_colors.name = "AllColors"
 
-del shades
 
 all_palettes = [obj for obj in globals().values() if isinstance(obj, Palette)]
