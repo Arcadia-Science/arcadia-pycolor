@@ -1,15 +1,20 @@
 # arcadia-pycolor
 
-Tools for using the Arcadia color palettes and figure style guide in Python.  
-This package automatically generate color palettes and color maps for use with Matplotlib.
+This repo contains a Python package called `arcadia_pycolor` that provides too for using the Arcadia color palettes and for styling Matplotlib figures to comply with Arcadia's style guide.
 
 ## Installation
 
-TODO: write installation instructions once the package is hosted on PyPI.
+The package is hosted on PyPI and can be installed using pip:
+
+```bash
+pip install arcadia-pycolor
+```
 
 ## Usage
 
-See [this notebook](usage_example.ipynb) for examples of how to use the color palettes and color maps in this package.
+Please see [the quickstart guide](docs/quickstart.md) for an introduction to the package and how to use it to style Matplotlib and seaborn plots.
+
+For detailed documentation about the package and links to example plots, see the [documentation README](docs/README.md).
 
 ## Development
 

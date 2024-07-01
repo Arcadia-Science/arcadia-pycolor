@@ -11,7 +11,7 @@ The `arcadia_pycolor` Python package should be installed using pip. If you are u
 pip install arcadia-pycolor
 ```
 
-After this, the package can be imported in notebooks or scripts using the following command:
+The package can then be imported in notebooks or scripts using the following command:
 
 ```python
 import arcadia_pycolor as apc
@@ -41,7 +41,7 @@ plt.show()
 ### An aside about fonts
 The Arcadia style guide uses the Suisse family of fonts. When `apc.mpl.setup` is called, it automatically configures Matplotlib to use these fonts. If they are not installed, Matplotlib will use its default fonts instead.
 
-The Suisse fonts are proprietary. To install them, please refer to [the brand assets page on notion](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7#d1cbc8fc315b4d10a8fd4cc7d9eb8c3f) for instruction. Please do not share these fonts outside of Arcadia.
+The Suisse fonts are proprietary. To install them, please refer to [the brand assets page on notion](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7#d1cbc8fc315b4d10a8fd4cc7d9eb8c3f) for instructions. Please do not share these fonts outside of Arcadia.
 
 ## Styling individual plots
 
@@ -68,7 +68,7 @@ It also has a few optional arguments that can be used to customize the styling o
 - `categorical_axes` adjusts the x- and/or y-axis styles to be more readable when the axis represents a categorical variable.
 - `colorbar_exists` tells the function to style the colorbar, if one exists.
 
-Check out [the documentation about styling plots](docs/style_usage.ipynb) for more information.
+Check out [the documentation about styling plots](/docs/style_usage.ipynb) for more information.
 
 ## Using Arcadia colors
 
@@ -85,6 +85,14 @@ import arcadia_pycolor as apc
 plt.plot([1, 2, 3], [4, 5, 6], color=apc.aegean)
 plt.plot([1, 2, 3], [4, 6, 8], color=apc.rose)
 ```
+
+To preview a particular color, you can print it:
+
+```python
+print(apc.aegean)
+```
+
+This will output the name and hex code of the color alongside a swatch showing what the color looks like.
 
 ### Using color palettes
 
@@ -105,7 +113,7 @@ This outputs a list of color swatches with the names and hex codes of the colors
 
 ### Using color gradients
 
-The Arcadia style guide also defines continuous color gradients that can be used in figures. These gradients are accessible as attributes of the `apc.gradients` module. To use a gradient in a Matplotlib or seaborn plot, you can convert it to a Matplotlib colormap using the `to_mpl_cmap` method. For example, to use the "blues" gradient in a heatmap:
+The Arcadia style guide also defines continuous color gradients that can be used in plots like heatmaps. These gradients are accessible as attributes of the `apc.gradients` module. To use a gradient in a Matplotlib or seaborn plot, you can convert it to a Matplotlib colormap using the `to_mpl_cmap` method. For example, to use the "blues" gradient in a heatmap:
 
 ```python
 import matplotlib.pyplot as plt
@@ -126,7 +134,7 @@ print(apc.gradients.blues)
 
 ### Referring to color palettes and gradients by name
 
-When `apc.mpl.setup` is called (see above), it registers all of the built-in color palettes and gradients with Matplotlib. This means that you can refer to them by name in any Matplotlib or seaborn plot. For example, to use the "blues" gradient in a heatmap without having to type `apc.gradients.blues` or convert it to a Matplotlib colormap:
+After `apc.mpl.setup` is called (see above), it registers all of the built-in color palettes and gradients with Matplotlib. This means that you can refer to them by name in any Matplotlib or seaborn plot. For example, to use the "blues" gradient in a heatmap without having to type `apc.gradients.blues` or convert it to a Matplotlib colormap:
 
 ```python
 import matplotlib.pyplot as plt
@@ -139,4 +147,4 @@ data = np.random.rand(10, 10)
 sns.heatmap(data, cmap="apc:blues")
 ```
 
-For much more detail about how to use color palettes and gradients in your figures, please refer to [the documentation about using colors](docs/color_usage.ipynb).
+For much more detail about how to use color palettes and gradients in your figures, please refer to [the documentation about using colors](/docs/color_usage.ipynb).
