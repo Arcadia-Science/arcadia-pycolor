@@ -2,7 +2,7 @@
 
 This notebook provides a quick introduction to the `arcadia_pycolor` package and how to use it to style Matplotlib and seaborn plots so that they comply with the Arcadia style guide.
 
-For detailed documentation about the package and links to example plots, please refer to the [documentation README](docs/README.md).
+For detailed documentation about the package and links to example plots, please refer to the [documentation README](/docs/README.md).
 
 ## Install the `arcadia_pycolor` package
 The `arcadia_pycolor` Python package should be installed using pip. If you are using conda environments, make sure you have the correct conda environment activated, then run the following command in your terminal:
@@ -122,6 +122,21 @@ Just like palettes, gradients can be visualized by printing the gradient object:
 
 ```python
 print(apc.gradients.blues)
+```
+
+### Referring to color palettes and gradients by name
+
+When `apc.mpl.setup` is called (see above), it registers all of the built-in color palettes and gradients with Matplotlib. This means that you can refer to them by name in any Matplotlib or seaborn plot. For example, to use the "blues" gradient in a heatmap without having to type `apc.gradients.blues` or convert it to a Matplotlib colormap:
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+import arcadia_pycolor as apc
+
+data = np.random.rand(10, 10)
+sns.heatmap(data, cmap="apc:blues")
 ```
 
 For much more detail about how to use color palettes and gradients in your figures, please refer to [the documentation about using colors](docs/color_usage.ipynb).
