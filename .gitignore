@@ -1,4 +1,4 @@
-/test-outputs/
+outputs/**
 
 # packages installed in editable mode
 envs/src/**

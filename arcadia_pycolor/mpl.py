@@ -62,11 +62,11 @@ def _arcadia_fonts_found() -> bool:
     return len(arcadia_fonts) > 0
 
 
-def save_figure(context: str = "web", **savefig_kwargs: dict[Any, Any]) -> None:
+def save_figure(fname: str, context: str = "web", **savefig_kwargs: dict[Any, Any]) -> None:
     "Save the current figure with the default settings for web."
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
     kwargs.update(**savefig_kwargs)  # type: ignore
-    plt.savefig(**kwargs)  # type: ignore
+    plt.savefig(fname=fname, **kwargs)  # type: ignore
 
 
 def set_yticklabel_font(
