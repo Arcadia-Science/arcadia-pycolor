@@ -36,7 +36,7 @@ def plot_seaborn_scatterplot(ax):
         ax=ax,
         s=80,
     )
-    apc.mpl.style_axis(monospaced_axes="both")
+    apc.mpl.style_plot(monospaced_axes="both")
 
 
 def plot_seaborn_violinplot(ax):
@@ -56,7 +56,7 @@ def plot_seaborn_violinplot(ax):
         palette=colors,
         ax=ax,
     )
-    apc.mpl.style_axis(categorical_axes="x", monospaced_axes="y")
+    apc.mpl.style_plot(categorical_axes="x", monospaced_axes="y")
 
 
 @pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())

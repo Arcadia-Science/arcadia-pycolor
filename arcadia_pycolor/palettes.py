@@ -36,7 +36,7 @@ secondary = Palette(
 neutral = Palette(
     "Neutral",
     [
-        colors.lightgrey,
+        colors.gray,
         colors.chateau,
         colors.bark,
         colors.slate,

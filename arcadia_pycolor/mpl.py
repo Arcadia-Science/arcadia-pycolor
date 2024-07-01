@@ -250,7 +250,7 @@ def set_colorbar_ticklabel_monospaced(axis: Union[Axes, None] = None):
         set_ticklabel_monospaced(axis=cbar.ax)
 
 
-def style_axis(
+def style_plot(
     axis: Union[Axes, None] = None,
     monospaced_axes: Literal["x", "y", "both", None] = None,
     categorical_axes: Literal["x", "y", "both", None] = None,
@@ -351,7 +351,7 @@ def add_legend_line(legend: Legend, linewidth: float = LEGEND_SEPARATOR_LINEWIDT
 
     # Check that we haven't already put a drawing area within the legend.
     # This should catch if we've already added the legend line
-    # through a different call to this function, e.g. calling "style_axis".
+    # through a different call to this function, e.g. calling "style_plot".
     # This won't catch if the DrawingArea is added by a user otherwise,
     # but most users shouldn't be adding new DrawingAreas to the legend.
     if not isinstance(entries[0], DrawingArea):
