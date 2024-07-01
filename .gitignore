@@ -1,4 +1,4 @@
-docs/outputs/
+docs/output/
 
 # packages installed in editable mode
 envs/src/**
