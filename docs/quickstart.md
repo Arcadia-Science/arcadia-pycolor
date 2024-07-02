@@ -4,6 +4,8 @@ This notebook provides a quick introduction to the `arcadia_pycolor` Python pack
 
 For detailed documentation about the package and links to example plots, please see [the documentation README](/docs/README.md).
 
+For links to the Arcadia style guide, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7) on Notion.
+
 ## Install the `arcadia_pycolor` package
 The `arcadia_pycolor` package can be installed using pip. In a virtual environment of your choice, run the following command in your terminal:
 
@@ -40,10 +42,19 @@ sns.histplot([3, 1, 4, 1, 5])
 plt.show()
 ```
 
-### A note about fonts
+### What does `apc.mpl.setup` do?
+
+The `apc.mpl.setup` does several different things:
+- It loads the Arcadia fonts.
+- It registers Arcadia color palettes and gradients with Matplotlib (see the section ["Using Arcadia colors"](#using-arcadia-colors) below).
+- It sets the default Matplotlib styles to match the Arcadia style guide.
+
+**To see before-and-after examples of what `apc.mpl.setup` does, please refer to [the documentation about styling plots](/docs/style_usage.ipynb).**
+
+### A note about the Arcadia fonts
 The Arcadia style guide uses the Suisse family of fonts. When `apc.mpl.setup` is called, it automatically configures Matplotlib to use these fonts. If they are not installed, Matplotlib will use its default fonts instead.
 
-The Suisse fonts are proprietary. To install them, please refer to [the brand assets page on notion](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7#d1cbc8fc315b4d10a8fd4cc7d9eb8c3f) for instructions. Please do not share these fonts outside of Arcadia.
+The Suisse fonts are proprietary. To install them, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7#d1cbc8fc315b4d10a8fd4cc7d9eb8c3f) on Notion for instructions. Please do not share these fonts outside of Arcadia.
 
 ## Styling individual plots
 
@@ -68,7 +79,7 @@ By default, the `style_plot` function capitalizes the x- and y-axis labels and s
 - `categorical_axes` adjusts the x- and/or y-axis styles to be more readable when the axis represents a categorical variable.
 - `colorbar_exists` tells the function to style the colorbar, if one exists.
 
-Check out [the documentation about styling plots](/docs/style_usage.ipynb) for more information.
+**To see examples of what the `style_plot` function does, please see [the documentation about styling plots](/docs/style_usage.ipynb).**
 
 ## Using Arcadia colors
 
@@ -156,4 +167,4 @@ data = np.random.rand(10, 10)
 sns.heatmap(data, cmap="apc:blues")
 ```
 
-For much more detail about how to use color palettes and gradients in your figures, please refer to [the documentation about using colors](/docs/color_usage.ipynb).
+**For much more detail about how to use color palettes and gradients in your figures, please refer to [the documentation about using colors](/docs/color_usage.ipynb).**
