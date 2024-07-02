@@ -18,6 +18,8 @@ For detailed documentation about the package and links to example plots, see the
 
 ## Development
 
+### Environment setup
+
 We use poetry to manage dependencies and packaging. First, create a new conda environment and install poetry:
 
 ```bash
@@ -37,7 +39,7 @@ Finally, install the package in editable mode:
 pip install -e .
 ```
 
-## Testing
+### Testing
 
 We use pytest for testing. The tests are found in the `arcadia_pycolor/tests/` subpackage. To run the tests, simply run `pytest` from the root directory of the repository.
 
@@ -54,6 +56,12 @@ Hint: you can use pytest's `-k` option to filter the tests that are run if you o
 ```bash
 pytest -k barplots --output-dirpath ./test-outputs
 ```
+
+### Updating the Jupyter notebooks
+
+Some of the documentation is in the form of Jupyter notebooks. The inline graphical outputs of these notebooks are part of the documentation, so these notebooks are committed to the repo with their outputs included. It is therefore important to keep the notebook outputs up-to-date by re-running all of the notebooks when changes are made to the package.
+
+Run the makefile command `execute-all-notebooks` to execute all the notebooks. This 1) ensures that the notebooks execute without errors and 2) updates their outputs in-place. Then, commit any modified notebooks to the repo.
 
 ## Releasing the package on PyPI
 
