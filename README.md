@@ -1,6 +1,6 @@
 # arcadia-pycolor
 
-This repo contains a Python package called `arcadia_pycolor` that provides too for using the Arcadia color palettes and for styling Matplotlib figures to comply with Arcadia's style guide.
+This repo contains a Python package called `arcadia_pycolor` that provides tools for using the Arcadia color palettes and for styling Matplotlib figures to comply with Arcadia's style guide.
 
 ## Installation
 
