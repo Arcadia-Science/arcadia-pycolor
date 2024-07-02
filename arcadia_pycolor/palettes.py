@@ -117,13 +117,13 @@ pink_shades = Palette(
     [colors.azalea, colors.candy, colors.rose, colors.dress, colors.putty],
 )
 
-brown_shades = Palette(
-    "BrownShades",
+warm_gray_shades = Palette(
+    "WarmGrayShades",
     [colors.mud, colors.bark, colors.chateau, colors.taupe, colors.stone],
 )
 
-grey_shades = Palette(
-    "GreyShades",
+cool_gray_shades = Palette(
+    "CoolGrayShades",
     [colors.steel, colors.marine, colors.cloud, colors.dove, colors.ice],
 )
 
@@ -136,7 +136,7 @@ other = Palette(
     "Other",
     [
         colors.concord,
-        colors.brightgrey,
+        colors.brightgray,
         colors.paper,
         colors.redwood,
         colors.depths,
@@ -180,8 +180,8 @@ shades = (
     + purple_shades
     + teal_shades
     + pink_shades
-    + brown_shades
-    + grey_shades
+    + warm_gray_shades
+    + cool_gray_shades
     + green_shades
 )
 all_colors = all_colors + Palette(

@@ -84,7 +84,7 @@ ghost = HexCode("ghost", "#FCF7FF")
 redwood = HexCode("redwood", "#52180A")
 
 # Other Arcadia colors
-brightgrey = HexCode("brightgrey", "#EAEAEA")
+brightgray = HexCode("brightgray", "#EAEAEA")
 paper = HexCode("paper", "#FCFCFC")
 
 soil = HexCode("soil", "#4D2500")
