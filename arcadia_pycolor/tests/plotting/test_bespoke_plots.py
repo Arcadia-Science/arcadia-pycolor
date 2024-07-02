@@ -41,7 +41,7 @@ def test_plot_stacked_barplot(output_dirpath, figure_size):
     assert legend is not None
     legend.set_title("Viability")
 
-    apc.mpl.style_axis(ax, categorical_axes="x", monospaced_axes="y")
+    apc.mpl.style_plot(ax, categorical_axes="x", monospaced_axes="y")
     apc.mpl.save_figure(fname=(output_dirpath / f"test_plot_stacked_barplot_{figure_size}.pdf"))
     plt.close(fig)
 
@@ -58,14 +58,14 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
         figsize=apc.mpl.get_figure_dimensions(figure_size),
     )
 
-    colors = [apc.aegean, apc.lightgrey, apc.dragon]
+    colors = [apc.aegean, apc.gray, apc.dragon]
     cmap = apc.Gradient(name="", colors=colors).to_mpl_cmap()
 
     for ind, line in enumerate(lines):
         ax = axes[ind]
         color = cmap(ind / len(lines))
         ax.plot(line, color=color)
-        apc.mpl.style_axis(axis=ax, monospaced_axes="both")
+        apc.mpl.style_plot(axis=ax, monospaced_axes="both")
         ax.set_yticks([])
 
         if ind != len(lines) - 1:
@@ -108,7 +108,7 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     )
 
     for ax in axs:
-        apc.mpl.style_axis(
+        apc.mpl.style_plot(
             ax,
             categorical_axes="both",
             monospaced_axes="both",

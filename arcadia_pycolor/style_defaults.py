@@ -78,8 +78,9 @@ ARCADIA_RC_PARAMS = {
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
     "axes.prop_cycle": plt.cycler(color=palettes.all_ordered.colors),  # type: ignore
-    "axes.titlesize": TITLE_FONT_SIZE,
+    "axes.titlesize": TITLE_FONT_SIZE + 2,
     "axes.titleweight": "medium",
+    "axes.titlepad": 16,
     "axes.labelsize": BASE_FONT_SIZE,
     "axes.labelweight": "medium",
     "axes.labelcolor": colors.black,

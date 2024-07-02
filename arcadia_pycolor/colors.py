@@ -25,7 +25,7 @@ mars = HexCode("mars", "#DA9085")
 shell = HexCode("shell", "#EDE0D6")
 
 # Neutral colors
-lightgrey = HexCode("lightgrey", "#EBEDE8")
+gray = HexCode("gray", "#EBEDE8")
 chateau = HexCode("chateau", "#BAB0A8")
 bark = HexCode("bark", "#8F8885")
 slate = HexCode("slate", "#43413F")
@@ -84,7 +84,7 @@ ghost = HexCode("ghost", "#FCF7FF")
 redwood = HexCode("redwood", "#52180A")
 
 # Other Arcadia colors
-brightgrey = HexCode("brightgrey", "#EAEAEA")
+brightgray = HexCode("brightgray", "#EAEAEA")
 paper = HexCode("paper", "#FCFCFC")
 
 soil = HexCode("soil", "#4D2500")

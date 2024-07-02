@@ -46,7 +46,7 @@ def test_gradient_from_hexcode_list_invalid_values(values):
             [0, 0.5, 1],
         ),
         (
-            [HexCode("white", "#FFFFFF"), HexCode("grey", "#CCCCCC"), HexCode("black", "#000000")],
+            [HexCode("white", "#FFFFFF"), HexCode("gray", "#CCCCCC"), HexCode("black", "#000000")],
             [0, 1],
         ),
     ],

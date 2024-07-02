@@ -67,7 +67,7 @@ def plot_vertical_barplot_with_matplotlib_with_error_bars(ax):
     """
     sample_ids = _word_wrap_sample_ids(BARPLOT_SAMPLE_IDS)
     plt.bar(sample_ids, BARPLOT_NUM_READS, color=apc.aster)
-    apc.mpl.style_axis(ax, monospaced_axes="y")
+    apc.mpl.style_plot(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
     apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
 
@@ -82,7 +82,7 @@ def plot_horizontal_barplot_with_matplotlib_with_error_bars(ax):
     This plot is identical to the vertical version, but with the x and y axes swapped.
     """
     plt.barh(BARPLOT_SAMPLE_IDS, BARPLOT_NUM_READS, color=apc.aster)
-    apc.mpl.style_axis(ax, monospaced_axes="x")
+    apc.mpl.style_plot(ax, monospaced_axes="x")
     apc.mpl.set_yaxis_categorical()
     apc.mpl.add_commas_to_axis_tick_labels(ax.get_xaxis())
     plt.xticks(rotation=30, ha="right")
@@ -110,7 +110,7 @@ def plot_vertical_barplot_with_matplotlib_with_categories(ax):
         BARPLOT_NUM_READS,
         color=colors,
     )
-    apc.mpl.style_axis(ax, monospaced_axes="y")
+    apc.mpl.style_plot(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
     apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
     plt.ylabel("Number of reads")
@@ -129,7 +129,7 @@ def plot_vertical_barplot_with_seaborn(ax):
         saturation=1,
         ax=ax,
     )
-    apc.mpl.style_axis(ax, monospaced_axes="y")
+    apc.mpl.style_plot(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
     apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
     plt.ylabel("Number of reads")
@@ -142,7 +142,7 @@ def plot_horizontal_barplot_with_seaborn(ax):
     This plot is identical to the vertical version, but with the x and y axes swapped.
     """
     sns.barplot(x=BARPLOT_NUM_READS, y=BARPLOT_SAMPLE_IDS, color=apc.aster, saturation=1, ax=ax)
-    apc.mpl.style_axis(ax, monospaced_axes="x")
+    apc.mpl.style_plot(ax, monospaced_axes="x")
     apc.mpl.set_yaxis_categorical()
     apc.mpl.add_commas_to_axis_tick_labels(ax.get_xaxis())
     plt.xticks(rotation=30, ha="right")
@@ -170,7 +170,7 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
         ax=ax,
     )
 
-    apc.mpl.style_axis(ax, monospaced_axes="y")
+    apc.mpl.style_plot(ax, monospaced_axes="y")
     apc.mpl.set_xaxis_categorical()
     apc.mpl.add_commas_to_axis_tick_labels(ax.get_yaxis())
 
