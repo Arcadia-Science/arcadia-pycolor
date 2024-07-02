@@ -1,5 +1,15 @@
 include .env
 
+DOCS_DIR := ./docs
+JUPYTER_NOTEBOOKS := $(shell find $(DOCS_DIR) -type f -name '*.ipynb')
+
+.PHONY: execute-all-notebooks
+execute-all-notebooks:
+	@for file in $(JUPYTER_NOTEBOOKS); do \
+		echo "Executing notebook $$file"; \
+		jupyter execute --inplace $$file; \
+	done
+
 .PHONY: lint
 lint:
 	ruff check --exit-zero .
