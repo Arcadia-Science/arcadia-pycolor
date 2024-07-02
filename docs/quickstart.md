@@ -113,6 +113,7 @@ apc.palettes.primary
 ```
 
 This outputs a list of color swatches with the names and hex codes of the colors in the palette:
+
 <img src="./images/primary-palette.png" alt="primary palette swatches" width="250"/>
 
 ### Using color gradients
@@ -137,6 +138,7 @@ apc.gradients.blues
 ```
 
 This outputs a gradient swatch showing the colors in the gradient:
+
 <img src="./images/blues-gradient.png" alt="blues gradient swatch" width="250"/>
 
 ### Referring to color palettes and gradients by name
