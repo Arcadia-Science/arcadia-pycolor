@@ -100,7 +100,7 @@ class Gradient(ColorSequence["Gradient"]):
         values: NumericSequence,
         min_value: Union[float, None] = None,
         max_value: Union[float, None] = None,
-    ) -> list[str]:
+    ) -> list[HexCode]:
         """Map a sequence of values to their corresponding colors from a gradient
 
         Args:
@@ -140,7 +140,7 @@ class Gradient(ColorSequence["Gradient"]):
         normalized_values = [(value - min_value) / (max_value - min_value) for value in values]
         clamped_values = [max(0.0, min(1.0, value)) for value in normalized_values]
 
-        return [mcolors.to_hex(cmap(value)) for value in clamped_values]
+        return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in clamped_values]
 
     def interpolate_lightness(self) -> "Gradient":
         """
