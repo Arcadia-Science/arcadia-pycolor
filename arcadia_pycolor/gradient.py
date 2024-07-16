@@ -6,6 +6,7 @@ from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import ColorSequence, Palette
 from arcadia_pycolor.utils import (
+    NumericSequence,
     distribute_values,
     interpolate_x_values,
     is_monotonic,
@@ -93,6 +94,53 @@ class Gradient(ColorSequence["Gradient"]):
             name=f"{self.name}_resampled_{steps}",
             colors=colors,
         )
+
+    def map_values(
+        self,
+        values: NumericSequence,
+        min_value: Union[float, None] = None,
+        max_value: Union[float, None] = None,
+    ) -> list[str]:
+        """Map a sequence of values to their corresponding colors from a gradient
+
+        Args:
+            min_value:
+                Determines which value corresponds to the first color in the spectrum.
+                Values less than this are given this color. If not provided, min(values) is
+                chosen.
+            max_value:
+                Determines which value corresponds to the last color in the spectrum. Values
+                greater than this are given this color. If not provided, max(values) is
+                chosen.
+
+        Returns:
+            A list of hex code strings.
+        """
+
+        if not len(values):
+            return []
+
+        if min_value is None:
+            min_value = min(values)
+
+        if max_value is None:
+            max_value = max(values)
+
+        if min_value > max_value:
+            raise ValueError(
+                f"max_value ({max_value}) must be greater than min_value ({min_value})."
+            )
+
+        cmap = self.to_mpl_cmap()
+
+        if min_value == max_value:
+            # Value range is 0. Return the midrange color for each value.
+            return [mcolors.to_hex(cmap(0.5))] * len(values)
+
+        normalized_values = [(value - min_value) / (max_value - min_value) for value in values]
+        clamped_values = [max(0.0, min(1.0, value)) for value in normalized_values]
+
+        return [mcolors.to_hex(cmap(value)) for value in clamped_values]
 
     def interpolate_lightness(self) -> "Gradient":
         """
