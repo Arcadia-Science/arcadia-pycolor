@@ -106,15 +106,15 @@ class Gradient(ColorSequence["Gradient"]):
         Args:
             min_value:
                 Determines which value corresponds to the first color in the spectrum.
-                Values less than this are given this color. If not provided, min(values) is
-                chosen.
+                Any values below this minimum are assigned to the first color. If not
+                provided, min(values) is chosen.
             max_value:
-                Determines which value corresponds to the last color in the spectrum. Values
-                greater than this are given this color. If not provided, max(values) is
-                chosen.
+                Determines which value corresponds to the last color in the spectrum.
+                Any values greater than this maximum are assigned to the last color. If
+                not provided, max(values) is chosen.
 
         Returns:
-            A list of hex code strings.
+            list[HexCode]: A list of hex codes.
         """
 
         if not len(values):
