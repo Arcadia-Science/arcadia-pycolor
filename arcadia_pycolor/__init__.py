@@ -5,6 +5,8 @@ from .gradient import Gradient
 from .hexcode import HexCode
 from .palette import Palette
 
+__version__ = "0.5.2-dev"
+
 __all__ = [
     "cvd",
     "Gradient",
