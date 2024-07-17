@@ -134,9 +134,8 @@ class Gradient(ColorSequence["Gradient"]):
         cmap = self.to_mpl_cmap()
 
         normalized_values = [(value - min_value) / (max_value - min_value) for value in values]
-        clamped_values = [max(0.0, min(1.0, value)) for value in normalized_values]
 
-        return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in clamped_values]
+        return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in normalized_values]
 
     def interpolate_lightness(self) -> "Gradient":
         """
