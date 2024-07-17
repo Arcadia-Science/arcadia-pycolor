@@ -1,10 +1,22 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+strict = true
+vcs = "git"
+# The 'pep440' style appends the git commit hash to the version number when there are commits
+# since the last tag.
+style = "pep440"
+# Append a flag to the version number if there are uncommitted changes.
+dirty = true
 
 [tool.poetry]
 name = "arcadia-pycolor"
-version = "0.5.1"
+# This version is a placeholder. It will be updated at build time by poetry-dynamic-versioning
+# from the latest git tag.
+version = "0.0.0"
 description = "A Python package to distribute Arcadia's color and style guidelines for figures."
 authors = [
     "Keith Cheveralls <keith.cheveralls@arcadiascience.com>",
