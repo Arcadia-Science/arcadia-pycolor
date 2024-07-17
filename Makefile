@@ -49,6 +49,5 @@ test-publish: build
 .PHONY: publish
 publish: build
 	poetry publish \
-		--repository pypi \
 		--username __token__ \
 		--password ${POETRY_PYPI_TOKEN_PYPI}
