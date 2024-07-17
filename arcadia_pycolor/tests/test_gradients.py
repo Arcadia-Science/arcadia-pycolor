@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from arcadia_pycolor import Gradient, HexCode
+from arcadia_pycolor.colors import black, white
 
 from .test_hexcode import INVALID_HEXCODES
 
@@ -116,3 +117,56 @@ def test_gradient_swatch_steps():
 )
 def test_gradient_swatch_repr(name, colors, swatch):
     assert Gradient(name, colors).__repr__() == swatch
+
+
+@pytest.fixture
+def black_to_white_gradient() -> Gradient:
+    return Gradient("_", [black, white], [0.0, 1.0])
+
+
+@pytest.mark.parametrize(
+    "values, expected_colors",
+    [
+        ([0, 1], ["#000000", "#ffffff"]),
+        ([0, 0.5, 1], ["#000000", "#808080", "#ffffff"]),
+        ([1, 2, 3, 4, 5], ["#000000", "#404040", "#808080", "#c0c0c0", "#ffffff"]),
+        ([-1, 0, 1], ["#000000", "#808080", "#ffffff"]),
+        ([-3, -2, -1], ["#000000", "#808080", "#ffffff"]),
+        ([], []),
+    ],
+)
+def test_map_values_basic_cases(
+    black_to_white_gradient: Gradient,
+    values: list[float],
+    expected_colors: list[str],
+):
+    assert black_to_white_gradient.map_values(values) == expected_colors
+
+
+@pytest.mark.parametrize(
+    "values, min_value, max_value, expected_colors",
+    [
+        ([0, 0.5, 1], 0, 1, ["#000000", "#808080", "#ffffff"]),
+        ([0, 0.5, 1], 0.25, 0.75, ["#000000", "#808080", "#ffffff"]),
+        ([-1, 0.5, 2], 0, 1, ["#000000", "#808080", "#ffffff"]),
+        ([0, 10], 0, 20, ["#000000", "#808080"]),
+    ],
+)
+def test_map_values_custom_ranges(
+    black_to_white_gradient: Gradient,
+    values: list[float],
+    min_value: float,
+    max_value: float,
+    expected_colors: list[str],
+):
+    assert black_to_white_gradient.map_values(values, min_value, max_value) == expected_colors
+
+
+def test_map_values_invalid_cases(black_to_white_gradient: Gradient):
+    # You can't pass min larger than max
+    with pytest.raises(ValueError, match="must be greater than"):
+        black_to_white_gradient.map_values([0, 1], min_value=1, max_value=0)
+
+    # Or min equal to max
+    with pytest.raises(ValueError, match="must be greater than"):
+        black_to_white_gradient.map_values([0, 1], min_value=1, max_value=1)

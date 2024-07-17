@@ -6,6 +6,7 @@ from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import ColorSequence, Palette
 from arcadia_pycolor.utils import (
+    NumericSequence,
     distribute_values,
     interpolate_x_values,
     is_monotonic,
@@ -93,6 +94,48 @@ class Gradient(ColorSequence["Gradient"]):
             name=f"{self.name}_resampled_{steps}",
             colors=colors,
         )
+
+    def map_values(
+        self,
+        values: NumericSequence,
+        min_value: Union[float, None] = None,
+        max_value: Union[float, None] = None,
+    ) -> list[HexCode]:
+        """Map a sequence of values to their corresponding colors from a gradient
+
+        Args:
+            min_value:
+                Determines which value corresponds to the first color in the spectrum.
+                Any values below this minimum are assigned to the first color. If not
+                provided, min(values) is chosen.
+            max_value:
+                Determines which value corresponds to the last color in the spectrum.
+                Any values greater than this maximum are assigned to the last color. If
+                not provided, max(values) is chosen.
+
+        Returns:
+            list[HexCode]: A list of hex codes.
+        """
+
+        if not len(values):
+            return []
+
+        if min_value is None:
+            min_value = min(values)
+
+        if max_value is None:
+            max_value = max(values)
+
+        if min_value >= max_value:
+            raise ValueError(
+                f"max_value ({max_value}) must be greater than min_value ({min_value})."
+            )
+
+        cmap = self.to_mpl_cmap()
+
+        normalized_values = [(value - min_value) / (max_value - min_value) for value in values]
+
+        return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in normalized_values]
 
     def interpolate_lightness(self) -> "Gradient":
         """
