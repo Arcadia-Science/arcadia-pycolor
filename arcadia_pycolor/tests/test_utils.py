@@ -1,6 +1,6 @@
 import pytest
 
-from arcadia_pycolor import distribute_values
+from arcadia_pycolor.utils import distribute_values
 
 
 @pytest.mark.parametrize(
