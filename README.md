@@ -63,11 +63,15 @@ Some of the documentation is in the form of Jupyter notebooks. The inline graphi
 
 Run the makefile command `execute-all-notebooks` to execute all the notebooks. This 1) ensures that the notebooks execute without errors and 2) updates their outputs in-place. Then, commit any modified notebooks to the repo.
 
-## Releasing the package on PyPI
+## Publishing a new version of the package on PyPI
 
-Releasing a new version of the package on PyPI requires API tokens for the test and real PyPI servers. You can find these tokens in your PyPI account settings. Copy `.env.copy` to `.env` and add your tokens to this file.
+Publishing the package on PyPI requires that you have API tokens for the test and production PyPI servers. You can find these tokens in your PyPI account settings. Copy `.env.copy` to `.env` and add your tokens to this file.
 
-We use git tags to define versions. When you're ready to release a new version of the package, first create a new git tag. __Make sure your local git repository is up-to-date before creating the tag!__
+To release a new version of the package on PyPI, its version number must first be incremented.
+
+We use git tags to define versions. When you're ready to release a new version of the package, first create a new git tag. The name of the tag should correspond to the version number, e.g. `"v0.1.0"`. Annotate the tag with a message that describes the release, e.g. "Release version 0.1.0". 
+
+__Before creating the tag, make sure that your local git repository is on `main`, is up-to-date, and does not contain uncommitted changes!__
 
 ```bash
 git tag -a v0.1.0 -m "Release version 0.1.0"
@@ -76,7 +80,22 @@ git push origin v0.1.0
 
 We use semantic versioning in which the versions have the form `MAJOR.MINOR.PATCH`. See [here](https://semver.org/) for more information.
 
-Then, build the package and upload the build artifacts to the PyPI test server:
+Next, build the package:
+```bash
+make build
+```
+
+You should see an output that looks like this:
+```
+Building arcadia-pycolor (0.1.0)
+  - Building sdist
+  - Built arcadia_pycolor-0.1.0.tar.gz
+  - Building wheel
+```
+
+Check that the version of the package matches the tag you created; Poetry automatically infers this version from the git tag that you created.
+
+Next, test that you can publish the package to the PyPI test server:
 
 ```bash
 make test-publish
@@ -92,13 +111,13 @@ Check that you can install the package from the test server:
 pip install --index-url https://test.pypi.org/simple/ arcadia-pycolor
 ```
 
-If everything looks good, build and publish the package to the real PyPI server:
+If everything looks good, build and publish the package to the prod PyPI server:
 
 ```bash
 make publish
 ```
 
-Finally, check that you can install the package from the real PyPI server:
+Finally, check that you can install the package from the prod PyPI server:
 
 ```bash
 pip install arcadia-pycolor
