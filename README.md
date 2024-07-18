@@ -98,7 +98,7 @@ Check that the version of the package matches the tag you created; Poetry automa
 Next, test that you can publish the package to the PyPI test server:
 
 ```bash
-make test-publish
+make build-and-test-publish
 ```
 
 This command calls `poetry build` to build the package and then `poetry publish` to upload the build artifacts to the test server.
@@ -114,7 +114,7 @@ pip install --index-url https://test.pypi.org/simple/ arcadia-pycolor
 If everything looks good, build and publish the package to the prod PyPI server:
 
 ```bash
-make publish
+make build-and-publish
 ```
 
 Finally, check that you can install the package from the prod PyPI server:
