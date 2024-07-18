@@ -93,7 +93,7 @@ Building arcadia-pycolor (0.1.0)
   - Building wheel
 ```
 
-Check that the version of the package matches the tag you created; Poetry automatically infers this version from the git tag that you created.
+__Make sure that the version number matches the one from the git tag that you just created.__ If it does not, double-check that you created the git tag correctly. If the version number is `0.0.0`, this indicates that Poetry is failing to infer any version number at all. Check that you are in the correct conda environment and that you have installed the dev dependencies using `poetry install --no-root --with=dev`.
 
 Next, test that you can publish the package to the PyPI test server:
 
