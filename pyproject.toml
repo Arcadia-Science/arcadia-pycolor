@@ -46,7 +46,7 @@ colorspacious = ">=1.1.2"
 # Disallow matplotlib 3.8.0 because it has a bug in `LinearSegmentedColormap`.
 matplotlib = ">=3.7,!=3.8.0"
 numpy = ">=1.20"
-python = ">=3.9"
+python = ">=3.9,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = ">=6.25.2"
@@ -58,6 +58,7 @@ pytest = "8.2.1"
 ruff = "0.4.4"
 scikit-learn = "^1.5.0"
 seaborn = "^0.13.2"
+poetry-dynamic-versioning = {extras = ["plugin"], version = "^1.4.0"}
 
 [tool.ruff]
 # The directories to consider when resolving first- vs. third-party imports.
