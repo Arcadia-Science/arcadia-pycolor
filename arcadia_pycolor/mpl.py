@@ -306,7 +306,12 @@ def style_plot(
 
 
 def get_figure_dimensions(size: str) -> tuple[float, ...]:
-    "Return the dimensions of a figure given a size, subtracting the spacing needed for margins."
+    """Return the dimensions of a figure given a size, subtracting the spacing needed for margins.
+
+    Args:
+        size (str) : the desired figure size,
+            either "full_wide", "full_square", "float_wide", "float_square", or "half_square"
+    """
 
     if size not in FIGURE_SIZES:
         raise ValueError(f"Size must be one of {list(FIGURE_SIZES.keys())}.")
