@@ -15,6 +15,7 @@ def simple_plot():
         ("test.pdf", None, ["test.pdf"]),
         ("test.pdf", ["pdf"], ["test.pdf"]),
         ("test.pdf", ["pdf", "png"], ["test.pdf", "test.png"]),
+        ("test.pdf", ["png", "eps"], ["test.pdf", "test.png", "test.eps"]),
         ("test.pdf", ["png"], ["test.pdf", "test.png"]),
         ("test", None, ["test.pdf"]),
         ("test", ["pdf"], ["test.pdf"]),
