@@ -7,6 +7,7 @@ import matplotlib.font_manager as font_manager
 import matplotlib.pyplot as plt
 from matplotlib import colormaps as mpl_colormaps
 from matplotlib.axis import XAxis, YAxis
+from matplotlib.backend_bases import FigureCanvasBase
 from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
@@ -75,7 +76,6 @@ def save_figure(
     Args:
         fname (str): the filename to save the figure to
         fname_types (list, optional): the filetypes(s) to save the figure to.
-            Valid options are 'png', 'pdf', 'svg', 'eps', and 'ps'.
             If None, the original suffix of fname is used.
             If the original suffix is not in fname_types, it is appended to the list.
         context (str): the context to save the figure in, either 'web' or 'print'
@@ -84,7 +84,8 @@ def save_figure(
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
     kwargs.update(**savefig_kwargs)  # type: ignore
 
-    valid_suffixes = ["png", "pdf", "svg", "eps", "ps"]
+    # Gets a list of valid suffixes for saving figures from matplotlib.
+    valid_suffixes = list(FigureCanvasBase.get_supported_filetypes().keys())
 
     if fname_types is not None:
         suffix = Path(fname).suffix[1:]  # Slice to remove the period.

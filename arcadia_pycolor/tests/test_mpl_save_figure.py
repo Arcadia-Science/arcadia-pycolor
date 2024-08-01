@@ -33,3 +33,27 @@ def test_mpl_save_figure_suffix_examples(tmp_path, fname, fname_types, expected_
     for output in expected_outputs:
         output_path = tmp_path / output
         assert output_path.is_file()
+
+
+@pytest.mark.parametrize(
+    "fname, fname_types",
+    [
+        ("test.pdf", ["invalid"]),
+        ("test", ["invalid"]),
+        ("test.invalid", ["pdf"]),
+    ],
+)
+def test_mpl_save_figure_fname_suffix_invalid(tmp_path, fname, fname_types, capsys):
+    simple_plot()
+
+    apc.mpl.save_figure(fname=tmp_path / fname, fname_types=fname_types)
+
+    captured = capsys.readouterr()
+    assert "Invalid file suffix 'invalid'. Skipping." in captured.out
+
+
+def test_mpl_save_figure_fname_suffix_invalid_no_fname_types(tmp_path):
+    simple_plot()
+
+    with pytest.raises(ValueError):
+        apc.mpl.save_figure(fname=tmp_path / "test.invalid")
