@@ -66,7 +66,7 @@ def _arcadia_fonts_found() -> bool:
 
 def save_figure(
     fname: str,
-    fname_types: Union[list[str], None] = None,
+    filetypes: Union[list[str], None] = None,
     context: str = "web",
     **savefig_kwargs: dict[Any, Any],
 ) -> None:
@@ -75,34 +75,34 @@ def save_figure(
 
     Args:
         fname (str): the filename to save the figure to
-        fname_types (list, optional): the filetypes(s) to save the figure to.
-            If None, the original suffix of fname is used.
-            If the original suffix is not in fname_types, it is appended to the list.
+        filetypes (list, optional): the filetypes(s) to save the figure to.
+            If None, the original filetype of fname is used.
+            If the original filetype is not in filetypes, it is appended to the list.
         context (str): the context to save the figure in, either 'web' or 'print'
         **savefig_kwargs: additional keyword arguments to pass to plt.savefig
     """
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
     kwargs.update(**savefig_kwargs)  # type: ignore
 
-    # Gets a list of valid suffixes for saving figures from matplotlib.
-    valid_suffixes = list(FigureCanvasBase.get_supported_filetypes().keys())
+    # Gets a list of valid filetypes for saving figures from matplotlib.
+    valid_filetypes = list(FigureCanvasBase.get_supported_filetypes().keys())
 
-    if fname_types is not None:
-        suffix = Path(fname).suffix[1:]  # Slice to remove the period.
-        filepath_no_suffix = Path(fname).with_suffix("")
+    filetype = Path(fname).suffix[1:]
+    filepath_no_filetype = Path(fname).with_suffix("")
 
-        # Handle the case where the original suffix is not in fname_types.
-        if (suffix != "") and (suffix not in fname_types):
-            fname_types.append(suffix)
-
-        for suffix in fname_types:
-            if suffix not in valid_suffixes:
-                print(f"Invalid file suffix '{suffix}'. Skipping.")
-                continue
-
-            plt.savefig(fname=f"{filepath_no_suffix}.{suffix}", **kwargs)  # type: ignore
+    if filetypes is None:
+        if not filetype:
+            raise ValueError("The filename must include a filetype if no filetypes are provided.")
+        filetypes = [filetype]
     else:
-        plt.savefig(fname=fname, **kwargs)  # type: ignore
+        filetypes.append(filetype)
+
+    for ftype in filetypes:
+        if ftype not in valid_filetypes:
+            print(f"Invalid filetype '{ftype}'. Skipping.")
+            continue
+
+        plt.savefig(fname=f"{filepath_no_filetype}.{ftype}", **kwargs)  # type: ignore
 
 
 def set_yticklabel_font(

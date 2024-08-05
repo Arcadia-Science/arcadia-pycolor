@@ -10,25 +10,24 @@ def simple_plot():
 
 
 @pytest.mark.parametrize(
-    "fname, fname_types, expected_outputs",
+    "fname, filetypes, expected_outputs",
     [
         ("test.pdf", None, ["test.pdf"]),
         ("test.pdf", ["pdf"], ["test.pdf"]),
         ("test.pdf", ["pdf", "png"], ["test.pdf", "test.png"]),
         ("test.pdf", ["png", "eps"], ["test.pdf", "test.png", "test.eps"]),
         ("test.pdf", ["png"], ["test.pdf", "test.png"]),
-        ("test", None, ["test.pdf"]),
         ("test", ["pdf"], ["test.pdf"]),
         ("test", ["pdf", "png"], ["test.pdf", "test.png"]),
     ],
 )
-def test_mpl_save_figure_suffix_examples(tmp_path, fname, fname_types, expected_outputs):
+def test_mpl_save_figure_filetype_examples(tmp_path, fname, filetypes, expected_outputs):
     """
     Test the `mpl.save_figure` function with various suffixes.
     """
 
     simple_plot()
-    apc.mpl.save_figure(fname=tmp_path / fname, fname_types=fname_types)
+    apc.mpl.save_figure(fname=tmp_path / fname, filetypes=filetypes)
 
     for output in expected_outputs:
         output_path = tmp_path / output
@@ -36,24 +35,25 @@ def test_mpl_save_figure_suffix_examples(tmp_path, fname, fname_types, expected_
 
 
 @pytest.mark.parametrize(
-    "fname, fname_types",
+    "fname, filetypes",
     [
         ("test.pdf", ["invalid"]),
         ("test", ["invalid"]),
         ("test.invalid", ["pdf"]),
+        ("test.invalid", None),
     ],
 )
-def test_mpl_save_figure_fname_suffix_invalid(tmp_path, fname, fname_types, capsys):
+def test_mpl_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys):
     simple_plot()
 
-    apc.mpl.save_figure(fname=tmp_path / fname, fname_types=fname_types)
+    apc.mpl.save_figure(fname=tmp_path / fname, filetypes=filetypes)
 
     captured = capsys.readouterr()
-    assert "Invalid file suffix 'invalid'. Skipping." in captured.out
+    assert "Invalid filetype 'invalid'. Skipping." in captured.out
 
 
-def test_mpl_save_figure_fname_suffix_invalid_no_fname_types(tmp_path):
+def test_mpl_save_figure_no_filetype(tmp_path):
     simple_plot()
 
     with pytest.raises(ValueError):
-        apc.mpl.save_figure(fname=tmp_path / "test.invalid")
+        apc.mpl.save_figure(fname=tmp_path / "test")
