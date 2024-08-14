@@ -23,7 +23,7 @@ For detailed documentation about the package and links to example plots, see the
 We use poetry to manage dependencies and packaging. First, create a new conda environment and install poetry:
 
 ```bash
-conda create -n arcadia-pycolor -f envs/dev.yml
+conda env create -n arcadia-pycolor -f envs/dev.yml
 conda activate arcadia-pycolor
 ```
 
