@@ -192,3 +192,22 @@ class Gradient(ColorSequence["Gradient"]):
             self.name,
             colors=colors,
         )
+
+    def to_plotly_colorscale(self) -> list[tuple[float, str]]:
+        """Convert gradient to a colorscale acceptable by plotly graph objects.
+
+        Example:
+            >>> import plotly.graph_objects as go
+            >>> import arcadia_pycolor as apc
+            >>> gradient = apc.gradients.reds
+            >>> data = np.random.rand(10, 10)
+            >>> heatmap = go.Heatmap(z=data, colorscale=gradient.to_plotly_colorscale())
+            >>> fig = go.Figure(data=[heatmap])
+            >>> fig.show()
+
+        Returns:
+            list[tuple[tuple, str]]:
+                A 256 (8-bit) color scale. Each element is a two-ple of normalized
+                position in the colorscale and the associated hex value.
+        """
+        return [(i / 255.0, mcolors.rgb2hex(self.to_mpl_cmap()(i / 255.0))) for i in range(256)]
