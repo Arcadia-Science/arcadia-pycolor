@@ -1,4 +1,5 @@
 import logging
+import sys
 from pathlib import Path
 from typing import Any, Literal, Union, cast
 
@@ -36,6 +37,12 @@ from arcadia_pycolor.style_defaults import (
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
 logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
+MACOS_FONT_LOCATIONS = [
+    "/Library/Fonts",
+    "/System/Library/Fonts",
+    str(Path.home() / "Library/Fonts"),
+]
+
 LEGEND_PARAMS = dict(
     alignment="left",
     title_fontproperties={"weight": "semibold", "size": ARCADIA_RC_PARAMS["legend.title_fontsize"]},
@@ -46,7 +53,7 @@ SAVEFIG_KWARGS_PRINT = dict(dpi=PRINT_DPI, bbox_inches="tight", pad_inches=FIGUR
 
 
 def _find_axis(axis: Union[Axes, None] = None) -> Axes:
-    "Convenience function to catch the current axis if none is provided."
+    """Convenience function to catch the current axis if none is provided."""
     if axis is None:
         return plt.gca()
     else:
@@ -54,7 +61,7 @@ def _find_axis(axis: Union[Axes, None] = None) -> Axes:
 
 
 def _arcadia_fonts_found() -> bool:
-    "Check if the Arcadia fonts are available to matplotlib."
+    """Check if the Arcadia fonts are available to matplotlib."""
     arcadia_fonts = [
         font_name
         for font_name in font_manager.fontManager.get_font_names()
@@ -416,10 +423,29 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
         font_folder (str, optional): the folder to search for fonts in.
             Uses the default system font folder if None.
     """
-    for fontpath in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
-        if FONT_FILTER.lower() in fontpath.lower():
-            font_manager.fontManager.addfont(fontpath)
-            font_manager.FontProperties(fname=fontpath)
+    arcadia_font_paths = []
+
+    # On macOS, check the common font locations first.
+    if font_folder is None and sys.platform == "darwin":
+        for location in MACOS_FONT_LOCATIONS:
+            if not Path(location).exists():
+                continue
+            font_paths = [
+                str(p)
+                for p in Path(location).glob("*.ttf")
+                if FONT_FILTER.lower() in p.name.lower()
+            ]
+            arcadia_font_paths.extend(font_paths)
+
+    # If no fonts are found, fallback to full system search.
+    if not arcadia_font_paths:
+        for font_path in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
+            if FONT_FILTER.lower() in font_path.lower():
+                arcadia_font_paths.extend(font_path)
+
+    for font_path in arcadia_font_paths:
+        font_manager.fontManager.addfont(font_path)
+        font_manager.FontProperties(fname=font_path)
 
     if not _arcadia_fonts_found():
         print(
