@@ -37,6 +37,7 @@ from arcadia_pycolor.style_defaults import (
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
 logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
+# See https://support.apple.com/guide/font-book/change-font-book-settings-fntbk1004/mac.
 MACOS_FONT_LOCATIONS = [
     "/Library/Fonts",
     "/System/Library/Fonts",
@@ -69,6 +70,23 @@ def _arcadia_fonts_found() -> bool:
     ]
     # TODO(KC): can we specify the number of fonts that should be found?
     return len(arcadia_fonts) > 0
+
+
+def _find_macos_arcadia_fonts() -> list[str]:
+    """
+    Search for Arcadia fonts in the standard macOS font locations.
+    """
+    font_paths = []
+    for location in MACOS_FONT_LOCATIONS:
+        if not Path(location).exists():
+            continue
+        paths = [
+            str(font_path)
+            for font_path in Path(location).glob("*.ttf")
+            if FONT_FILTER.lower() in font_path.name.lower()
+        ]
+        font_paths.extend(paths)
+    return font_paths
 
 
 def save_figure(
@@ -425,21 +443,13 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
     """
     arcadia_font_paths = []
 
-    # On macOS, check the common font locations first.
-    # https://support.apple.com/guide/font-book/change-font-book-settings-fntbk1004/mac
+    # On macOS, look in the standard font locations first.
+    # This is faster than matplotlib's font search implementation.
+    # See https://github.com/Arcadia-Science/arcadia-pycolor/pull/58.
     if font_folder is None and sys.platform == "darwin":
-        for location in MACOS_FONT_LOCATIONS:
-            if not Path(location).exists():
-                continue
-            font_paths = [
-                str(font_path)
-                for font_path in Path(location).glob("*.ttf")
-                if FONT_FILTER.lower() in font_path.name.lower()
-            ]
-            arcadia_font_paths.extend(font_paths)
-
+        arcadia_font_paths.extend(_find_macos_arcadia_fonts())
     # If no fonts are found, fallback to full system search.
-    if not arcadia_font_paths:
+    else:
         for font_path in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
             if FONT_FILTER.lower() in font_path.lower():
                 arcadia_font_paths.extend(font_path)
