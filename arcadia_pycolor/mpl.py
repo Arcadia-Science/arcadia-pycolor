@@ -37,10 +37,13 @@ from arcadia_pycolor.style_defaults import (
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
 logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
-# See https://support.apple.com/guide/font-book/change-font-book-settings-fntbk1004/mac.
-MACOS_FONT_LOCATIONS = [
+# Copied from `matplotlib.font_manager.OSXFontDirectories`. For reference, see:
+# https://support.apple.com/guide/font-book/change-font-book-settings-fntbk1004/mac.
+MACOS_FONT_DIRECTORIES = [
     "/Library/Fonts",
+    "/Network/Library/Fonts",
     "/System/Library/Fonts",
+    "/opt/local/share/fonts",
     str(Path.home() / "Library/Fonts"),
 ]
 
@@ -74,10 +77,10 @@ def _arcadia_fonts_found() -> bool:
 
 def _find_macos_arcadia_fonts() -> list[str]:
     """
-    Search for Arcadia fonts in the standard macOS font locations.
+    Search for Arcadia fonts in the standard macOS font directories.
     """
     font_paths = []
-    for location in MACOS_FONT_LOCATIONS:
+    for location in MACOS_FONT_DIRECTORIES:
         if not Path(location).exists():
             continue
         paths = [
