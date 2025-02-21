@@ -448,13 +448,11 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
     # See https://github.com/Arcadia-Science/arcadia-pycolor/pull/58.
     if font_folder is None and sys.platform == "darwin":
         arcadia_font_paths.extend(_find_macos_arcadia_fonts())
-        print(f"Found {len(arcadia_font_paths)} Arcadia fonts in macOS font locations.")
     # If no fonts are found, fallback to full system search.
     else:
         for font_path in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
             if FONT_FILTER.lower() in font_path.lower():
-                arcadia_font_paths.extend(font_path)
-                print(f"Found {len(arcadia_font_paths)} Arcadia fonts in system font locations.")
+                arcadia_font_paths.append(font_path)
 
     for font_path in arcadia_font_paths:
         font_manager.fontManager.addfont(font_path)
