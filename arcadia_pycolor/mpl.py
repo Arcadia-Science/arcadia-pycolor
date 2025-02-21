@@ -80,12 +80,12 @@ def _find_macos_arcadia_fonts() -> list[str]:
     Search for Arcadia fonts in the standard macOS font directories.
     """
     font_paths = []
-    for location in MACOS_FONT_DIRECTORIES:
-        if not Path(location).exists():
+    for dirpath in MACOS_FONT_DIRECTORIES:
+        if not Path(dirpath).exists():
             continue
         paths = [
             str(font_path)
-            for font_path in Path(location).glob("*.ttf")
+            for font_path in Path(dirpath).glob("*.ttf")
             if FONT_FILTER.lower() in font_path.name.lower()
         ]
         font_paths.extend(paths)
@@ -446,13 +446,14 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
     """
     arcadia_font_paths = []
 
-    # On macOS, look in the standard font locations first.
+    # On macOS, look in the standard font directories first.
     # This is faster than matplotlib's font search implementation.
     # See https://github.com/Arcadia-Science/arcadia-pycolor/pull/58.
     if font_folder is None and sys.platform == "darwin":
         arcadia_font_paths.extend(_find_macos_arcadia_fonts())
+
     # If no fonts are found, fallback to full system search.
-    else:
+    if not arcadia_font_paths:
         for font_path in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
             if FONT_FILTER.lower() in font_path.lower():
                 arcadia_font_paths.append(font_path)
