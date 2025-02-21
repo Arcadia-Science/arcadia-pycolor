@@ -426,14 +426,15 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
     arcadia_font_paths = []
 
     # On macOS, check the common font locations first.
+    # https://support.apple.com/guide/font-book/change-font-book-settings-fntbk1004/mac
     if font_folder is None and sys.platform == "darwin":
         for location in MACOS_FONT_LOCATIONS:
             if not Path(location).exists():
                 continue
             font_paths = [
-                str(p)
-                for p in Path(location).glob("*.ttf")
-                if FONT_FILTER.lower() in p.name.lower()
+                str(font_path)
+                for font_path in Path(location).glob("*.ttf")
+                if FONT_FILTER.lower() in font_path.name.lower()
             ]
             arcadia_font_paths.extend(font_paths)
 
