@@ -57,7 +57,7 @@ SAVEFIG_KWARGS_PRINT = dict(dpi=PRINT_DPI, bbox_inches="tight", pad_inches=FIGUR
 
 
 def _find_axis(axis: Union[Axes, None] = None) -> Axes:
-    """Convenience function to catch the current axis if none is provided."""
+    "Convenience function to catch the current axis if none is provided."
     if axis is None:
         return plt.gca()
     else:
@@ -65,7 +65,7 @@ def _find_axis(axis: Union[Axes, None] = None) -> Axes:
 
 
 def _arcadia_fonts_found() -> bool:
-    """Check if the Arcadia fonts are available to matplotlib."""
+    "Check if the Arcadia fonts are available to matplotlib."
     arcadia_fonts = [
         font_name
         for font_name in font_manager.fontManager.get_font_names()
