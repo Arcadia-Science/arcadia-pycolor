@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains the documentation for the `arcadia_pycolor` package. 
+This directory contains the documentation for the `arcadia_pycolor` package.
 
 ## Quickstart guide
 
@@ -16,5 +16,4 @@ If you are new to using the package, we recommend starting with the [quickstart 
 
 ## Examples
 
-The [examples](examples/) directory contains examples of some common plot types that demonstrate how to use the package to style Matplotlib and seaborn plots. 
-
+The [examples](examples/) directory contains examples of some common plot types that demonstrate how to use the package to style Matplotlib and seaborn plots.
