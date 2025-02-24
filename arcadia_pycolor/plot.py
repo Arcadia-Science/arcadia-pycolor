@@ -12,7 +12,7 @@ from arcadia_pycolor.palettes import all_palettes
 
 
 def plot_gradient_lightness(
-    gradients: Union["Gradient", str, list["Gradient"], list[str]],
+    gradients: Union[Gradient, str, list[Gradient], list[str]],
     title: Union[str, None] = None,
     horizontal_spacing: float = 1.1,
     steps: int = 100,

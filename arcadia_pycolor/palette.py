@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Union, overload
+from typing import overload
 
 import matplotlib.colors as mcolors
 
@@ -73,7 +73,7 @@ class Palette:
     @overload
     def __getitem__(self, index: slice) -> Palette: ...
 
-    def __getitem__(self, index: Union[int, slice]) -> Union[HexCode, Palette]:
+    def __getitem__(self, index: int | slice) -> HexCode | Palette:
         """Returns the color at the given index, or a new palette if a slice is provided.
 
         Args:
