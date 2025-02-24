@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Union, overload
 
 import matplotlib.colors as mcolors
 
@@ -11,7 +11,7 @@ class Palette:
     A Palette is a discrete ordered sequence of HexCode objects.
     """
 
-    def __init__(self, name: str, colors: list[Any]):
+    def __init__(self, name: str, colors: list[HexCode]):
         """
         Initialize a Palette with a name and a list of colors.
 
@@ -27,18 +27,18 @@ class Palette:
         self.colors = colors
 
     @classmethod
-    def from_dict(cls, name: str, colors: dict[str, str]):
+    def from_dict(cls, name: str, colors: dict[str, str]) -> "Palette":
         """
         Create a Palette from a dictionary of color names and hex codes.
 
         Args:
-            name (str): the name of the palette
-            colors (dict): a dictionary mapping color names to hex codes
+            name (str): the name of the palette.
+            colors (dict): a dictionary mapping color names to hex codes.
         """
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes)
 
-    def swatch(self):
+    def swatch(self) -> str:
         """
         Returns a color swatch showing all colors in the palette.
         """
@@ -55,26 +55,25 @@ class Palette:
         )
 
     def _get_longest_name_length(self) -> int:
-        """
-        Convenience function to get the length of the longest color name in the palette.
-        """
+        """Convenience function to get the length of the longest color name in the palette."""
         return max(len(color.name) for color in self.colors)
 
     def __len__(self) -> int:
-        """
-        Returns the number of colors in the palette.
-        """
+        """Returns the number of colors in the palette."""
         return len(self.colors)
 
     def __iter__(self):
-        """
-        Returns an iterator over the colors in the palette.
-        """
+        """Returns an iterator over the colors in the palette."""
         return iter(self.colors)
 
+    @overload
+    def __getitem__(self, index: int) -> HexCode: ...
+
+    @overload
+    def __getitem__(self, index: slice) -> "Palette": ...
+
     def __getitem__(self, index: Union[int, slice]) -> Union[HexCode, "Palette"]:
-        """
-        Returns the color at the given index, or a new palette if a slice is provided.
+        """Returns the color at the given index, or a new palette if a slice is provided.
 
         Args:
             index: An integer index or slice.
@@ -89,9 +88,7 @@ class Palette:
             return self.colors[index]
 
     def __repr__(self) -> str:
-        """
-        Returns a string representation of the palette.
-        """
+        """Returns a string representation of the palette."""
         longest_name_length = self._get_longest_name_length()
 
         return "\n".join(
@@ -100,15 +97,13 @@ class Palette:
         )
 
     def __add__(self, other: "Palette") -> "Palette":
-        """
-        Returns a new palette that is the concatenation of this palette and another.
-        """
+        """Returns a new palette that is the concatenation of this palette and another."""
         return Palette(
             name=f"{self.name}+{other.name}",
             colors=self.colors + other.colors,
         )
 
-    def to_mpl_cmap(self):
+    def to_mpl_cmap(self) -> mcolors.ListedColormap:
         """
         Convert the palette to a Matplotlib colormap.
         """

@@ -194,7 +194,7 @@ class Gradient:
         """
         # If the first gradient ends with the same color as the start of the second gradient,
         # drop the repeated color.
-        offset = 1 if self.colors[-1] == other.colors[0] else 0
+        offset = int(self.colors[-1] == other.colors[0])
         new_colors = self.colors + other.colors[offset:]
         new_values = rescale_and_concatenate_values(self.values, other.values[offset:])
 
