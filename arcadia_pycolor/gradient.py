@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import Union
 
@@ -79,7 +80,7 @@ class Gradient:
     @classmethod
     def from_dict(
         cls, name: str, colors: dict[str, str], values: Union[list[float], None] = None
-    ) -> "Gradient":
+    ) -> Gradient:
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes, values)
 
@@ -103,7 +104,7 @@ class Gradient:
 
         return "".join(swatches)
 
-    def reverse(self) -> "Gradient":
+    def reverse(self) -> Gradient:
         """Returns a new gradient with the colors and values in reverse order"""
         return Gradient(
             name=f"{self.name}_r",
@@ -169,7 +170,7 @@ class Gradient:
 
         return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in normalized_values]
 
-    def interpolate_lightness(self) -> "Gradient":
+    def interpolate_lightness(self) -> Gradient:
         """
         Interpolates the gradient to new values based on lightness.
         """
@@ -188,7 +189,7 @@ class Gradient:
             values=new_values,
         )
 
-    def __add__(self, other: "Gradient") -> "Gradient":
+    def __add__(self, other: Gradient) -> Gradient:
         """
         Return the sum of two gradients by concatenating their colors and values.
         """
