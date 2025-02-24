@@ -1,10 +1,11 @@
-from typing import Any, Union
+from dataclasses import dataclass
+from typing import Union
 
 import matplotlib.colors as mcolors
 
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
-from arcadia_pycolor.palette import ColorSequence, Palette
+from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.utils import (
     NumericSequence,
     distribute_values,
@@ -14,19 +15,36 @@ from arcadia_pycolor.utils import (
 )
 
 
-class Gradient(ColorSequence["Gradient"]):
-    def __init__(self, name: str, colors: list[Any], values: Union[list[Any], None] = None):
+@dataclass
+class Anchor:
+    """
+    A paired color and position value for a gradient.
+
+    Args:
+        color: A HexCode object representing the color
+        value: A numeric value between 0 and 1 representing the position in the gradient
+    """
+
+    color: HexCode
+    value: float
+
+
+class Gradient:
+    def __init__(self, name: str, colors: list[HexCode], values: Union[list[float], None] = None):
         """
-        A Gradient is a sequence of pairs of HexCode objects and numeric values
-        from 0 to 1 that represent the position of each color in the gradient.
+        A Gradient is a sequence of anchors (paired colors and values)
+        that can create interpolated color sequences.
 
         Args:
-            name (str): the name of the gradient
-            colors (list): a list of HexCode objects
-            values (list): a list of float values corresponding
+            name: the name of the gradient
+            colors: a list of HexCode objects
+            values: a list of float values corresponding
                 to the position of colors on a 0 to 1 scale.
         """
-        super().__init__(name=name, colors=colors)
+        self.name = name
+
+        if not all(isinstance(color, HexCode) for color in colors):
+            raise ValueError("All colors must be HexCode objects.")
 
         if values is not None:
             if len(values) < 2:
@@ -39,9 +57,24 @@ class Gradient(ColorSequence["Gradient"]):
                 raise ValueError("The first value must be 0 and the last value must be 1.")
             if len(colors) != len(values):
                 raise ValueError("The number of colors and values must be the same.")
-            self.values = values
+            anchor_values = values
         else:
-            self.values = distribute_values(len(self.colors))
+            anchor_values = distribute_values(len(colors))
+
+        self.anchors = [Anchor(color, value) for color, value in zip(colors, anchor_values)]
+
+    @property
+    def colors(self) -> list[HexCode]:
+        return [anchor.color for anchor in self.anchors]
+
+    @property
+    def values(self) -> list[float]:
+        return [anchor.value for anchor in self.anchors]
+
+    @property
+    def num_anchors(self) -> int:
+        """Returns the number of anchors in the gradient"""
+        return len(self.anchors)
 
     @classmethod
     def from_dict(
@@ -55,9 +88,7 @@ class Gradient(ColorSequence["Gradient"]):
         Returns a gradient swatch with the specified number of steps.
 
         Args:
-            gradient (Gradient): the Gradient object to display
             steps (int): the number of swatches to display in the gradient
-
         """
         # Calculate the color for each step in the gradient
         cmap = self.to_mpl_cmap()
@@ -73,6 +104,7 @@ class Gradient(ColorSequence["Gradient"]):
         return "".join(swatches)
 
     def reverse(self) -> "Gradient":
+        """Returns a new gradient with the colors and values in reverse order"""
         return Gradient(
             name=f"{self.name}_r",
             colors=self.colors[::-1],
@@ -142,7 +174,7 @@ class Gradient(ColorSequence["Gradient"]):
         Interpolates the gradient to new values based on lightness.
         """
 
-        if len(self.colors) < 3:
+        if self.num_anchors < 3:
             raise ValueError("Interpolation requires at least three colors.")
         if not is_monotonic(self.values):
             raise ValueError("Lightness must be monotonically increasing or decreasing.")
@@ -160,9 +192,6 @@ class Gradient(ColorSequence["Gradient"]):
         """
         Return the sum of two gradients by concatenating their colors and values.
         """
-        new_colors = []
-        new_values = []
-
         # If the first gradient ends with the same color as the start of the second gradient,
         # drop the repeated color.
         offset = 1 if self.colors[-1] == other.colors[0] else 0
@@ -176,18 +205,19 @@ class Gradient(ColorSequence["Gradient"]):
         )
 
     def __repr__(self) -> str:
-        longest_name_length = self._get_longest_name_length()
+        longest_name_length = max(len(anchor.color.name) for anchor in self.anchors)
 
         return "\n".join(
             [self.swatch()]
             + [
-                f"{color.swatch(min_name_width=longest_name_length)} {value}"
-                for color, value in zip(self.colors, self.values)
+                f"{anchor.color.swatch(min_name_width=longest_name_length)} {anchor.value}"
+                for anchor in self.anchors
             ]
         )
 
     def to_mpl_cmap(self):
-        colors = [(value, color.hex_code) for value, color in zip(self.values, self.colors)]
+        """Convert the gradient to a Matplotlib colormap"""
+        colors = [(anchor.value, anchor.color.hex_code) for anchor in self.anchors]
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,
             colors=colors,

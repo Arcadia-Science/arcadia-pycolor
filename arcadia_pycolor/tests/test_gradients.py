@@ -170,3 +170,29 @@ def test_map_values_invalid_cases(black_to_white_gradient: Gradient):
     # Or min equal to max
     with pytest.raises(ValueError, match="must be greater than"):
         black_to_white_gradient.map_values([0, 1], min_value=1, max_value=1)
+
+
+def test_gradient_num_anchors():
+    """Test that a Gradient's num_anchors returns the expected count."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    gradient = Gradient("test_gradient", colors)
+    assert gradient.num_anchors == 2
+    assert len(gradient.colors) == 2
+    assert len(gradient.values) == 2
+
+
+def test_gradient_anchor_properties():
+    """Test that a Gradient's anchors have the expected properties."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    values = [0.0, 1.0]
+    gradient = Gradient("test_gradient", colors, values)
+
+    # Check anchor properties.
+    assert gradient.anchors[0].color == colors[0]
+    assert gradient.anchors[0].value == values[0]
+    assert gradient.anchors[1].color == colors[1]
+    assert gradient.anchors[1].value == values[1]
+
+    # Check parent properties.
+    assert gradient.colors == colors
+    assert gradient.values == values

@@ -66,3 +66,69 @@ def test_palette_add():
     result = p1 + p2
     assert (Palette("p1", p1) + Palette("p2", p2)).colors == result
     assert (Palette("p1", p1) + Palette("p2", p2)).name == "p1+p2"
+
+
+# New sequence functionality tests
+
+
+def test_palette_length():
+    """Test that a Palette has the expected length."""
+    palette = Palette("test_palette", [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")])
+    assert len(palette) == 2
+
+
+def test_palette_iteration():
+    """Test that a Palette can be iterated over."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    palette = Palette("test_palette", colors)
+
+    # Test iteration
+    for i, color in enumerate(palette):
+        assert color == colors[i]
+
+    # Test list comprehension
+    assert [color.hex_code for color in palette] == ["#FFFFFF", "#000000"]
+
+
+def test_palette_indexing():
+    """Test that a Palette can be indexed."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    palette = Palette("test_palette", colors)
+
+    # Test indexing
+    assert palette[0] == colors[0]
+    assert palette[1] == colors[1]
+
+    # Test negative indexing
+    assert palette[-1] == colors[-1]
+
+    # Test out of bounds
+    with pytest.raises(IndexError):
+        palette[2]
+
+
+def test_palette_slicing():
+    """Test that a Palette can be sliced."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("gray", "#CCCCCC"), HexCode("black", "#000000")]
+    palette = Palette("test_palette", colors)
+
+    # Test slicing
+    sliced = palette[0:2]
+    assert isinstance(sliced, Palette)
+    assert sliced.name == "test_palette_slice"
+    assert len(sliced) == 2
+    assert sliced.colors == colors[0:2]
+
+    # Test negative slicing
+    sliced = palette[-2:]
+    assert len(sliced) == 2
+    assert sliced.colors == colors[-2:]
+
+    # Test step slicing
+    sliced = palette[::2]
+    assert len(sliced) == 2
+    assert sliced.colors == [colors[0], colors[2]]
+
+    # Test slice and reverse consistency
+    palette = Palette("test", colors)
+    assert palette.reverse().colors == palette[::-1].colors
