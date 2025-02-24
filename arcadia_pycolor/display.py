@@ -1,6 +1,8 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
-from arcadia_pycolor.hexcode import HexCode
+if TYPE_CHECKING:
+    from arcadia_pycolor.hexcode import HexCode
 
 
 def colorize(
