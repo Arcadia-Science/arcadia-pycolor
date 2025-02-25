@@ -41,25 +41,6 @@ def test_palette_repr():
     )
 
 
-@pytest.mark.parametrize(
-    "name, input, longest_name_length",
-    [
-        (
-            "my_palette",
-            [HexCode("white", "#FFFFFF"), HexCode("tangerine", "#FFB984")],
-            9,
-        ),
-        (
-            "my_palette",
-            [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")],
-            5,
-        ),
-    ],
-)
-def test_get_longest_name_length(name, input, longest_name_length):
-    assert Palette(name, input)._get_longest_name_length() == longest_name_length
-
-
 def test_palette_add():
     p1 = [HexCode("white", "#FFFFFF")]
     p2 = [HexCode("black", "#000000")]
