@@ -16,7 +16,7 @@ from .test_hexcode import INVALID_HEXCODES
 )
 def test_gradient_from_hexcode_list(values):
     colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
-    assert Gradient("some-gradient", colors, values).colors == colors
+    assert Gradient("some-gradient", colors, values).anchor_colors == colors
 
 
 @pytest.mark.parametrize(
@@ -78,7 +78,7 @@ def test_gradient_from_dict(values):
         "some_gradient",
         {"white": "#FFFFFF", "black": "#000000"},
         values,
-    ).colors == [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    ).anchor_colors == [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
 
 
 def test_gradient_swatch():
@@ -177,8 +177,8 @@ def test_gradient_num_anchors():
     colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
     gradient = Gradient("test_gradient", colors)
     assert gradient.num_anchors == 2
-    assert len(gradient.colors) == 2
-    assert len(gradient.values) == 2
+    assert len(gradient.anchor_colors) == 2
+    assert len(gradient.anchor_values) == 2
 
 
 def test_gradient_anchor_properties():
@@ -194,5 +194,5 @@ def test_gradient_anchor_properties():
     assert gradient.anchors[1].value == values[1]
 
     # Check parent properties.
-    assert gradient.colors == colors
-    assert gradient.values == values
+    assert gradient.anchor_colors == colors
+    assert gradient.anchor_values == values

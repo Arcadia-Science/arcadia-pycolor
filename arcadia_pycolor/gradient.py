@@ -64,11 +64,11 @@ class Gradient:
         self.anchors = [Anchor(color, value) for color, value in zip(colors, anchor_values)]
 
     @property
-    def colors(self) -> list[HexCode]:
+    def anchor_colors(self) -> list[HexCode]:
         return [anchor.color for anchor in self.anchors]
 
     @property
-    def values(self) -> list[float]:
+    def anchor_values(self) -> list[float]:
         return [anchor.value for anchor in self.anchors]
 
     @property
@@ -107,8 +107,8 @@ class Gradient:
         """Returns a new gradient with the colors and values in reverse order"""
         return Gradient(
             name=f"{self.name}_r",
-            colors=self.colors[::-1],
-            values=[1 - value for value in self.values[::-1]],
+            colors=self.anchor_colors[::-1],
+            values=[1 - value for value in self.anchor_values[::-1]],
         )
 
     def resample_as_palette(self, steps: int = 5) -> Palette:
@@ -176,15 +176,15 @@ class Gradient:
 
         if self.num_anchors < 3:
             raise ValueError("Interpolation requires at least three colors.")
-        if not is_monotonic(self.values):
+        if not is_monotonic(self.anchor_values):
             raise ValueError("Lightness must be monotonically increasing or decreasing.")
 
-        lightness_values = [color.to_cam02ucs()[0] for color in self.colors]
+        lightness_values = [color.to_cam02ucs()[0] for color in self.anchor_colors]
         new_values = interpolate_x_values(lightness_values)
 
         return Gradient(
             name=f"{self.name}_interpolated",
-            colors=self.colors,
+            colors=self.anchor_colors,
             values=new_values,
         )
 
@@ -194,9 +194,11 @@ class Gradient:
         """
         # If the first gradient ends with the same color as the start of the second gradient,
         # drop the repeated color.
-        offset = int(self.colors[-1] == other.colors[0])
-        new_colors = self.colors + other.colors[offset:]
-        new_values = rescale_and_concatenate_values(self.values, other.values[offset:])
+        offset = int(self.anchor_colors[-1] == other.anchor_colors[0])
+        new_colors = self.anchor_colors + other.anchor_colors[offset:]
+        new_values = rescale_and_concatenate_values(
+            self.anchor_values, other.anchor_values[offset:]
+        )
 
         return Gradient(
             name=f"{self.name}_{other.name}",
