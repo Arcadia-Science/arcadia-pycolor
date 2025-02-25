@@ -55,10 +55,6 @@ class Palette:
             colors=self.colors[::-1],
         )
 
-    def _get_longest_name_length(self) -> int:
-        """Convenience function to get the length of the longest color name in the palette."""
-        return max(len(color.name) for color in self.colors)
-
     def __len__(self) -> int:
         """Returns the number of colors in the palette."""
         return len(self.colors)
@@ -90,7 +86,7 @@ class Palette:
 
     def __repr__(self) -> str:
         """Returns a string representation of the palette."""
-        longest_name_length = self._get_longest_name_length()
+        longest_name_length = max(len(color.name) for color in self.colors)
 
         return "\n".join(
             [self.swatch()]
