@@ -1,5 +1,5 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Union
 
 import matplotlib.colors as mcolors
 
@@ -30,7 +30,7 @@ class Anchor:
 
 
 class Gradient:
-    def __init__(self, name: str, colors: list[HexCode], values: Union[list[float], None] = None):
+    def __init__(self, name: str, colors: list[HexCode], values: list[float] | None = None):
         """
         A Gradient is a sequence of anchors (paired colors and values)
         that can create interpolated color sequences.
@@ -78,8 +78,8 @@ class Gradient:
 
     @classmethod
     def from_dict(
-        cls, name: str, colors: dict[str, str], values: Union[list[float], None] = None
-    ) -> "Gradient":
+        cls, name: str, colors: dict[str, str], values: list[float] | None = None
+    ) -> Gradient:
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes, values)
 
@@ -103,7 +103,7 @@ class Gradient:
 
         return "".join(swatches)
 
-    def reverse(self) -> "Gradient":
+    def reverse(self) -> Gradient:
         """Returns a new gradient with the colors and values in reverse order"""
         return Gradient(
             name=f"{self.name}_r",
@@ -130,8 +130,8 @@ class Gradient:
     def map_values(
         self,
         values: NumericSequence,
-        min_value: Union[float, None] = None,
-        max_value: Union[float, None] = None,
+        min_value: float | None = None,
+        max_value: float | None = None,
     ) -> list[HexCode]:
         """Map a sequence of values to their corresponding colors from a gradient
 
@@ -169,7 +169,7 @@ class Gradient:
 
         return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in normalized_values]
 
-    def interpolate_lightness(self) -> "Gradient":
+    def interpolate_lightness(self) -> Gradient:
         """
         Interpolates the gradient to new values based on lightness.
         """
@@ -188,7 +188,7 @@ class Gradient:
             values=new_values,
         )
 
-    def __add__(self, other: "Gradient") -> "Gradient":
+    def __add__(self, other: Gradient) -> Gradient:
         """
         Return the sum of two gradients by concatenating their colors and values.
         """

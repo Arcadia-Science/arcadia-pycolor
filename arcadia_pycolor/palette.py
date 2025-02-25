@@ -1,4 +1,5 @@
-from typing import Union, overload
+from __future__ import annotations
+from typing import overload
 
 import matplotlib.colors as mcolors
 
@@ -27,7 +28,7 @@ class Palette:
         self.colors = colors
 
     @classmethod
-    def from_dict(cls, name: str, colors: dict[str, str]) -> "Palette":
+    def from_dict(cls, name: str, colors: dict[str, str]) -> Palette:
         """
         Create a Palette from a dictionary of color names and hex codes.
 
@@ -45,7 +46,7 @@ class Palette:
         swatches = [colorize("  ", bg_color=color) for color in self.colors]
         return "".join(swatches)
 
-    def reverse(self) -> "Palette":
+    def reverse(self) -> Palette:
         """
         Returns a new palette with the colors in reverse order.
         """
@@ -70,9 +71,9 @@ class Palette:
     def __getitem__(self, index: int) -> HexCode: ...
 
     @overload
-    def __getitem__(self, index: slice) -> "Palette": ...
+    def __getitem__(self, index: slice) -> Palette: ...
 
-    def __getitem__(self, index: Union[int, slice]) -> Union[HexCode, "Palette"]:
+    def __getitem__(self, index: int | slice) -> HexCode | Palette:
         """Returns the color at the given index, or a new palette if a slice is provided.
 
         Args:
@@ -96,7 +97,7 @@ class Palette:
             + [color.swatch(min_name_width=longest_name_length) for color in self.colors]
         )
 
-    def __add__(self, other: "Palette") -> "Palette":
+    def __add__(self, other: Palette) -> Palette:
         """Returns a new palette that is the concatenation of this palette and another."""
         return Palette(
             name=f"{self.name}+{other.name}",
