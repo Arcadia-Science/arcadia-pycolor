@@ -69,7 +69,7 @@ Publishing the package on PyPI requires that you have API tokens for the test an
 
 To release a new version of the package on PyPI, its version number must first be incremented.
 
-We use git tags to define versions. When you're ready to release a new version of the package, first create a new git tag. The name of the tag should correspond to the version number, e.g. `"v0.1.0"`. Annotate the tag with a message that describes the release, e.g. "Release version 0.1.0". 
+We use git tags to define versions. When you're ready to release a new version of the package, first create a new git tag. The name of the tag should correspond to the version number, e.g. `"v0.1.0"`. Annotate the tag with a message that describes the release, e.g. "Release version 0.1.0".
 
 __Before creating the tag, make sure that your local git repository is on `main`, is up-to-date, and does not contain uncommitted changes!__
 
@@ -103,7 +103,7 @@ make build-and-test-publish
 
 This command calls `poetry build` to build the package and then `poetry publish` to upload the build artifacts to the test server.
 
-Note: the build artifacts are also written to the `dist/` directory. 
+Note: the build artifacts are also written to the `dist/` directory.
 
 Check that you can install the package from the test server:
 
