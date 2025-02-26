@@ -27,7 +27,10 @@ def test_mpl_save_figure_filetype_examples(tmp_path, fname, filetypes, expected_
     """
 
     simple_plot()
-    apc.mpl.save_figure(fname=tmp_path / fname, filetypes=filetypes)
+    apc.mpl.save_figure(
+        tmp_path / fname,
+        filetypes=filetypes,
+    )
 
     for output in expected_outputs:
         output_path = tmp_path / output
@@ -46,7 +49,10 @@ def test_mpl_save_figure_filetype_examples(tmp_path, fname, filetypes, expected_
 def test_mpl_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys):
     simple_plot()
 
-    apc.mpl.save_figure(fname=tmp_path / fname, filetypes=filetypes)
+    apc.mpl.save_figure(
+        tmp_path / fname,
+        filetypes=filetypes,
+    )
 
     captured = capsys.readouterr()
     assert "Invalid filetype 'invalid'. Skipping." in captured.out
@@ -56,4 +62,7 @@ def test_mpl_save_figure_no_filetype(tmp_path):
     simple_plot()
 
     with pytest.raises(ValueError):
-        apc.mpl.save_figure(fname=tmp_path / "test")
+        apc.mpl.save_figure(
+            tmp_path / "test",
+            filetypes=None,
+        )

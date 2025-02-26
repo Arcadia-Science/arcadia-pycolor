@@ -42,7 +42,10 @@ def test_plot_stacked_barplot(output_dirpath, figure_size):
     legend.set_title("Viability")
 
     apc.mpl.style_plot(ax, categorical_axes="x", monospaced_axes="y")
-    apc.mpl.save_figure(fname=(output_dirpath / f"test_plot_stacked_barplot_{figure_size}.pdf"))
+    apc.mpl.save_figure(
+        output_dirpath / f"test_plot_stacked_barplot_{figure_size}.pdf",
+        filetypes=["pdf"],
+    )
     plt.close(fig)
 
 
@@ -65,7 +68,7 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
         ax = axes[ind]
         color = cmap(ind / len(lines))
         ax.plot(line, color=color)
-        apc.mpl.style_plot(axis=ax, monospaced_axes="both")
+        apc.mpl.style_plot(axes=ax, monospaced_axes="both")
         ax.set_yticks([])
 
         if ind != len(lines) - 1:
@@ -76,7 +79,10 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
 
     fig.supylabel("Brightness")
     fig.subplots_adjust(hspace=0)
-    apc.mpl.save_figure(fname=(output_dirpath / f"test_plot_multiple_line_plot_{figure_size}.pdf"))
+    apc.mpl.save_figure(
+        output_dirpath / f"test_plot_multiple_line_plot_{figure_size}.pdf",
+        filetypes=["pdf"],
+    )
     plt.close(fig)
 
 
@@ -87,12 +93,12 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     """
     random_data = np.random.rand(8, 8)
 
-    fig, axs = plt.subplots(
+    fig, axes = plt.subplots(
         1, 2, figsize=apc.mpl.get_figure_dimensions(figure_size), layout="constrained"
     )
     sns.heatmap(
         random_data,
-        ax=axs[0],
+        ax=axes[0],
         square=True,
         cmap="apc:magma",
         cbar_kws={"label": "Intensity"},
@@ -101,13 +107,13 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     )
     sns.heatmap(
         random_data - 0.5,
-        ax=axs[1],
+        ax=axes[1],
         square=True,
         cmap="apc:purple_green",
         cbar_kws={"label": "Intensity"},
     )
 
-    for ax in axs:
+    for ax in axes:
         apc.mpl.style_plot(
             ax,
             categorical_axes="both",
@@ -118,6 +124,7 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
         ax.set_ylabel("Category 2")
 
     apc.mpl.save_figure(
-        fname=(output_dirpath / f"test_plot_heatmaps_with_seaborn_{figure_size}.pdf")
+        output_dirpath / f"test_plot_heatmaps_with_seaborn_{figure_size}.pdf",
+        filetypes=["pdf"],
     )
     plt.close(fig)

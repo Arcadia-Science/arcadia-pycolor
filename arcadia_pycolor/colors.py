@@ -1,6 +1,6 @@
 from arcadia_pycolor.hexcode import HexCode
 
-# Primary colors
+# Primary colors.
 aegean = HexCode("aegean", "#5088C5")
 amber = HexCode("amber", "#F28360")
 seaweed = HexCode("seaweed", "#3B9886")
@@ -14,7 +14,7 @@ dragon = HexCode("dragon", "#C85152")
 oat = HexCode("oat", "#F5E4BE")
 wish = HexCode("wish", "#BABEE0")
 
-# Secondary colors
+# Secondary colors.
 sky = HexCode("sky", "#C6E7F4")
 dress = HexCode("dress", "#F8C5C1")
 taupe = HexCode("taupe", "#DBD1C3")
@@ -24,7 +24,7 @@ marine = HexCode("marine", "#8A99AD")
 mars = HexCode("mars", "#DA9085")
 shell = HexCode("shell", "#EDE0D6")
 
-# Neutral colors
+# Neutral colors.
 gray = HexCode("gray", "#EBEDE8")
 chateau = HexCode("chateau", "#BAB0A8")
 bark = HexCode("bark", "#8F8885")
@@ -34,13 +34,13 @@ crow = HexCode("crow", "#292928")
 forest = HexCode("forest", "#596F74")
 pitch = HexCode("pitch", "#09090A")
 
-# Background colors
+# Background colors.
 parchment = HexCode("parchment", "#FDF8F2")
 zephyr = HexCode("zephyr", "#F4FBFF")
 lichen = HexCode("lichen", "#F7FBEF")
 dawn = HexCode("dawn", "#F8F4F1")
 
-# Shades
+# Shades.
 lapis = HexCode("lapis", "#2B65A1")
 dusk = HexCode("dusk", "#094468")
 cinnabar = HexCode("cinnabar", "#9E3F41")
@@ -68,7 +68,7 @@ edamame = HexCode("edamame", "#C1E1AE")
 matcha = HexCode("matcha", "#71AC5A")
 yucca = HexCode("yucca", "#1E4812")
 
-# Gradient colors
+# Gradient colors.
 concord = HexCode("concord", "#341E60")
 heather = HexCode("heather", "#A96789")
 tumbleweed = HexCode("tumbleweed", "#E9A482")
@@ -83,7 +83,7 @@ lilac = HexCode("lilac", "#6862AB")
 ghost = HexCode("ghost", "#FCF7FF")
 redwood = HexCode("redwood", "#52180A")
 
-# Other Arcadia colors
+# Other Arcadia colors.
 brightgray = HexCode("brightgray", "#EAEAEA")
 paper = HexCode("paper", "#FCFCFC")
 
@@ -91,7 +91,7 @@ soil = HexCode("soil", "#4D2500")
 blossom = HexCode("blossom", "#F5CBE4")
 mint = HexCode("mint", "#D1EADF")
 
-# Other named colors
+# Other named colors.
 white = HexCode("white", "#FFFFFF")
 red = HexCode("red", "#FF0000")
 green = HexCode("green", "#00FF00")

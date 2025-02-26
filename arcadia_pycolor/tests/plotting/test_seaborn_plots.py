@@ -67,5 +67,8 @@ def plot_seaborn_violinplot(ax):
 def test_seaborn_plots(output_dirpath, plotting_function, figure_size):
     fig, ax = plt.subplots(figsize=apc.mpl.get_figure_dimensions(figure_size), layout="constrained")
     plotting_function(ax)
-    apc.mpl.save_figure(fname=(output_dirpath / f"{plotting_function.__name__}_{figure_size}.pdf"))
+    apc.mpl.save_figure(
+        output_dirpath / f"{plotting_function.__name__}_{figure_size}.pdf",
+        filetypes=["pdf"],
+    )
     plt.close(fig)

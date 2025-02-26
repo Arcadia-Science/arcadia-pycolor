@@ -10,14 +10,22 @@ T = TypeVar("T", bound="ColorSequence")
 
 
 class ColorSequence(abc.ABC, Generic[T]):
-    def __init__(self, name: str, colors: list[Any]):
-        """
-        A color sequence is an ordered sequence of HexCode objects.
+    """Represents an ordered collection of colors, such as a palette or gradient.
 
-        Args:
-            name (str): the name of the sequence.
-            colors (list): a list of HexCode objects.
-        """
+    This abstract base class defines common functionality for working with color sequences,
+    including:
+
+    - displaying color swatches,
+    - reversing the sequence,
+    - concatenating sequences, and
+    - converting to matplotlib colormaps.
+
+    Attributes:
+        name (str): The name of the sequence.
+        colors (list): A list of HexCode objects.
+    """
+
+    def __init__(self, name: str, colors: list[Any]) -> None:
         self.name = name
 
         if not all(isinstance(color, HexCode) for color in colors):
@@ -26,17 +34,17 @@ class ColorSequence(abc.ABC, Generic[T]):
         self.colors = colors
 
     def _get_longest_name_length(self) -> int:
-        """
-        Convenience function to get the length of the longest color name in the sequence.
-        """
+        """Returns the length of the longest color name in the sequence."""
         return max(len(color.name) for color in self.colors)
 
     @abc.abstractmethod
     def swatch(self) -> str:
+        """Returns a swatch of the color sequence."""
         pass
 
     @abc.abstractmethod
     def reverse(self) -> T:
+        """Returns a reversed color sequence."""
         pass
 
     @abc.abstractmethod
@@ -49,28 +57,39 @@ class ColorSequence(abc.ABC, Generic[T]):
 
     @abc.abstractmethod
     def to_mpl_cmap(self) -> Any:
+        """Returns a matplotlib colormap for the color sequence."""
         pass
 
 
 class Palette(ColorSequence["Palette"]):
-    """
-    A Palette is a discrete ordered sequence of HexCode objects.
+    """A discrete ordered sequence of HexCode objects.
+
+    Attributes:
+        name (str): The name of the palette.
+        colors (list): A list of HexCode objects.
     """
 
-    def __init__(self, name: str, colors: list[Any]):
+    def __init__(self, name: str, colors: list[Any]) -> None:
         super().__init__(name, colors)
 
     @classmethod
-    def from_dict(cls, name: str, colors: dict[str, str]):
+    def from_dict(cls, name: str, colors: dict[str, str]) -> "Palette":
+        """Create a palette from a dictionary of color names and hex codes.
+
+        Args:
+            name (str): The name of the palette.
+            colors (dict): A dictionary of color names and hex codes.
+        """
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes)
 
-    def swatch(self):
+    def swatch(self) -> str:
+        """Returns a swatch of the palette."""
         swatches = [colorize("  ", bg_color=color) for color in self.colors]
-
         return "".join(swatches)
 
     def reverse(self) -> "Palette":
+        """Returns a reversed palette."""
         return Palette(
             name=f"{self.name}_r",
             colors=self.colors[::-1],
@@ -90,5 +109,6 @@ class Palette(ColorSequence["Palette"]):
             colors=self.colors + other.colors,
         )
 
-    def to_mpl_cmap(self):
+    def to_mpl_cmap(self) -> mcolors.ListedColormap:
+        """Returns a matplotlib colormap for the palette."""
         return mcolors.ListedColormap([color.hex_code for color in self.colors], self.name)

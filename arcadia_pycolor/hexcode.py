@@ -19,13 +19,22 @@ def _is_hex_code(hex_string: Any) -> bool:
 
 
 class HexCode(str):
+    """Represents the HEX code of a color.
+
+    Attributes:
+        name (str): The name of the color.
+        hex_code (str): The HEX code of the color.
+    """
+
     def __new__(cls, name: str, hex_code: str) -> "HexCode":
-        """
-        A HexCode object stores a color's name and HEX code.
+        """Returns a new HexCode object.
 
         Args:
-            name (str): the name of the color
-            hex_code (str): the HEX code of the color
+            name (str): The name of the color.
+            hex_code (str): The HEX code of the color.
+
+        Raises:
+            ValueError: If the HEX code is invalid.
         """
         if not _is_hex_code(hex_code):
             raise ValueError(f"Invalid HEX code: {hex_code}")
@@ -56,10 +65,10 @@ class HexCode(str):
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]
 
     def to_cam02ucs(self) -> list[float]:
-        """
-        Returns a tuple of CAM02-UCS values for the color, where
-        the first value is the lightness (J) and the second and third values
-        are the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness).
+        """Returns a tuple of CAM02-UCS values for the color.
+
+        The first value is the lightness (J) and the second and third values are
+        the chromaticity coordinates (a: redness-to-greenness, b: blueness-to-yellowness).
         """
         # Convert RGB255 to RGB1.
         rgb = [i / 255 for i in self.to_rgb()]
@@ -70,18 +79,14 @@ class HexCode(str):
         return cam02ucs
 
     def swatch(self, width: int = 2, min_name_width: Union[int, None] = None) -> str:
-        """
-        Returns a color swatch with the specified width and color name.
+        """Returns a color swatch with the specified width and color name width.
+
+        Based on colorir's `swatch` function:
+        https://github.com/aleferna12/colorir/blob/2d44e4c/colorir/utils.py#L69.
 
         Args:
-            color (HexCode): the HexCode object to display
-            width (int): the width of the color swatch
-            min_name_width (int): the desired width of the color name;
-                pads the name with spaces if necessary.
-                If not specified, text will not display in a fixed width.
-
-        Based on colorir's swatch function:
-        https://github.com/aleferna12/colorir/blob/master/colorir/utils.py#L59
+            width (int): The desired width of the color swatch.
+            min_name_width (int, optional): The desired width of the color name.
         """
         # Add padding to the color name if necessary.
         # Used when displaying multiple colors in a palette.

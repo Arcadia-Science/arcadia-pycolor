@@ -4,7 +4,8 @@ import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients as gradients
 import arcadia_pycolor.palettes as palettes
 
-### Sizing and spacing ###
+### SIZING AND SPACING ###
+
 # Units in inches when dpi is 72
 BASE_DPI = 72
 PRINT_DPI = 300
@@ -20,7 +21,7 @@ FLOAT_SQUARE = (4.44444, 4.44444)
 HALF_SQUARE = (6.38888, 6.38888)
 
 # Dictionary of common figure sizes.
-FIGURE_SIZES = {
+FIGURE_SIZES: dict[str, tuple[float, float]] = {
     "full_wide": FULL_WIDE,
     "full_square": FULL_SQUARE,
     "float_wide": FLOAT_WIDE,
@@ -28,7 +29,8 @@ FIGURE_SIZES = {
     "half_square": HALF_SQUARE,
 }
 
-### Fonts ###
+### FONTS ###
+
 # Font family to look for in the font folder.
 FONT_FILTER = "Suisse"
 DEFAULT_FONT = "Suisse Int'l"
@@ -45,32 +47,34 @@ MONOSPACE_FONT_SIZE = 14.5
 CATEGORICAL_AXIS_TICKLENGTH = 0
 CATEGORICAL_AXIS_TICKPADDING = 10
 
-### Legends ###
+### LEGEND ###
+
 LEGEND_SEPARATOR_LINEWIDTH = 1.5
 
-### Axes ###
+### AXES ###
+
 NUMERICAL_AXIS_TICKLENGTH = 5
 NUMERICAL_AXIS_TICKPADDING = 5
 LINEWEIGHT = 0.75
 
+### MATPLOTLIB RUNTIME CONFIGURATION PARAMETERS ###
 
-### rcParams ###
 ARCADIA_RC_PARAMS = {
-    # Fonts
+    # Fonts.
     "font.family": "sans-serif",
     "font.size": BASE_FONT_SIZE,
     "font.serif": "Suisse Works",
     "font.sans-serif": "Suisse Int'l",
     "font.monospace": "Suisse Int'l Mono",
     "font.weight": "regular",
-    # Figure
+    # Figure.
     "figure.titlesize": TITLE_FONT_SIZE,
     "figure.titleweight": "medium",
     "figure.facecolor": colors.white,
     "figure.edgecolor": "none",
     "figure.frameon": False,
     "figure.dpi": BASE_DPI,
-    # Axes
+    # Axes.
     "axes.facecolor": "none",
     "axes.edgecolor": colors.black,
     "axes.linewidth": LINEWEIGHT,
@@ -95,7 +99,7 @@ ARCADIA_RC_PARAMS = {
     "axes.autolimit_mode": "data",
     "polaraxes.grid": True,
     "axes3d.grid": True,
-    # Ticks
+    # Ticks.
     "xtick.major.size": NUMERICAL_AXIS_TICKLENGTH,
     "xtick.minor.size": NUMERICAL_AXIS_TICKLENGTH / 2,
     "xtick.major.width": LINEWEIGHT,
@@ -112,7 +116,7 @@ ARCADIA_RC_PARAMS = {
     "ytick.minor.pad": NUMERICAL_AXIS_TICKPADDING,
     "ytick.color": colors.black,
     "ytick.labelsize": BASE_FONT_SIZE,
-    # Legend
+    # Legend.
     "legend.loc": "best",
     "legend.frameon": False,
     "legend.title_fontsize": TITLE_FONT_SIZE,
@@ -125,7 +129,7 @@ ARCADIA_RC_PARAMS = {
     "legend.handlelength": 1,
     "legend.handleheight": 1.2,
     "legend.handletextpad": 0.4,
-    # Lines
+    # Lines.
     "lines.linewidth": 2,
     "lines.linestyle": "-",
     "lines.color": colors.aegean,
@@ -139,16 +143,16 @@ ARCADIA_RC_PARAMS = {
     "lines.dash_capstyle": "butt",
     "lines.solid_joinstyle": "round",
     "lines.solid_capstyle": "round",
-    # Markers
+    # Markers.
     "markers.fillstyle": "full",
     "pcolor.shading": "auto",
-    # Patches
+    # Patches.
     "patch.linewidth": 0,  # Removes edge on patches.
     "patch.facecolor": colors.aegean,
     "patch.edgecolor": colors.aegean,
     "patch.force_edgecolor": False,
     "patch.antialiased": True,
-    # Saving figures
+    # Saving figures.
     "savefig.format": "pdf",
     "savefig.transparent": True,
     "savefig.pad_inches": FIGURE_PADDING_INCHES,
@@ -158,7 +162,7 @@ ARCADIA_RC_PARAMS = {
     "ps.fonttype": 42,
     "svg.fonttype": "none",
     "svg.image_inline": True,
-    # Images
+    # Images.
     "image.cmap": f"apc:{gradients.magma.name}",
     "image.aspect": "equal",
     "image.interpolation": "antialiased",
