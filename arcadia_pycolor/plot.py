@@ -4,6 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from colorspacious import cspace_converter  # type: ignore
+from matplotlib.figure import Figure
 from numpy.typing import NDArray
 
 from arcadia_pycolor.gradient import Gradient
@@ -21,28 +22,39 @@ def plot_gradient_lightness(
     tickrotation: float = 50,
     markersize: float = 300,
     return_fig: bool = False,
-):
-    """
-    Plots the lightness of one or more color gradients
-        to assess the uniformity of their lightnesses.
-
-    Expects a dictionary, where each entry has the name of the color palette
-        as its key and the value as:
-        - the string name of the registered Matplotlib colormap OR
-        - a Matplotlib ListedColormap object for the colormap
+) -> Union[None, Figure]:
+    """Plots the lightness of one or more color gradients to assess their uniformity.
 
     Args:
-        gradients (list of Gradient or str): list of gradients to plot.
-            If `str` is provided, it is assumed to be a registered Matplotlib colormap.
-        title (str): a title for the plot if desired
-        horizontal_spacing (float): the spacing between lines
-        steps (int): the number of steps along the gradient to generate
-        figsize (tuple): the width, height tuple of the figure size
-        cmap_type (str): 'linear' if you want the label for the cmap to be at the end;
+        gradients (list[Gradient] or list[str]):
+            The list of gradients to plot, where each element is either a `Gradient` object
+            or a string. If a string is provided, it is assumed to be a registered Matplotlib
+            colormap.
+        title (str):
+            A title for the plot if desired.
+        horizontal_spacing (float):
+            The spacing between lines.
+        steps (int):
+            The number of steps along the gradient to generate.
+        figsize (tuple):
+            The width, height tuple of the figure size.
+        cmap_type (str):
+            'linear' if you want the label for the `cmap` to be at the end;
             anything else puts the label in the middle.
-        tickrotation (int): rotation of the label for each cmap
-        markersize (int): the size of the points that make up the gradient color line
-        return_fig (bool): whether or not to return the figure as an object
+        tickrotation (int):
+            The rotation of the label for each `cmap`.
+        markersize (int):
+            The size of the points that make up the gradient color line.
+        return_fig (bool):
+            Whether or not to return the figure as an object.
+
+    Returns:
+        Union[None, matplotlib.figure.Figure]:
+            None if `return_fig` is False, otherwise a `matplotlib.figure.Figure` object.
+
+    Raises:
+        TypeError:
+            If `gradients` is not a list of `Gradient` objects or strings.
     """
 
     fig, ax = plt.subplots(figsize=figsize, layout="constrained")  # type: ignore
@@ -113,13 +125,15 @@ def plot_gradient_lightness(
         return fig
 
 
-def display_all_gradients():
+def display_all_gradients() -> None:
+    """Displays all registered gradients."""
     for gradient in all_gradients:
         print(gradient.name)
         print(gradient.swatch())
 
 
-def display_all_palettes():
+def display_all_palettes() -> None:
+    """Displays all registered palettes."""
     for palette in all_palettes:
         print(palette.name)
         print(palette.swatch())
