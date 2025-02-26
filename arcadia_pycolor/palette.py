@@ -8,8 +8,11 @@ from arcadia_pycolor.hexcode import HexCode
 
 
 class Palette:
-    """
-    A Palette is a discrete ordered sequence of HexCode objects.
+    """A discrete ordered sequence of HexCode objects.
+
+    Attributes:
+        name (str): The name of the palette.
+        colors (list): A list of HexCode objects.
     """
 
     def __init__(self, name: str, colors: list[HexCode]):
@@ -29,27 +32,22 @@ class Palette:
 
     @classmethod
     def from_dict(cls, name: str, colors: dict[str, str]) -> Palette:
-        """
-        Create a Palette from a dictionary of color names and hex codes.
+        """Create a palette from a dictionary of color names and hex codes.
 
         Args:
-            name (str): the name of the palette.
-            colors (dict): a dictionary mapping color names to hex codes.
+            name (str): The name of the palette.
+            colors (dict): A dictionary of color names and hex codes.
         """
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes)
 
     def swatch(self) -> str:
-        """
-        Returns a color swatch showing all colors in the palette.
-        """
+        """Returns a swatch of the palette."""
         swatches = [colorize("  ", bg_color=color) for color in self.colors]
         return "".join(swatches)
 
     def reverse(self) -> Palette:
-        """
-        Returns a new palette with the colors in reverse order.
-        """
+        """Returns a reversed palette."""
         return Palette(
             name=f"{self.name}_r",
             colors=self.colors[::-1],
@@ -101,7 +99,5 @@ class Palette:
         )
 
     def to_mpl_cmap(self) -> mcolors.ListedColormap:
-        """
-        Convert the palette to a Matplotlib colormap.
-        """
+        """Returns a matplotlib colormap for the palette."""
         return mcolors.ListedColormap([color.hex_code for color in self.colors], self.name)

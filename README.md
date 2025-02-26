@@ -81,11 +81,13 @@ git push origin v0.1.0
 We use semantic versioning in which the versions have the form `MAJOR.MINOR.PATCH`. See [here](https://semver.org/) for more information.
 
 Next, build the package:
+
 ```bash
 make build
 ```
 
 You should see an output that looks like this:
+
 ```
 Building arcadia-pycolor (0.1.0)
   - Building sdist

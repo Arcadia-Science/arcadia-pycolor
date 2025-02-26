@@ -30,16 +30,38 @@ class Anchor:
 
 
 class Gradient:
+    """A sequence of colors and their positions that define a continuous color gradient.
+
+    Each color is paired with a numeric value between 0 and 1 that determines its position
+    in the gradient. The first color is always at position 0 and the last color at position 1.
+    Colors in between are interpolated based on their position values to create a smooth gradient.
+
+    Attributes:
+        name (str): The name of the gradient.
+        anchors (list[Anchor]): A list of gradient anchors.
+
+    Properties:
+        anchor_colors (list[HexCode]):
+            The list of HexCodes corresponding to each anchor.
+        anchor_values (list[float]):
+            The list of values corresponding to each anchor.
+    """
+
     def __init__(self, name: str, colors: list[HexCode], values: list[float] | None = None):
-        """
-        A Gradient is a sequence of anchors (paired colors and values)
-        that can create interpolated color sequences.
+        """Initializes a Gradient.
 
         Args:
-            name: the name of the gradient
-            colors: a list of HexCode objects
-            values: a list of float values corresponding
-                to the position of colors on a 0 to 1 scale.
+            name: The name of the gradient.
+            colors: A list of HexCodes.
+            values: An optional list of float values. See class docstring for details.
+
+        Raises:
+            ValueError:
+                - If there are less than two values.
+                - If the values are not integers or floats.
+                - If the values are not between 0 and 1.
+                - If the first value is not 0 or the last value is not 1.
+                - If the number of values is not the same as the number of colors.
         """
         self.name = name
 
@@ -80,6 +102,7 @@ class Gradient:
     def from_dict(
         cls, name: str, colors: dict[str, str], values: list[float] | None = None
     ) -> Gradient:
+        """Creates a gradient from a dictionary of colors and values."""
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes, values)
 
@@ -93,7 +116,7 @@ class Gradient:
         # Calculate the color for each step in the gradient
         cmap = self.to_mpl_cmap()
 
-        # Get the color for each step in the gradient
+        # Get the color for each step in the gradient.
         colors = [
             HexCode(name=str(ind), hex_code=mcolors.to_hex(cmap(ind / steps)))
             for ind in range(steps)
@@ -112,9 +135,7 @@ class Gradient:
         )
 
     def resample_as_palette(self, steps: int = 5) -> Palette:
-        """
-        Resamples the gradient, returning a Palette with the specified number of steps.
-        """
+        """Returns a resampled gradient as a Palette with the specified number of steps."""
         gradient = self.to_mpl_cmap()
         values = distribute_values(steps)
         colors = [
@@ -133,22 +154,22 @@ class Gradient:
         min_value: float | None = None,
         max_value: float | None = None,
     ) -> list[HexCode]:
-        """Map a sequence of values to their corresponding colors from a gradient
+        """Maps a sequence of values to their corresponding colors from a gradient.
 
         Args:
-            min_value:
+            values (NumericSequence): A sequence of values to map to colors.
+            min_value (float, optional):
                 Determines which value corresponds to the first color in the spectrum.
-                Any values below this minimum are assigned to the first color. If not
-                provided, min(values) is chosen.
-            max_value:
+                Any values below this minimum are assigned to the first color.
+                If not provided, the minimum value of `values` is chosen.
+            max_value (float, optional):
                 Determines which value corresponds to the last color in the spectrum.
-                Any values greater than this maximum are assigned to the last color. If
-                not provided, max(values) is chosen.
+                Any values greater than this maximum are assigned to the last color.
+                If not provided, the maximum value of `values` is chosen.
 
         Returns:
-            list[HexCode]: A list of hex codes.
+            list[HexCode]: A list of HexCode objects corresponding to the values.
         """
-
         if not len(values):
             return []
 
@@ -170,9 +191,7 @@ class Gradient:
         return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in normalized_values]
 
     def interpolate_lightness(self) -> Gradient:
-        """
-        Interpolates the gradient to new values based on lightness.
-        """
+        """Interpolates the gradient to new values based on lightness."""
 
         if self.num_anchors < 3:
             raise ValueError("Interpolation requires at least three colors.")
@@ -189,9 +208,7 @@ class Gradient:
         )
 
     def __add__(self, other: Gradient) -> Gradient:
-        """
-        Return the sum of two gradients by concatenating their colors and values.
-        """
+        """Return the sum of two gradients by concatenating their colors and values."""
         # If the first gradient ends with the same color as the start of the second gradient,
         # drop the repeated color.
         offset = int(self.anchor_colors[-1] == other.anchor_colors[0])
@@ -217,8 +234,8 @@ class Gradient:
             ]
         )
 
-    def to_mpl_cmap(self):
-        """Convert the gradient to a Matplotlib colormap"""
+    def to_mpl_cmap(self) -> mcolors.LinearSegmentedColormap:
+        """Converts the gradient to a matplotlib colormap."""
         colors = [(anchor.value, anchor.color.hex_code) for anchor in self.anchors]
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,
@@ -226,16 +243,16 @@ class Gradient:
         )
 
     def to_plotly_colorscale(self) -> list[tuple[float, str]]:
-        """Convert gradient to a colorscale acceptable by plotly graph objects.
+        """Converts the gradient to a colorscale acceptable by plotly graph objects.
 
         Example:
-            >>> import plotly.graph_objects as go
-            >>> import arcadia_pycolor as apc
-            >>> gradient = apc.gradients.reds
-            >>> data = np.random.rand(10, 10)
-            >>> heatmap = go.Heatmap(z=data, colorscale=gradient.to_plotly_colorscale())
-            >>> fig = go.Figure(data=[heatmap])
-            >>> fig.show()
+        >>> import plotly.graph_objects as go
+        >>> import arcadia_pycolor as apc
+        >>> gradient = apc.gradients.reds
+        >>> data = np.random.rand(10, 10)
+        >>> heatmap = go.Heatmap(z=data, colorscale=gradient.to_plotly_colorscale())
+        >>> fig = go.Figure(data=[heatmap])
+        >>> fig.show()
 
         Returns:
             list[tuple[tuple, str]]:

@@ -56,16 +56,19 @@ SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, bbox_inches="tight", pad_inches=FIGURE_P
 SAVEFIG_KWARGS_PRINT = dict(dpi=PRINT_DPI, bbox_inches="tight", pad_inches=FIGURE_PADDING_INCHES)
 
 
-def _find_axis(axis: Union[Axes, None] = None) -> Axes:
-    "Convenience function to catch the current axis if none is provided."
-    if axis is None:
+def _try_get_current_axes(axes: Union[Axes, None] = None) -> Axes:
+    """Returns the current axes using `plt.gca()` if no axes are provided.
+
+    Otherwise, returns the provided axes.
+    """
+    if axes is None:
         return plt.gca()
     else:
-        return axis
+        return axes
 
 
-def _arcadia_fonts_found() -> bool:
-    "Check if the Arcadia fonts are available to matplotlib."
+def _is_arcadia_font_set_available() -> bool:
+    """Returns True if the Arcadia fonts are available to matplotlib."""
     arcadia_fonts = [
         font_name
         for font_name in font_manager.fontManager.get_font_names()
@@ -76,8 +79,10 @@ def _arcadia_fonts_found() -> bool:
 
 
 def _find_macos_arcadia_fonts() -> list[str]:
-    """
-    Search for Arcadia fonts in the standard macOS font directories.
+    """Searches for Arcadia fonts in the standard macOS font directories.
+
+    Returns:
+        list[str]: A list of paths to the Arcadia fonts.
     """
     font_paths = []
     for dirpath in MACOS_FONT_DIRECTORIES:
@@ -93,21 +98,20 @@ def _find_macos_arcadia_fonts() -> list[str]:
 
 
 def save_figure(
-    fname: str,
+    filepath: str,
     filetypes: Union[list[str], None] = None,
     context: str = "web",
     **savefig_kwargs: dict[Any, Any],
 ) -> None:
-    """
-    Save the current figure, accounting for Arcadia's defaults.
+    """Saves the current figure to a file using Arcadia's margin, padding, and dpi settings.
 
     Args:
-        fname (str): the filename to save the figure to
-        filetypes (list, optional): the filetypes(s) to save the figure to.
-            If None, the original filetype of fname is used.
-            If the original filetype is not in filetypes, it is appended to the list.
-        context (str): the context to save the figure in, either 'web' or 'print'
-        **savefig_kwargs: additional keyword arguments to pass to plt.savefig
+        filepath (str): Path to save the figure to.
+        filetypes (list[str], optional): The file types(s) to save the figure to.
+            If None, the original filetype of `filepath` is used.
+            If the original filetype is not in `filetypes`, it is appended to the list.
+        context (str): The context to save the figure in, either 'web' or 'print'.
+        **savefig_kwargs: Additional keyword arguments to pass to `plt.savefig`.
     """
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
     kwargs.update(**savefig_kwargs)  # type: ignore
@@ -115,9 +119,10 @@ def save_figure(
     # Gets a list of valid filetypes for saving figures from matplotlib.
     valid_filetypes = list(FigureCanvasBase.get_supported_filetypes().keys())
 
-    filetype = Path(fname).suffix[1:]
-    filepath_no_filetype = Path(fname).with_suffix("")
+    filename = Path(filepath).with_suffix("")
+    filetype = Path(filepath).suffix[1:]
 
+    # If no file types are provided, use the filetype from the file path.
     if filetypes is None:
         if not filetype:
             raise ValueError("The filename must include a filetype if no filetypes are provided.")
@@ -130,16 +135,24 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
 
-        plt.savefig(fname=f"{filepath_no_filetype}.{ftype}", **kwargs)  # type: ignore
+        plt.savefig(fname=f"{filename}.{ftype}", **kwargs)  # type: ignore
 
 
 def set_yticklabel_font(
-    axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+    axes: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
 ) -> None:
-    "Set the font of the x and y tick labels."
-    ax = _find_axis(axis)
+    """Sets the font and font size of the y-axis tick labels.
 
-    ytick_labels = ax.get_yticklabels()  # type: ignore
+    Args:
+        axes (Axes, optional): The matplotlib axes to modify.
+            If None, uses the current axes.
+        font (str): The font family to use for the tick labels.
+        font_size (float, optional): The font size to use for the tick labels.
+            If None, keeps current size.
+    """
+    ax = _try_get_current_axes(axes)
+
+    ytick_labels = ax.get_yticklabels()
     for label in ytick_labels:
         label.set_fontfamily(font)
     if font_size is not None:
@@ -147,12 +160,20 @@ def set_yticklabel_font(
 
 
 def set_xticklabel_font(
-    axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+    axes: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
 ) -> None:
-    "Set the font of the x and y tick labels."
-    ax = _find_axis(axis)
+    """Sets the font and font size of the x-axis tick labels.
 
-    xtick_labels = ax.get_xticklabels()  # type: ignore
+    Args:
+        axes (Axes, optional): The matplotlib axes to modify.
+            If None, uses the current axes.
+        font (str): The font family to use for the tick labels.
+        font_size (float, optional): The font size to use for the tick labels.
+            If None, keeps current size.
+    """
+    ax = _try_get_current_axes(axes)
+
+    xtick_labels = ax.get_xticklabels()
     for label in xtick_labels:
         label.set_fontfamily(font)
     if font_size is not None:
@@ -160,71 +181,78 @@ def set_xticklabel_font(
 
 
 def set_ticklabel_font(
-    axis: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+    axes: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
 ) -> None:
-    "Set the font of the x and y tick labels."
-    ax = _find_axis(axis)
+    """Sets the font and font size of the ticklabels for the given axes.
+
+    Args:
+        axes (Axes, optional): The matplotlib axes to modify.
+            If None, uses the current axes.
+        font (str, optional): The font family to use for the ticklabels.
+        font_size (float, optional): The font size to use for the ticklabels.
+            If None, keeps current size.
+    """
+    ax = _try_get_current_axes(axes)
 
     set_xticklabel_font(ax, font, font_size)
     set_yticklabel_font(ax, font, font_size)
 
 
-def set_xticklabel_monospaced(axis: Union[Axes, None] = None):
-    "Set the font of the xtick labels to a monospace font."
-    ax = _find_axis(axis)
-
+def set_xticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+    """Sets the font of the x-axis ticklabels to a monospace font."""
+    ax = _try_get_current_axes(axes)
     set_xticklabel_font(ax, MONOSPACE_FONT, MONOSPACE_FONT_SIZE)
 
 
-def set_yticklabel_monospaced(axis: Union[Axes, None] = None):
-    "Set the font of the ytick labels to a monospace font."
-    ax = _find_axis(axis)
-
+def set_yticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+    """Sets the font of the y-axis ticklabels to a monospace font."""
+    ax = _try_get_current_axes(axes)
     set_yticklabel_font(ax, MONOSPACE_FONT, MONOSPACE_FONT_SIZE)
 
 
-def set_ticklabel_monospaced(axis: Union[Axes, None] = None):
-    "Set the font of both the x and y tick labels to a monospace font."
-    ax = _find_axis(axis)
+def set_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+    """Sets the font of both the x- and y-axis ticklabels to a monospace font."""
+    ax = _try_get_current_axes(axes)
 
     set_xticklabel_monospaced(ax)
     set_yticklabel_monospaced(ax)
 
 
-def capitalize_xticklabels(axis: Union[Axes, None] = None):
-    "Capitalize the xtick labels."
-    ax = _find_axis(axis)
+def capitalize_xticklabels(axes: Union[Axes, None] = None) -> None:
+    """Capitalizes the x-axis ticklabels."""
+    ax = _try_get_current_axes(axes)
 
-    xticklabels = [label.get_text().capitalize() for label in ax.get_xticklabels()]  # type: ignore
-    ax.set_xticklabels(xticklabels)  # type: ignore
-
-
-def capitalize_yticklabels(axis: Union[Axes, None] = None):
-    "Capitalize the ytick labels."
-    ax = _find_axis(axis)
-
-    yticklabels = [label.get_text().capitalize() for label in ax.get_yticklabels()]  # type: ignore
-    ax.set_yticklabels(yticklabels)  # type: ignore
+    xticklabels = [label.get_text().capitalize() for label in ax.get_xticklabels()]
+    ax.set_xticklabels(xticklabels)
 
 
-def capitalize_ticklabels(axis: Union[Axes, None] = None):
-    "Capitalize both the x and y tick labels."
-    ax = _find_axis(axis)
+def capitalize_yticklabels(axes: Union[Axes, None] = None) -> None:
+    """Capitalizes the y-axis ticklabels."""
+    ax = _try_get_current_axes(axes)
+
+    yticklabels = [label.get_text().capitalize() for label in ax.get_yticklabels()]
+    ax.set_yticklabels(yticklabels)
+
+
+def capitalize_ticklabels(axes: Union[Axes, None] = None) -> None:
+    """Capitalizes both the x- and y-axis ticklabels."""
+    ax = _try_get_current_axes(axes)
 
     capitalize_yticklabels(ax)
     capitalize_xticklabels(ax)
 
 
-def add_commas_to_axis_tick_labels(axis: Union[XAxis, YAxis]):
+def add_commas_to_axis_tick_labels(axes: Union[XAxis, YAxis]) -> None:
+    """Adds commas to the numbers used for axis ticklabels.
+
+    For example, transform 1000000 to 1,000,000.
     """
-    Add commas to the numbers used for axis tick labels.
-    """
-    axis.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: format(int(x), ",")))  # type: ignore
+    axes.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: format(int(x), ",")))  # type: ignore
 
 
-def set_xaxis_categorical(axis: Union[Axes, None] = None):
-    "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
-    ax = _find_axis(axis)
+def set_xaxis_categorical(axes: Union[Axes, None] = None) -> None:
+    """Sets the style of the x-axis to a categorical axis, removing ticks and adjusting padding."""
+    ax = _try_get_current_axes(axes)
 
     ax.tick_params(
         axis="x",
@@ -234,9 +262,9 @@ def set_xaxis_categorical(axis: Union[Axes, None] = None):
     )
 
 
-def set_yaxis_categorical(axis: Union[Axes, None] = None):
-    "Set the style of the x-axis to a categorical axis, removing ticks and adjusting padding."
-    ax = _find_axis(axis)
+def set_yaxis_categorical(axes: Union[Axes, None] = None) -> None:
+    """Sets the style of the y-axis to a categorical axis, removing ticks and adjusting padding."""
+    ax = _try_get_current_axes(axes)
 
     ax.tick_params(
         axis="y",
@@ -246,120 +274,120 @@ def set_yaxis_categorical(axis: Union[Axes, None] = None):
     )
 
 
-def set_axes_categorical(axis: Union[Axes, None] = None):
-    "Set the style of both the x and y axes to categorical axes."
-    ax = _find_axis(axis)
+def set_axes_categorical(axes: Union[Axes, None] = None) -> None:
+    """Sets the style of both the x and y axes to categorical axes."""
+    ax = _try_get_current_axes(axes)
 
     set_xaxis_categorical(ax)
     set_yaxis_categorical(ax)
 
 
-def capitalize_ylabel(axis: Union[Axes, None] = None):
-    "Capitalize the y-axis label."
-    ax = _find_axis(axis)
+def capitalize_ylabel(axes: Union[Axes, None] = None) -> None:
+    """Capitalizes the y-axis label."""
+    ax = _try_get_current_axes(axes)
 
     ax.set_ylabel(ax.get_yaxis().get_label().get_text().capitalize())
 
 
-def capitalize_xlabel(axis: Union[Axes, None] = None):
-    "Capitalize the x-axis label."
-    ax = _find_axis(axis)
+def capitalize_xlabel(axes: Union[Axes, None] = None) -> None:
+    """Capitalizes the x-axis label."""
+    ax = _try_get_current_axes(axes)
 
     ax.set_xlabel(ax.get_xaxis().get_label().get_text().capitalize())
 
 
-def capitalize_axislabels(axis: Union[Axes, None] = None):
-    "Capitalize both the x and y axis labels."
-    ax = _find_axis(axis)
+def capitalize_axislabels(axes: Union[Axes, None] = None) -> None:
+    """Capitalizes both the x and y axis labels."""
+    ax = _try_get_current_axes(axes)
 
     capitalize_xlabel(ax)
     capitalize_ylabel(ax)
 
 
-def capitalize_legend_title(legend: Legend):
-    "Capitalize the legend title."
+def capitalize_legend_title(legend: Legend) -> None:
+    """Capitalizes the legend title."""
     legend.set_title(legend.get_title().get_text().capitalize())
 
 
-def capitalize_legend_entries(legend: Legend):
-    "Capitalize the legend entries."
+def capitalize_legend_entries(legend: Legend) -> None:
+    """Capitalizes the legend entries."""
     for text in legend.get_texts():
         text.set_text(text.get_text().capitalize())
 
 
-def capitalize_legend_text(legend: Legend):
-    "Capitalize the legend title and entries."
+def capitalize_legend_text(legend: Legend) -> None:
+    """Capitalize the legend title and entries."""
     capitalize_legend_title(legend)
     capitalize_legend_entries(legend)
 
 
-def justify_legend_text(legend: Legend):
-    "Justify the legend to the left and change legend title font to Medium weight."
+def justify_legend_text(legend: Legend) -> None:
+    """Justify the legend to the left and change legend title font to Medium weight."""
     legend.set_title(legend.get_title()._text, prop=LEGEND_PARAMS["title_fontproperties"])  # type: ignore
     legend.set(alignment="left")
 
 
-def style_legend(legend: Legend):
-    "Apply a set of style changes to a legend."
+def style_legend(legend: Legend) -> None:
+    """Styles the legend according to Arcadia's style guide."""
     capitalize_legend_text(legend)
     add_legend_line(legend)
     justify_legend_text(legend)
 
 
-def set_colorbar_ticklabel_monospaced(axis: Union[Axes, None] = None):
-    "Set the font of the colorbar tick labels to Suisse Int'l Mono."
-
-    ax = _find_axis(axis)
+def set_colorbar_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+    """Set the font of the colorbar tick labels to Suisse Int'l Mono."""
+    ax = _try_get_current_axes(axes)
     if cbar := ax.collections[0].colorbar:  # type: ignore
-        set_ticklabel_monospaced(axis=cbar.ax)
+        set_ticklabel_monospaced(axes=cbar.ax)
 
 
 def style_plot(
-    axis: Union[Axes, None] = None,
+    axes: Union[Axes, None] = None,
     monospaced_axes: Literal["x", "y", "both", None] = None,
     categorical_axes: Literal["x", "y", "both", None] = None,
     colorbar_exists: bool = False,
 ) -> None:
-    """Apply a set of style changes to a user-specified axis, or (if None), the most recent axis.
+    """Styles the plot according to Arcadia's style guide.
 
     Args:
-        axis (matplotlib.axis.Axis or None): the axis to style
-        monospaced_axes (str): which axes to set to a monospaced font,
-            either 'x', 'y', 'both', or None
-        categorical_axes (str): which axes to set to categorical,
-            either 'x', 'y', 'both', or None
-        colorbar_exists (bool): whether a colorbar exists on the axis
+        axes (Axes, optional): The matplotlib Axes to modify.
+            If None, uses the most recent Axes.
+        monospaced_axes (str, optional): Which axes to set to a monospaced font.
+            Either 'x', 'y', 'both', or None.
+        categorical_axes (str, optional): Which axes to set to categorical.
+            Either 'x', 'y', 'both', or None.
+        colorbar_exists (bool): Whether a colorbar exists on the axis.
     """
 
-    ax = _find_axis(axis)
+    ax = _try_get_current_axes(axes)
     capitalize_axislabels(ax)
 
     # Legend styling.
     legend = ax.get_legend()
 
-    if legend is not None:  # type: ignore
+    if legend is not None:
         style_legend(legend)
 
     if categorical_axes == "both":
-        set_axes_categorical(axis)
-        capitalize_ticklabels(axis)
+        set_axes_categorical(ax)
+        capitalize_ticklabels(ax)
     elif categorical_axes == "x":
-        set_xaxis_categorical(axis)
-        capitalize_xticklabels(axis)
+        set_xaxis_categorical(ax)
+        capitalize_xticklabels(ax)
     elif categorical_axes == "y":
-        set_yaxis_categorical(axis)
-        capitalize_yticklabels(axis)
+        set_yaxis_categorical(ax)
+        capitalize_yticklabels(ax)
     elif categorical_axes is None:
         pass
     else:
         print("Invalid categorical_axes option. Please choose from 'x', 'y', or 'both'.")
 
     if monospaced_axes == "both":
-        set_ticklabel_monospaced(axis)
+        set_ticklabel_monospaced(ax)
     elif monospaced_axes == "x":
-        set_xticklabel_monospaced(axis)
+        set_xticklabel_monospaced(ax)
     elif monospaced_axes == "y":
-        set_yticklabel_monospaced(axis)
+        set_yticklabel_monospaced(ax)
     elif monospaced_axes is None:
         pass
     else:
@@ -369,26 +397,43 @@ def style_plot(
         set_colorbar_ticklabel_monospaced(ax)
 
 
-def get_figure_dimensions(size: str) -> tuple[float, ...]:
-    """Return the dimensions of a figure given a size, subtracting the spacing needed for margins.
+def get_figure_dimensions(size: str) -> tuple[float, float]:
+    """Returns the dimensions of a figure given a predefined size.
+
+    The dimensions are calculated by subtracting the spacing needed for padding
+    from the width and height of the predefined size.
 
     Args:
-        size (str) : the desired figure size,
-            either "full_wide", "full_square", "float_wide", "float_square", or "half_square"
-    """
+        size (str): Figure size, which must be one of the following:
+            - "full_wide"
+            - "full_square"
+            - "float_wide"
+            - "float_square"
+            - "half_square"
 
+    Returns:
+        tuple[float, float]: The width and height of the figure in inches.
+
+    Raises:
+        ValueError: If the size is not one of the predefined sizes.
+    """
     if size not in FIGURE_SIZES:
         raise ValueError(f"Size must be one of {list(FIGURE_SIZES.keys())}.")
 
-    return tuple(x - 2 * FIGURE_PADDING_INCHES for x in FIGURE_SIZES[size])
+    width, height = FIGURE_SIZES[size]
+    return (width - 2 * FIGURE_PADDING_INCHES, height - 2 * FIGURE_PADDING_INCHES)
 
 
 def add_legend_line(legend: Legend, linewidth: float = LEGEND_SEPARATOR_LINEWIDTH):
-    "Add a horizontal line with 'chateau' color below the legend title."
-    # Determine the width of the legend in pixels
+    """Adds a horizontal line with 'chateau' color below the legend title.
 
+    Args:
+        legend (Legend): The legend to add the line to.
+        linewidth (float): The width of the line.
+    """
     legend_line_color = colors.chateau
 
+    # Determine the width of the legend in pixels.
     x0 = legend._legend_handle_box.get_window_extent()._points[0][0]  # type: ignore
     x1 = legend._legend_handle_box.get_window_extent()._points[1][0]  # type: ignore
     bbox_length = abs(cast(float, x1 - x0))
@@ -428,33 +473,32 @@ def add_legend_line(legend: Legend, linewidth: float = LEGEND_SEPARATOR_LINEWIDT
         entries.insert(0, line_area)
 
 
-def load_colors():
-    "Load Arcadia's colors into the matplotlib list of named colors with the prefix 'apc:'."
+def load_colors() -> None:
+    """Loads Arcadia's colors into the matplotlib list of named colors with the prefix 'apc:'."""
     colors = {
         "apc:" + color.name: color.hex_code for color in arcadia_pycolor.palettes.all_colors.colors
     }
     mpl.cm.colors.get_named_colors_mapping().update(colors)  # type: ignore
 
 
-def load_fonts(font_folder: Union[str, None] = None) -> None:
-    """
-    Detect and load Suisse-family fonts installed on the system into matplotlib.
+def load_fonts(font_dirpath: Union[str, None] = None) -> None:
+    """Detects the Suisse-family fonts installed on the system and loads them into matplotlib.
 
     Args:
-        font_folder (str, optional): the folder to search for fonts in.
-            Uses the default system font folder if None.
+        font_dirpath (str, optional): Path to the directory to search for fonts in.
+            If None, searches the expected system font directories.
     """
     arcadia_font_paths = []
 
     # On macOS, look in the standard font directories first.
     # This is faster than matplotlib's font search implementation.
     # See https://github.com/Arcadia-Science/arcadia-pycolor/pull/58.
-    if font_folder is None and sys.platform == "darwin":
+    if font_dirpath is None and sys.platform == "darwin":
         arcadia_font_paths.extend(_find_macos_arcadia_fonts())
 
     # If no fonts are found, fallback to full system search.
     if not arcadia_font_paths:
-        for font_path in font_manager.findSystemFonts(fontpaths=font_folder, fontext="ttf"):
+        for font_path in font_manager.findSystemFonts(fontpaths=font_dirpath, fontext="ttf"):
             if FONT_FILTER.lower() in font_path.lower():
                 arcadia_font_paths.append(font_path)
 
@@ -462,7 +506,7 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
         font_manager.fontManager.addfont(font_path)
         font_manager.FontProperties(fname=font_path)
 
-    if not _arcadia_fonts_found():
+    if not _is_arcadia_font_set_available():
         print(
             "Warning: The Arcadia fonts were not found. "
             "The default matplotlib fonts will be used instead."
@@ -470,8 +514,9 @@ def load_fonts(font_folder: Union[str, None] = None) -> None:
 
 
 def load_colormaps() -> None:
-    """
-    Load Arcadia's palettes and gradients into the matplotlib list of named colormaps
+    """Loads Arcadia's palettes and gradients into matplotlib.
+
+    The colormaps are loaded into matplotlib's list of named colormaps
     with the prefix 'apc:'.
     """
     arcadia_colormaps = [
@@ -496,13 +541,13 @@ def load_colormaps() -> None:
 
 
 def load_styles() -> None:
-    "Load Arcadia's default style settings into matplotlib rcParams."
+    """Updates matplotlib's runtime configuration parameters with Arcadia's style settings."""
     plt.rcParams.update(ARCADIA_RC_PARAMS)
 
 
-def setup(font_folder: Union[str, None] = None) -> None:
-    "Load all Arcadia colors, fonts, styles, and colormaps into matplotlib."
+def setup(font_dirpath: Union[str, None] = None) -> None:
+    """Loads all Arcadia colors, fonts, styles, and colormaps into matplotlib."""
     load_colors()
-    load_fonts(font_folder)
+    load_fonts(font_dirpath)
     load_colormaps()
     load_styles()

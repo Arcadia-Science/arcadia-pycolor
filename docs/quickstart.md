@@ -7,6 +7,7 @@ For detailed documentation about the package and links to example plots, please 
 For links to the Arcadia style guide, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7) on Notion.
 
 ## Install the `arcadia_pycolor` package
+
 The `arcadia_pycolor` package can be installed using pip. In a virtual environment of your choice, run the following command in your terminal:
 
 ```bash
@@ -45,6 +46,7 @@ plt.show()
 ### What does `apc.mpl.setup` do?
 
 The `apc.mpl.setup` does several different things:
+
 - It loads the Arcadia fonts.
 - It registers Arcadia color palettes and gradients with Matplotlib (see the section ["Using Arcadia colors"](#using-arcadia-colors) below).
 - It sets the default Matplotlib styles to match the Arcadia style guide.
@@ -52,6 +54,7 @@ The `apc.mpl.setup` does several different things:
 **To see before-and-after examples of what `apc.mpl.setup` does, please refer to [the documentation about styling plots](/docs/style_usage.ipynb).**
 
 ### A note about the Arcadia fonts
+
 The Arcadia style guide uses the Suisse family of fonts. When `apc.mpl.setup` is called, it automatically configures Matplotlib to use these fonts. If they are not installed, Matplotlib will use its default fonts instead.
 
 The Suisse fonts are proprietary. To install them, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7#d1cbc8fc315b4d10a8fd4cc7d9eb8c3f) on Notion for instructions. Please do not share these fonts outside of Arcadia.
@@ -106,7 +109,6 @@ apc.aegean
 When the cell is evaluated, it will output the name and hex code of the color alongside a swatch showing what the color looks like:
 
 <img src="./images/aegean-swatch.png" alt="aegean color swatch" width="200"/>
-
 
 ### Using color palettes
 

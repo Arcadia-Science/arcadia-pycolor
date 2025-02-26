@@ -1,7 +1,7 @@
 import arcadia_pycolor.colors as colors
 from arcadia_pycolor.gradient import Gradient
 
-# Perceptually Uniform Gradients
+# Perceptually Uniform Gradients.
 magma = Gradient(
     "magma",
     [colors.concord, colors.tanzanite, colors.heather, colors.tumbleweed, colors.wheat],
@@ -38,7 +38,7 @@ lisafrank = Gradient(
     [0, 0.484, 0.862, 1],
 )
 
-# Strong Monocolor Gradients
+# Strong Monocolor Gradients.
 reds = Gradient(
     "reds",
     [colors.cinnabar, colors.dragon, colors.blush],
@@ -75,7 +75,7 @@ purples = Gradient(
     [0, 0.144, 1.0],
 )
 
-# Strong Bicolor Gradients
+# Strong Bicolor Gradients.
 orange_sage = oranges + sages.reverse()
 orange_sage.name = "orange_sage"
 

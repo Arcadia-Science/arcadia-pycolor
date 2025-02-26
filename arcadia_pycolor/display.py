@@ -9,20 +9,22 @@ def colorize(
     string: str,
     fg_color: HexCode | None = None,
     bg_color: HexCode | None = None,
-):
-    """
-    Colorizes a string with the specified foreground and background colors.
+) -> str:
+    """Colorizes a string with the specified foreground and background colors.
+
+    Based on colorir's `color_str` function. See:
+    https://github.com/aleferna12/colorir/blob/2d44e4c/colorir/utils.py#L389.
+
+    Relies on ANSI escape codes for colorization. See:
+    https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797.
 
     Args:
-        string (str): the string to colorize
-        fg_color (HexCode): the foreground color
-        bg_color (HexCode): the background color
+        string (str): The string to colorize.
+        fg_color (HexCode): The foreground color.
+        bg_color (HexCode): The background color.
 
-    Based on colorir's color_str function:
-    https://github.com/aleferna12/colorir/blob/master/colorir/utils.py#L370
-
-    Relies on ANSI escape codes for colorization.
-    See https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+    Returns:
+        str: The colorized string.
     """
     if fg_color:
         rgb = fg_color.to_rgb()
