@@ -35,15 +35,14 @@ jobs:
           virtualenvs-in-project: true
 
       - name: Cache Poetry dependencies
-        id: cache-poetry-deps
+        id: cache-deps
         uses: actions/cache@v2
         with:
           path: .venv
           key: pydeps-${{ hashFiles('**/poetry.lock') }}
 
-      - run: poetry install --no-interaction --no-root
-        if: steps.cache-poetry-deps.outputs.cache-hit != 'true'
-
+      - run: poetry install --no-interaction --no-root --with=dev
+        if: steps.cache-deps.outputs.cache-hit != 'true'
       - name: Run Ruff
         run: poetry run ruff check --output-format=github .
 
@@ -52,3 +51,14 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest
+
+      # This is necessary to prevent the following error when installing the package in CI:
+      # "RuntimeError: This is a shallow repository, so Dunamai may not produce the correct version."
+      - name: Fetch full Git history
+        run: git fetch --unshallow --tags
+
+      - name: Install arcadia-pycolor
+        run: poetry run pip install .
+
+      - name: Execute notebooks
+        run: make execute-all-notebooks
