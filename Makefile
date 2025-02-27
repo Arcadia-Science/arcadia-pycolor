@@ -10,7 +10,7 @@ endif
 execute-all-notebooks:
 	@for file in $(JUPYTER_NOTEBOOKS); do \
 		echo "Executing notebook $$file"; \
-		jupyter execute --inplace $$file; \
+		poetry run jupyter execute --inplace $$file; \
 	done
 
 .PHONY: lint
