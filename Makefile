@@ -1,7 +1,10 @@
-include .env
-
 DOCS_DIR := ./docs
 JUPYTER_NOTEBOOKS := $(shell find $(DOCS_DIR) -type f -name '*.ipynb')
+
+# Load environment variables from the `.env` file if it exists.
+ifneq (,$(wildcard .env))
+    include .env
+endif
 
 .PHONY: execute-all-notebooks
 execute-all-notebooks:
@@ -14,12 +17,15 @@ execute-all-notebooks:
 lint:
 	ruff check --exit-zero .
 	ruff format --check .
-	pyright --project pyproject.toml .
 
 .PHONY: format
 format:
 	ruff check --fix .
 	ruff format .
+
+.PHONY: typecheck
+typecheck:
+	pyright --project pyproject.toml .
 
 .PHONY: pre-commit
 pre-commit:

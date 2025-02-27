@@ -115,8 +115,8 @@ When the cell is evaluated, it will output the name and hex code of the color al
 Individual colors are organized into groups called "palettes." The palettes themselves have names and are accessible as attributes of the `apc.palettes` module. For example, we can rewrite the previous example to use the first two colors in the "primary" palette:
 
 ```python
-plt.plot([1, 2, 3], [4, 5, 6], color=apc.palettes.primary.colors[0])
-plt.plot([1, 2, 3], [4, 6, 8], color=apc.palettes.primary.colors[1])
+plt.plot([1, 2, 3], [4, 5, 6], color=apc.palettes.primary[0])
+plt.plot([1, 2, 3], [4, 6, 8], color=apc.palettes.primary[1])
 ```
 
 To see all of the colors in a palette, evaluate the palette object in a notebook cell:

@@ -18,7 +18,7 @@ import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
-from arcadia_pycolor.palette import ColorSequence
+from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
     ARCADIA_RC_PARAMS,
     BASE_DPI,
@@ -525,7 +525,7 @@ def load_colormaps() -> None:
             list(arcadia_pycolor.palettes.__dict__.values())
             + list(arcadia_pycolor.gradients.__dict__.values())
         )
-        if isinstance(object, ColorSequence)
+        if isinstance(object, (Palette, Gradient))
     ]
 
     for arcadia_colormap in arcadia_colormaps:

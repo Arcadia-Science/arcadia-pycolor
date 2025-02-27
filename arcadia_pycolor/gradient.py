@@ -1,10 +1,11 @@
-from typing import Any, Union
+from __future__ import annotations
+from dataclasses import dataclass
 
 import matplotlib.colors as mcolors
 
 from arcadia_pycolor.display import colorize
 from arcadia_pycolor.hexcode import HexCode
-from arcadia_pycolor.palette import ColorSequence, Palette
+from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.utils import (
     NumericSequence,
     distribute_values,
@@ -14,7 +15,21 @@ from arcadia_pycolor.utils import (
 )
 
 
-class Gradient(ColorSequence["Gradient"]):
+@dataclass
+class Anchor:
+    """
+    A paired color and position value for a gradient.
+
+    Args:
+        color: A HexCode object representing the color
+        value: A numeric value between 0 and 1 representing the position in the gradient
+    """
+
+    color: HexCode
+    value: float
+
+
+class Gradient:
     """A sequence of colors and their positions that define a continuous color gradient.
 
     Each color is paired with a numeric value between 0 and 1 that determines its position
@@ -23,19 +38,22 @@ class Gradient(ColorSequence["Gradient"]):
 
     Attributes:
         name (str): The name of the gradient.
-        colors (list): A list of HexCode objects.
-        values (list, optional): A list of float values corresponding to the position of
-            colors on a 0 to 1 scale. If None, the values will be distributed evenly
-            between 0 and 1.
+        anchors (list[Anchor]): A list of gradient anchors.
+
+    Properties:
+        anchor_colors (list[HexCode]):
+            The list of HexCodes corresponding to each anchor.
+        anchor_values (list[float]):
+            The list of values corresponding to each anchor.
     """
 
-    def __init__(
-        self,
-        name: str,
-        colors: list[Any],
-        values: Union[list[Any], None] = None,
-    ) -> None:
+    def __init__(self, name: str, colors: list[HexCode], values: list[float] | None = None):
         """Initializes a Gradient.
+
+        Args:
+            name: The name of the gradient.
+            colors: A list of HexCodes.
+            values: An optional list of float values. See class docstring for details.
 
         Raises:
             ValueError:
@@ -45,7 +63,10 @@ class Gradient(ColorSequence["Gradient"]):
                 - If the first value is not 0 or the last value is not 1.
                 - If the number of values is not the same as the number of colors.
         """
-        super().__init__(name=name, colors=colors)
+        self.name = name
+
+        if not all(isinstance(color, HexCode) for color in colors):
+            raise ValueError("All colors must be HexCode objects.")
 
         if values is not None:
             if len(values) < 2:
@@ -58,21 +79,41 @@ class Gradient(ColorSequence["Gradient"]):
                 raise ValueError("The first value must be 0 and the last value must be 1.")
             if len(colors) != len(values):
                 raise ValueError("The number of colors and values must be the same.")
-            self.values = values
+            anchor_values = values
         else:
-            self.values = distribute_values(len(self.colors))
+            anchor_values = distribute_values(len(colors))
+
+        self.anchors = [Anchor(color, value) for color, value in zip(colors, anchor_values)]
+
+    @property
+    def anchor_colors(self) -> list[HexCode]:
+        return [anchor.color for anchor in self.anchors]
+
+    @property
+    def anchor_values(self) -> list[float]:
+        return [anchor.value for anchor in self.anchors]
+
+    @property
+    def num_anchors(self) -> int:
+        """Returns the number of anchors in the gradient"""
+        return len(self.anchors)
 
     @classmethod
     def from_dict(
-        cls, name: str, colors: dict[str, str], values: Union[list[float], None] = None
-    ) -> "Gradient":
+        cls, name: str, colors: dict[str, str], values: list[float] | None = None
+    ) -> Gradient:
         """Creates a gradient from a dictionary of colors and values."""
         hex_codes = [HexCode(name, hex_code) for name, hex_code in colors.items()]
         return cls(name, hex_codes, values)
 
     def swatch(self, steps: int = 21) -> str:
-        """Returns a gradient swatch with the specified number of steps."""
-        # Calculate the color for each step in the gradient.
+        """
+        Returns a gradient swatch with the specified number of steps.
+
+        Args:
+            steps (int): the number of swatches to display in the gradient
+        """
+        # Calculate the color for each step in the gradient
         cmap = self.to_mpl_cmap()
 
         # Get the color for each step in the gradient.
@@ -85,12 +126,12 @@ class Gradient(ColorSequence["Gradient"]):
 
         return "".join(swatches)
 
-    def reverse(self) -> "Gradient":
-        """Returns a reversed gradient."""
+    def reverse(self) -> Gradient:
+        """Returns a new gradient with the colors and values in reverse order"""
         return Gradient(
             name=f"{self.name}_r",
-            colors=self.colors[::-1],
-            values=[1 - value for value in self.values[::-1]],
+            colors=self.anchor_colors[::-1],
+            values=[1 - value for value in self.anchor_values[::-1]],
         )
 
     def resample_as_palette(self, steps: int = 5) -> Palette:
@@ -110,8 +151,8 @@ class Gradient(ColorSequence["Gradient"]):
     def map_values(
         self,
         values: NumericSequence,
-        min_value: Union[float, None] = None,
-        max_value: Union[float, None] = None,
+        min_value: float | None = None,
+        max_value: float | None = None,
     ) -> list[HexCode]:
         """Maps a sequence of values to their corresponding colors from a gradient.
 
@@ -149,31 +190,32 @@ class Gradient(ColorSequence["Gradient"]):
 
         return [HexCode(f"{value}", mcolors.to_hex(cmap(value))) for value in normalized_values]
 
-    def interpolate_lightness(self) -> "Gradient":
+    def interpolate_lightness(self) -> Gradient:
         """Interpolates the gradient to new values based on lightness."""
-        if len(self.colors) < 3:
+
+        if self.num_anchors < 3:
             raise ValueError("Interpolation requires at least three colors.")
-        if not is_monotonic(self.values):
+        if not is_monotonic(self.anchor_values):
             raise ValueError("Lightness must be monotonically increasing or decreasing.")
 
-        lightness_values = [color.to_cam02ucs()[0] for color in self.colors]
+        lightness_values = [color.to_cam02ucs()[0] for color in self.anchor_colors]
         new_values = interpolate_x_values(lightness_values)
 
         return Gradient(
             name=f"{self.name}_interpolated",
-            colors=self.colors,
+            colors=self.anchor_colors,
             values=new_values,
         )
 
-    def __add__(self, other: "Gradient") -> "Gradient":
-        new_colors = []
-        new_values = []
-
+    def __add__(self, other: Gradient) -> Gradient:
+        """Return the sum of two gradients by concatenating their colors and values."""
         # If the first gradient ends with the same color as the start of the second gradient,
         # drop the repeated color.
-        offset = 1 if self.colors[-1] == other.colors[0] else 0
-        new_colors = self.colors + other.colors[offset:]
-        new_values = rescale_and_concatenate_values(self.values, other.values[offset:])
+        offset = int(self.anchor_colors[-1] == other.anchor_colors[0])
+        new_colors = self.anchor_colors + other.anchor_colors[offset:]
+        new_values = rescale_and_concatenate_values(
+            self.anchor_values, other.anchor_values[offset:]
+        )
 
         return Gradient(
             name=f"{self.name}_{other.name}",
@@ -182,19 +224,19 @@ class Gradient(ColorSequence["Gradient"]):
         )
 
     def __repr__(self) -> str:
-        longest_name_length = self._get_longest_name_length()
+        longest_name_length = max(len(anchor.color.name) for anchor in self.anchors)
 
         return "\n".join(
             [self.swatch()]
             + [
-                f"{color.swatch(min_name_width=longest_name_length)} {value}"
-                for color, value in zip(self.colors, self.values)
+                f"{anchor.color.swatch(min_name_width=longest_name_length)} {anchor.value}"
+                for anchor in self.anchors
             ]
         )
 
     def to_mpl_cmap(self) -> mcolors.LinearSegmentedColormap:
         """Converts the gradient to a matplotlib colormap."""
-        colors = [(value, color.hex_code) for value, color in zip(self.values, self.colors)]
+        colors = [(anchor.value, anchor.color.hex_code) for anchor in self.anchors]
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,
             colors=colors,

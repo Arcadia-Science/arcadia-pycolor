@@ -16,7 +16,7 @@ from .test_hexcode import INVALID_HEXCODES
 )
 def test_gradient_from_hexcode_list(values):
     colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
-    assert Gradient("some-gradient", colors, values).colors == colors
+    assert Gradient("some-gradient", colors, values).anchor_colors == colors
 
 
 @pytest.mark.parametrize(
@@ -78,7 +78,7 @@ def test_gradient_from_dict(values):
         "some_gradient",
         {"white": "#FFFFFF", "black": "#000000"},
         values,
-    ).colors == [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    ).anchor_colors == [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
 
 
 def test_gradient_swatch():
@@ -170,3 +170,29 @@ def test_map_values_invalid_cases(black_to_white_gradient: Gradient):
     # Or min equal to max
     with pytest.raises(ValueError, match="must be greater than"):
         black_to_white_gradient.map_values([0, 1], min_value=1, max_value=1)
+
+
+def test_gradient_num_anchors():
+    """Test that a Gradient's num_anchors returns the expected count."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    gradient = Gradient("test_gradient", colors)
+    assert gradient.num_anchors == 2
+    assert len(gradient.anchor_colors) == 2
+    assert len(gradient.anchor_values) == 2
+
+
+def test_gradient_anchor_properties():
+    """Test that a Gradient's anchors have the expected properties."""
+    colors = [HexCode("white", "#FFFFFF"), HexCode("black", "#000000")]
+    values = [0.0, 1.0]
+    gradient = Gradient("test_gradient", colors, values)
+
+    # Check anchor properties.
+    assert gradient.anchors[0].color == colors[0]
+    assert gradient.anchors[0].value == values[0]
+    assert gradient.anchors[1].color == colors[1]
+    assert gradient.anchors[1].value == values[1]
+
+    # Check parent properties.
+    assert gradient.anchor_colors == colors
+    assert gradient.anchor_values == values

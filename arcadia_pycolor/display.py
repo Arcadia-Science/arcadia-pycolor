@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from arcadia_pycolor.hexcode import HexCode
@@ -6,8 +7,8 @@ if TYPE_CHECKING:
 
 def colorize(
     string: str,
-    fg_color: Optional["HexCode"] = None,
-    bg_color: Optional["HexCode"] = None,
+    fg_color: HexCode | None = None,
+    bg_color: HexCode | None = None,
 ) -> str:
     """Colorizes a string with the specified foreground and background colors.
 

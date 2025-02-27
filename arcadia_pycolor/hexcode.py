@@ -1,5 +1,6 @@
+from __future__ import annotations
 import re
-from typing import Any, Union, cast
+from typing import Any, cast
 
 import matplotlib.colors as mcolors
 from colorspacious import cspace_converter  # type: ignore
@@ -26,7 +27,7 @@ class HexCode(str):
         hex_code (str): The HEX code of the color.
     """
 
-    def __new__(cls, name: str, hex_code: str) -> "HexCode":
+    def __new__(cls, name: str, hex_code: str) -> HexCode:
         """Returns a new HexCode object.
 
         Args:
@@ -78,7 +79,7 @@ class HexCode(str):
 
         return cam02ucs
 
-    def swatch(self, width: int = 2, min_name_width: Union[int, None] = None) -> str:
+    def swatch(self, width: int = 2, min_name_width: int | None = None) -> str:
         """Returns a color swatch with the specified width and color name width.
 
         Based on colorir's `swatch` function:

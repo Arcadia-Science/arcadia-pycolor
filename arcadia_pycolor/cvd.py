@@ -130,8 +130,8 @@ def simulate_gradient(gradient: Gradient, cvd_type: str = "d", severity: int = 1
     Returns:
         Gradient: A new gradient with the simulated color vision deficiency.
     """
-    cvd_hex_colors = simulate_color(gradient.colors, cvd_type=cvd_type, severity=severity)
-    cvd_gradient = Gradient(f"{gradient.name}_{cvd_type}", cvd_hex_colors, gradient.values)
+    cvd_hex_colors = simulate_color(gradient.anchor_colors, cvd_type=cvd_type, severity=severity)
+    cvd_gradient = Gradient(f"{gradient.name}_{cvd_type}", cvd_hex_colors, gradient.anchor_values)
     return cvd_gradient
 
 
