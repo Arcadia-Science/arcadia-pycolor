@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        # Fetching the full git history is necessary because poetry's dynamic versioning extension
+        # requires it, and this extension is run even when the package is pip-installed locally
+        # (as we do below).
+        with:
+          fetch-depth: 0
 
       - name: Install Python
         uses: actions/setup-python@v4
@@ -51,11 +56,6 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest
-
-      # This is necessary to prevent the following error when installing the package in CI:
-      # "RuntimeError: This is a shallow repository, so Dunamai may not produce the correct version."
-      - name: Fetch full Git history
-        run: git fetch --unshallow --tags
 
       - name: Install arcadia-pycolor
         run: poetry run pip install .
