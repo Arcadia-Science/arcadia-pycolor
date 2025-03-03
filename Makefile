@@ -8,7 +8,8 @@ endif
 
 .PHONY: execute-all-notebooks
 execute-all-notebooks:
-	@for file in $(JUPYTER_NOTEBOOKS); do \
+	@if [ -n "$$CI" ]; then set -e; fi; \
+	for file in $(JUPYTER_NOTEBOOKS); do \
 		echo "Executing notebook $$file"; \
 		poetry run jupyter execute --inplace $$file; \
 	done
