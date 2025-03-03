@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        # Fetching the full git history is necessary because poetry's dynamic versioning extension
+        # requires it, and this extension is run even when the package is pip-installed locally
+        # (as we do below).
+        with:
+          fetch-depth: 0
 
       - name: Install Python
         uses: actions/setup-python@v4
@@ -22,7 +27,7 @@ jobs:
           python-version: "3.9"
 
       - name: Cache Poetry install
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.local
           key: poetry-1.8.3-0
@@ -35,15 +40,14 @@ jobs:
           virtualenvs-in-project: true
 
       - name: Cache Poetry dependencies
-        id: cache-poetry-deps
-        uses: actions/cache@v2
+        id: cache-deps
+        uses: actions/cache@v3
         with:
           path: .venv
           key: pydeps-${{ hashFiles('**/poetry.lock') }}
 
-      - run: poetry install --no-interaction --no-root
-        if: steps.cache-poetry-deps.outputs.cache-hit != 'true'
-
+      - run: poetry install --no-interaction --no-root --with=dev
+        if: steps.cache-deps.outputs.cache-hit != 'true'
       - name: Run Ruff
         run: poetry run ruff check --output-format=github .
 
@@ -52,3 +56,9 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest
+
+      - name: Install arcadia-pycolor
+        run: poetry run pip install .
+
+      - name: Execute notebooks
+        run: make execute-all-notebooks
