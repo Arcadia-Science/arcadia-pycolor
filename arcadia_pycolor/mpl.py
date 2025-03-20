@@ -20,7 +20,7 @@ import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
-    ARCADIA_RC_PARAMS,
+    ARCADIA_MATPLOTLIB_RC_PARAMS,
     BASE_DPI,
     CATEGORICAL_AXIS_TICKLENGTH,
     CATEGORICAL_AXIS_TICKPADDING,
@@ -49,7 +49,10 @@ MACOS_FONT_DIRECTORIES = [
 
 LEGEND_PARAMS = dict(
     alignment="left",
-    title_fontproperties={"weight": "semibold", "size": ARCADIA_RC_PARAMS["legend.title_fontsize"]},
+    title_fontproperties={
+        "weight": "semibold",
+        "size": ARCADIA_MATPLOTLIB_RC_PARAMS["legend.title_fontsize"],
+    },
 )
 
 SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, bbox_inches="tight", pad_inches=FIGURE_PADDING_INCHES)
@@ -542,7 +545,7 @@ def load_colormaps() -> None:
 
 def load_styles() -> None:
     """Updates matplotlib's runtime configuration parameters with Arcadia's style settings."""
-    plt.rcParams.update(ARCADIA_RC_PARAMS)
+    plt.rcParams.update(ARCADIA_MATPLOTLIB_RC_PARAMS)
 
 
 def setup(font_dirpath: Union[str, None] = None) -> None:

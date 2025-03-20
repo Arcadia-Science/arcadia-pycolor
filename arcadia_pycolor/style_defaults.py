@@ -4,8 +4,6 @@ import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients as gradients
 import arcadia_pycolor.palettes as palettes
 
-### SIZING AND SPACING ###
-
 # Units in inches when dpi is 72
 BASE_DPI = 72
 PRINT_DPI = 300
@@ -29,11 +27,10 @@ FIGURE_SIZES: dict[str, tuple[float, float]] = {
     "half_square": HALF_SQUARE,
 }
 
-### FONTS ###
-
 # Font family to look for in the font folder.
 FONT_FILTER = "Suisse"
 DEFAULT_FONT = "Suisse Int'l"
+DEFAULT_FONT_PLOTLY = DEFAULT_FONT.replace(" ", "").replace("'", "")
 
 # Base font size for text.
 BASE_FONT_SIZE = 15
@@ -41,25 +38,25 @@ TITLE_FONT_SIZE = 16
 
 # Font family to use for monospace fonts.
 MONOSPACE_FONT = "Suisse Int'l Mono"
+MONOSPACE_FONT_PLOTLY = MONOSPACE_FONT.replace(" ", "").replace("'", "")
 MONOSPACE_FONT_SIZE = 14.5
 
 # Specifications for categorical axes.
 CATEGORICAL_AXIS_TICKLENGTH = 0
 CATEGORICAL_AXIS_TICKPADDING = 10
 
-### LEGEND ###
-
+# Legend.
 LEGEND_SEPARATOR_LINEWIDTH = 1.5
 
-### AXES ###
-
+# Axes.
 NUMERICAL_AXIS_TICKLENGTH = 5
 NUMERICAL_AXIS_TICKPADDING = 5
 LINEWEIGHT = 0.75
 
-### MATPLOTLIB RUNTIME CONFIGURATION PARAMETERS ###
+# Matplotlib runtime configuration parameters.
+# API reference: https://matplotlib.org/stable/api/matplotlib_configuration_api.html.
 
-ARCADIA_RC_PARAMS = {
+ARCADIA_MATPLOTLIB_RC_PARAMS = {
     # Fonts.
     "font.family": "sans-serif",
     "font.size": BASE_FONT_SIZE,
@@ -171,3 +168,10 @@ ARCADIA_RC_PARAMS = {
     "image.resample": True,
     "image.composite_image": True,
 }
+
+# Plotly template layout.
+# API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.Layout.html.
+
+ARCADIA_PLOTLY_TEMPLATE_LAYOUT = dict(
+    font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
+)
