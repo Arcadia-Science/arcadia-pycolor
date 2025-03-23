@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients as gradients
@@ -172,6 +173,40 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 # Plotly template layout.
 # API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.Layout.html.
 
-ARCADIA_PLOTLY_TEMPLATE_LAYOUT = dict(
+ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
+    bargap=0.05,
     font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
+    title=dict(font=dict(size=TITLE_FONT_SIZE, color="black", weight=800)),
+    xaxis=dict(
+        automargin=True,
+        linecolor="black",
+        linewidth=1,
+        showgrid=False,
+        showline=True,
+        ticklabelstandoff=2,
+        ticks="outside",
+        tickwidth=1,
+        title=dict(
+            font=dict(size=BASE_FONT_SIZE, color="black", weight=600),
+            standoff=10,
+        ),
+        zerolinecolor="rgba(255,0,0,0)",
+        zerolinewidth=0,
+    ),
+    yaxis=dict(
+        automargin=True,
+        linecolor="black",
+        linewidth=1,
+        showgrid=False,
+        showline=True,
+        ticklabelstandoff=2,
+        ticks="outside",
+        tickwidth=1,
+        title=dict(
+            font=dict(size=BASE_FONT_SIZE, color="black", weight=600),
+            standoff=10,
+        ),
+        zerolinecolor="rgba(255,0,0,0)",
+        zerolinewidth=0,
+    ),
 )
