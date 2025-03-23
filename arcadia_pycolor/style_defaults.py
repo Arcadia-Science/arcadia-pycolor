@@ -176,6 +176,10 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     bargap=0.05,
     font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
+    hoverlabel=dict(
+        font_family=DEFAULT_FONT_PLOTLY,
+        font_size=12,
+    ),
     title=dict(font=dict(size=TITLE_FONT_SIZE, color="black", weight=800)),
     xaxis=dict(
         automargin=True,
