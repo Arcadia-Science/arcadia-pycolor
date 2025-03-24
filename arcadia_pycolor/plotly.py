@@ -6,6 +6,8 @@ import plotly.io as pio
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
     DEFAULT_FONT_PLOTLY,
+    FIGURE_PADDING_INCHES,
+    FIGURE_WIDTHS_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
 )
@@ -74,22 +76,6 @@ def set_ticklabel_monospaced(fig: go.Figure) -> None:
     set_yticklabel_monospaced(fig)
 
 
-def capitalize_xticklabels(fig: go.Figure) -> None:
-    """Capitalizes the x-axis ticklabels."""
-    fig.update_layout(xaxis=dict(tickfont=dict(variant="small-caption")))
-
-
-def capitalize_yticklabels(fig: go.Figure) -> None:
-    """Capitalizes the y-axis ticklabels."""
-    fig.update_layout(yaxis=dict(tickfont=dict(variant="small-caption")))
-
-
-def capitalize_ticklabels(fig: go.Figure) -> None:
-    """Capitalizes both the x- and y-axis ticklabels."""
-    capitalize_xticklabels(fig)
-    capitalize_yticklabels(fig)
-
-
 def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
     """Adds commas to the numbers used for axis ticklabels.
 
@@ -99,42 +85,24 @@ def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
     fig.update_layout(yaxis=dict(tickformat=","))
 
 
-def set_xaxis_categorical(fig: go.Figure) -> None:
-    """Sets the style of the x-axis to a categorical axis, removing ticks and adjusting padding."""
-    fig.update_layout(xaxis=dict(tickmode="array", tickvals=[]))
-    fig.update_layout(xaxis=dict(tickmode="array", tickvals=[], ticktext=[]))
+def set_figure_width(fig: go.Figure, width: str) -> None:
+    """Sets the width of a figure.
 
+    Args:
+        width (str): Figure width, which must be one of the following:
+            - "full_wide"
+            - "full_square"
+            - "float_wide"
+            - "float_square"
+            - "half_square"
 
-def set_yaxis_categorical(fig: go.Figure) -> None:
-    """Sets the style of the y-axis to a categorical axis, removing ticks and adjusting padding."""
-    fig.update_layout(yaxis=dict(tickmode="array", tickvals=[]))
-    fig.update_layout(yaxis=dict(tickmode="array", tickvals=[], ticktext=[]))
+    Raises:
+        ValueError: If the width is not one of the predefined sizes.
+    """
+    if width not in FIGURE_WIDTHS_IN_PIXELS.keys():
+        raise ValueError(f"Width must be one of {list(FIGURE_WIDTHS_IN_PIXELS.keys())}.")
 
-
-def set_axes_categorical(fig: go.Figure) -> None:
-    """Sets the style of both the x and y axes to categorical axes."""
-    fig.update_layout(xaxis=dict(tickmode="array", tickvals=[]))
-    fig.update_layout(yaxis=dict(tickmode="array", tickvals=[]))
-    set_xaxis_categorical(fig)
-    set_yaxis_categorical(fig)
-
-
-def capitalize_ylabel(fig: go.Figure) -> None:
-    """Capitalizes the y-axis label."""
-    print(fig)
-    pass
-
-
-def capitalize_xlabel(fig: go.Figure) -> None:
-    """Capitalizes the x-axis label."""
-    print(fig)
-    pass
-
-
-def capitalize_axislabels(fig: go.Figure) -> None:
-    """Capitalizes both the x and y axis labels."""
-    capitalize_xlabel(fig)
-    capitalize_ylabel(fig)
+    fig.update_layout(width=FIGURE_WIDTHS_IN_PIXELS[width] - 2 * FIGURE_PADDING_INCHES)
 
 
 def setup() -> None:

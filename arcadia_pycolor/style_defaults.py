@@ -19,13 +19,28 @@ FLOAT_WIDE = (9.16667, 5.27777)
 FLOAT_SQUARE = (4.44444, 4.44444)
 HALF_SQUARE = (6.38888, 6.38888)
 
+FULL_WIDE_WIDTH_PIXELS = 1000
+FULL_SQUARE_WIDTH_PIXELS = 500
+FLOAT_WIDE_WIDTH_PIXELS = 700
+FLOAT_SQUARE_WIDTH_PIXELS = 350
+HALF_SQUARE_WIDTH_PIXELS = 500
+
 # Dictionary of common figure sizes.
-FIGURE_SIZES: dict[str, tuple[float, float]] = {
+FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
     "full_wide": FULL_WIDE,
     "full_square": FULL_SQUARE,
     "float_wide": FLOAT_WIDE,
     "float_square": FLOAT_SQUARE,
     "half_square": HALF_SQUARE,
+}
+
+# Dictionary of common figure widths.
+FIGURE_WIDTHS_IN_PIXELS: dict[str, int] = {
+    "full_wide": FULL_WIDE_WIDTH_PIXELS,
+    "full_square": FULL_SQUARE_WIDTH_PIXELS,
+    "float_wide": FLOAT_WIDE_WIDTH_PIXELS,
+    "float_square": FLOAT_SQUARE_WIDTH_PIXELS,
+    "half_square": HALF_SQUARE_WIDTH_PIXELS,
 }
 
 # Font family to look for in the font folder.
@@ -174,11 +189,20 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 # API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.Layout.html.
 
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
-    bargap=0.05,
+    bargap=0.20,
     font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
     hoverlabel=dict(
         font_family=DEFAULT_FONT_PLOTLY,
-        font_size=12,
+        font_size=13,
+    ),
+    legend=dict(
+        font=dict(size=BASE_FONT_SIZE, color="black"),
+    ),
+    margin=dict(
+        l=FIGURE_PADDING_PIXELS,
+        r=FIGURE_PADDING_PIXELS,
+        b=FIGURE_PADDING_PIXELS,
+        t=FIGURE_PADDING_PIXELS,
     ),
     title=dict(font=dict(size=TITLE_FONT_SIZE, color="black", weight=800)),
     xaxis=dict(
@@ -194,7 +218,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
             font=dict(size=BASE_FONT_SIZE, color="black", weight=600),
             standoff=10,
         ),
-        zerolinecolor="rgba(255,0,0,0)",
+        zerolinecolor="rgba(0,0,0,0)",
         zerolinewidth=0,
     ),
     yaxis=dict(
@@ -210,7 +234,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
             font=dict(size=BASE_FONT_SIZE, color="black", weight=600),
             standoff=10,
         ),
-        zerolinecolor="rgba(255,0,0,0)",
+        zerolinecolor="rgba(0,0,0,0)",
         zerolinewidth=0,
     ),
 )

@@ -26,7 +26,7 @@ from arcadia_pycolor.style_defaults import (
     CATEGORICAL_AXIS_TICKPADDING,
     DEFAULT_FONT,
     FIGURE_PADDING_INCHES,
-    FIGURE_SIZES,
+    FIGURE_SIZES_IN_INCHES,
     FONT_FILTER,
     LEGEND_SEPARATOR_LINEWIDTH,
     MONOSPACE_FONT,
@@ -420,10 +420,10 @@ def get_figure_dimensions(size: str) -> tuple[float, float]:
     Raises:
         ValueError: If the size is not one of the predefined sizes.
     """
-    if size not in FIGURE_SIZES:
-        raise ValueError(f"Size must be one of {list(FIGURE_SIZES.keys())}.")
+    if size not in FIGURE_SIZES_IN_INCHES:
+        raise ValueError(f"Size must be one of {list(FIGURE_SIZES_IN_INCHES.keys())}.")
 
-    width, height = FIGURE_SIZES[size]
+    width, height = FIGURE_SIZES_IN_INCHES[size]
     return (width - 2 * FIGURE_PADDING_INCHES, height - 2 * FIGURE_PADDING_INCHES)
 
 
