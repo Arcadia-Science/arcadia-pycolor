@@ -6,7 +6,7 @@ import plotly.io as pio
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
     DEFAULT_FONT_PLOTLY,
-    FIGURE_PADDING_INCHES,
+    FIGURE_PADDING_PIXELS,
     FIGURE_WIDTHS_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
@@ -102,7 +102,7 @@ def set_figure_width(fig: go.Figure, width: str) -> None:
     if width not in FIGURE_WIDTHS_IN_PIXELS.keys():
         raise ValueError(f"Width must be one of {list(FIGURE_WIDTHS_IN_PIXELS.keys())}.")
 
-    fig.update_layout(width=FIGURE_WIDTHS_IN_PIXELS[width] - 2 * FIGURE_PADDING_INCHES)
+    fig.update_layout(width=FIGURE_WIDTHS_IN_PIXELS[width] - 2 * FIGURE_PADDING_PIXELS)
 
 
 def setup() -> None:
