@@ -190,6 +190,11 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     bargap=0.20,
+    colorscale={
+        "sequential": gradients.magma.to_plotly_colorscale(),
+        "sequentialminus": gradients.magma.reverse().to_plotly_colorscale(),
+        "diverging": gradients.orange_sage.to_plotly_colorscale(),
+    },
     font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
     hoverlabel=dict(
         font_family=DEFAULT_FONT_PLOTLY,
