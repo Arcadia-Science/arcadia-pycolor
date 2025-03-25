@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Literal, Union
 
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -10,6 +10,7 @@ from arcadia_pycolor.style_defaults import (
     FIGURE_WIDTHS_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
+    TITLE_FONT_SIZE,
 )
 
 
@@ -172,6 +173,26 @@ def capitalize_axislabels(
     capitalize_ylabel(fig, row, col)
 
 
+def hide_xaxis_ticks(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Hides the ticks on the x-axis."""
+    fig.update_xaxes(ticks="", showticklabels=False, row=row, col=col)
+
+
+def hide_yaxis_ticks(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Hides the ticks on the y-axis."""
+    fig.update_yaxes(ticks="", showticklabels=False, row=row, col=col)
+
+
+def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None) -> None:
+    """Hides the ticks on both the x- and y-axes."""
+    hide_xaxis_ticks(fig, row, col)
+    hide_yaxis_ticks(fig, row, col)
+
+
 def hide_yaxis_line(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
@@ -201,8 +222,7 @@ def capitalize_legend_title(fig: go.Figure) -> None:
 
 def capitalize_legend_entries(fig: go.Figure) -> None:
     """Capitalizes the legend entries."""
-    for text in fig.layout.legend.items:  # type: ignore
-        text.text = text.text.capitalize()
+    pass
 
 
 def capitalize_legend_text(fig: go.Figure) -> None:
@@ -213,13 +233,56 @@ def capitalize_legend_text(fig: go.Figure) -> None:
 
 def justify_legend_text(fig: go.Figure) -> None:
     """Justify the legend to the left and change legend title font to Medium weight."""
-    fig.update_layout(legend_title_font_weight="medium", legend_title_font_size=12)
+    fig.update_layout(legend_title_font_weight=600, legend_title_font_size=TITLE_FONT_SIZE)
 
 
 def style_legend(fig: go.Figure) -> None:
     """Styles the legend according to Arcadia's style guide."""
     capitalize_legend_text(fig)
     justify_legend_text(fig)
+
+
+def style_plot(
+    fig: go.Figure,
+    monospaced_axes: Literal["x", "y", "both", None] = None,
+    categorical_axes: Literal["x", "y", "both", None] = None,
+    colorbar_exists: bool = False,
+) -> None:
+    """Styles the plot according to Arcadia's style guide.
+
+    Args:
+        axes (Axes, optional): The matplotlib Axes to modify.
+            If None, uses the most recent Axes.
+        monospaced_axes (str, optional): Which axes to set to a monospaced font.
+            Either 'x', 'y', 'both', or None.
+        categorical_axes (str, optional): Which axes to set to categorical.
+            Either 'x', 'y', 'both', or None.
+        colorbar_exists (bool): Whether a colorbar exists on the axis.
+    """
+    if monospaced_axes is not None:
+        if monospaced_axes == "x":
+            set_xticklabel_monospaced(fig)
+        elif monospaced_axes == "y":
+            set_yticklabel_monospaced(fig)
+        elif monospaced_axes == "both":
+            set_ticklabel_monospaced(fig)
+        else:
+            raise ValueError(
+                "Invalid monospaced_axes option. Please choose from 'x', 'y', or 'both'."
+            )
+    if categorical_axes is not None:
+        if categorical_axes == "x":
+            set_xaxis_categorical(fig)
+        elif categorical_axes == "y":
+            set_yaxis_categorical(fig)
+        elif categorical_axes == "both":
+            set_axes_categorical(fig)
+        else:
+            raise ValueError(
+                "Invalid categorical_axes option. Please choose from 'x', 'y', or 'both'."
+            )
+    if colorbar_exists:
+        set_colorbar_ticklabel_monospaced(fig)
 
 
 def set_figure_width(fig: go.Figure, width: str) -> None:
