@@ -86,12 +86,37 @@ def set_yticklabel_monospaced(
     set_yticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE, row=row, col=col)
 
 
+def set_colorbar_ticklabel_monospaced(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Sets the font of the colorbar ticklabels to a monospace font."""
+    fig.update_coloraxes(
+        tickfont_family=MONOSPACE_FONT_PLOTLY, tickfont_size=MONOSPACE_FONT_SIZE, row=row, col=col
+    )
+
+
 def set_ticklabel_monospaced(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
     """Sets the font of both the x- and y-axis ticklabels to a monospace font."""
     set_xticklabel_monospaced(fig, row, col)
     set_yticklabel_monospaced(fig, row, col)
+
+
+def capitalize_xticklabels(fig: go.Figure) -> None:
+    """Capitalizes the x-axis ticklabels."""
+    fig.update_xaxes(ticktext=fig.xaxes[0].ticktext.capitalize())  # type: ignore
+
+
+def capitalize_yticklabels(fig: go.Figure) -> None:
+    """Capitalizes the y-axis ticklabels."""
+    fig.update_yaxes(ticktext=fig.yaxes[0].ticktext.capitalize())  # type: ignore
+
+
+def capitalize_ticklabels(fig: go.Figure) -> None:
+    """Capitalizes both the x- and y-axis ticklabels."""
+    capitalize_xticklabels(fig)
+    capitalize_yticklabels(fig)
 
 
 def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
@@ -101,6 +126,50 @@ def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
     """
     fig.update_layout(xaxis=dict(tickformat=","))
     fig.update_layout(yaxis=dict(tickformat=","))
+
+
+def set_xaxis_categorical(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Sets the style of the x-axis to a categorical axis, removing ticks and adjusting padding."""
+    fig.update_xaxes(ticks="", row=row, col=col)
+
+
+def set_yaxis_categorical(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Sets the style of the y-axis to a categorical axis, removing ticks and adjusting padding."""
+    fig.update_yaxes(ticks="", row=row, col=col)
+
+
+def set_axes_categorical(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Sets both the x- and y-axes to categorical axes, removing ticks and adjusting padding."""
+    set_xaxis_categorical(fig, row, col)
+    set_yaxis_categorical(fig, row, col)
+
+
+def capitalize_ylabel(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes the y-axis label."""
+    fig.update_yaxes(title_text=fig.yaxes[0].title.text.capitalize(), row=row, col=col)  # type: ignore
+
+
+def capitalize_xlabel(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes the x-axis label."""
+    fig.update_xaxes(title_text=fig.xaxes[0].title.text.capitalize(), row=row, col=col)  # type: ignore
+
+
+def capitalize_axislabels(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes both the x and y axis labels."""
+    capitalize_xlabel(fig, row, col)
+    capitalize_ylabel(fig, row, col)
 
 
 def hide_yaxis_line(
@@ -123,6 +192,34 @@ def hide_axis_lines(
     """Hides the lines on both the x- and y-axes."""
     hide_yaxis_line(fig, row, col)
     hide_xaxis_line(fig, row, col)
+
+
+def capitalize_legend_title(fig: go.Figure) -> None:
+    """Capitalizes the legend title."""
+    fig.update_layout(legend_title_text=fig.layout.legend.title.text.capitalize())  # type: ignore
+
+
+def capitalize_legend_entries(fig: go.Figure) -> None:
+    """Capitalizes the legend entries."""
+    for text in fig.layout.legend.items:  # type: ignore
+        text.text = text.text.capitalize()
+
+
+def capitalize_legend_text(fig: go.Figure) -> None:
+    """Capitalize the legend title and entries."""
+    capitalize_legend_title(fig)
+    capitalize_legend_entries(fig)
+
+
+def justify_legend_text(fig: go.Figure) -> None:
+    """Justify the legend to the left and change legend title font to Medium weight."""
+    fig.update_layout(legend_title_font_weight="medium", legend_title_font_size=12)
+
+
+def style_legend(fig: go.Figure) -> None:
+    """Styles the legend according to Arcadia's style guide."""
+    capitalize_legend_text(fig)
+    justify_legend_text(fig)
 
 
 def set_figure_width(fig: go.Figure, width: str) -> None:
