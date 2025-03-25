@@ -209,7 +209,11 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         b=FIGURE_PADDING_PIXELS,
         t=FIGURE_PADDING_PIXELS,
     ),
-    title=dict(font=dict(size=TITLE_FONT_SIZE, color="black", weight=800)),
+    title=dict(
+        font=dict(size=TITLE_FONT_SIZE, color="black", weight=800),
+        automargin=True,
+        yref="container",
+    ),
     xaxis=dict(
         automargin=True,
         linecolor="black",
