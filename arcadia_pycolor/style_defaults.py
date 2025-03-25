@@ -190,31 +190,44 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     bargap=0.20,
-    colorscale={
-        "sequential": gradients.magma.to_plotly_colorscale(),
-        "sequentialminus": gradients.magma.reverse().to_plotly_colorscale(),
-        "diverging": gradients.orange_sage.to_plotly_colorscale(),
-    },
-    font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
-    hoverlabel=dict(
+    # TODO: Investigate why these styles are not being applied.
+    coloraxis=go.layout.Coloraxis(
+        colorbar=go.layout.coloraxis.ColorBar(
+            outlinecolor="white",
+            thickness=15,
+            ticks="outside",
+            tickfont=dict(family=MONOSPACE_FONT_PLOTLY, size=MONOSPACE_FONT_SIZE),
+            title=dict(
+                font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE),
+                side="right",
+            ),
+        ),
+    ),
+    colorscale=go.layout.Colorscale(
+        sequential=gradients.magma.to_plotly_colorscale(),
+        sequentialminus=gradients.magma.reverse().to_plotly_colorscale(),
+        diverging=gradients.orange_sage.to_plotly_colorscale(),
+    ),
+    font=go.layout.Font(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
+    hoverlabel=go.layout.Hoverlabel(
         font_family=DEFAULT_FONT_PLOTLY,
         font_size=13,
     ),
-    legend=dict(
+    legend=go.layout.Legend(
         font=dict(size=BASE_FONT_SIZE, color="black"),
     ),
-    margin=dict(
+    margin=go.layout.Margin(
         l=FIGURE_PADDING_PIXELS,
         r=FIGURE_PADDING_PIXELS,
         b=FIGURE_PADDING_PIXELS,
         t=FIGURE_PADDING_PIXELS,
     ),
-    title=dict(
+    title=go.layout.Title(
         font=dict(size=TITLE_FONT_SIZE, color="black", weight=800),
         automargin=True,
         yref="container",
     ),
-    xaxis=dict(
+    xaxis=go.layout.XAxis(
         automargin=True,
         linecolor="black",
         linewidth=1,
@@ -230,7 +243,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         zerolinecolor="rgba(0,0,0,0)",
         zerolinewidth=0,
     ),
-    yaxis=dict(
+    yaxis=go.layout.YAxis(
         automargin=True,
         linecolor="black",
         linewidth=1,

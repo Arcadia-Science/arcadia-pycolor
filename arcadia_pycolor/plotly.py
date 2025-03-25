@@ -14,7 +14,11 @@ from arcadia_pycolor.style_defaults import (
 
 
 def set_yticklabel_font(
-    fig: go.Figure, font: str = DEFAULT_FONT_PLOTLY, font_size: Union[float, None] = None
+    fig: go.Figure,
+    font: str = DEFAULT_FONT_PLOTLY,
+    font_size: Union[float, None] = None,
+    row: Union[int, None] = None,
+    col: Union[int, None] = None,
 ) -> None:
     """Sets the font and font size of the y-axis tick labels for a Plotly figure.
 
@@ -24,13 +28,17 @@ def set_yticklabel_font(
         font_size (float, optional): The font size to use for the tick labels.
             If None, keeps current size.
     """
-    fig.update_layout(yaxis=dict(tickfont=dict(family=font)))
+    fig.update_yaxes(tickfont_family=font, row=row, col=col)
     if font_size is not None:
-        fig.update_layout(yaxis=dict(tickfont=dict(size=font_size)))
+        fig.update_yaxes(tickfont_size=font_size, row=row, col=col)
 
 
 def set_xticklabel_font(
-    fig: go.Figure, font: str = DEFAULT_FONT_PLOTLY, font_size: Union[float, None] = None
+    fig: go.Figure,
+    font: str = DEFAULT_FONT_PLOTLY,
+    font_size: Union[float, None] = None,
+    row: Union[int, None] = None,
+    col: Union[int, None] = None,
 ) -> None:
     """Sets the font and font size of the x-axis tick labels for a Plotly figure.
 
@@ -40,13 +48,17 @@ def set_xticklabel_font(
         font_size (float, optional): The font size to use for the tick labels.
             If None, keeps current size.
     """
-    fig.update_layout(xaxis=dict(tickfont=dict(family=font)))
+    fig.update_xaxes(tickfont_family=font, row=row, col=col)
     if font_size is not None:
-        fig.update_layout(xaxis=dict(tickfont=dict(size=font_size)))
+        fig.update_xaxes(tickfont_size=font_size, row=row, col=col)
 
 
 def set_ticklabel_font(
-    fig: go.Figure, font: str = DEFAULT_FONT_PLOTLY, font_size: Union[float, None] = None
+    fig: go.Figure,
+    font: str = DEFAULT_FONT_PLOTLY,
+    font_size: Union[float, None] = None,
+    row: Union[int, None] = None,
+    col: Union[int, None] = None,
 ) -> None:
     """Sets the font and font size of the ticklabels for the given axes.
 
@@ -56,24 +68,30 @@ def set_ticklabel_font(
         font_size (float, optional): The font size to use for the ticklabels.
             If None, keeps current size.
     """
-    set_xticklabel_font(fig, font, font_size)
-    set_yticklabel_font(fig, font, font_size)
+    set_xticklabel_font(fig, font, font_size, row, col)
+    set_yticklabel_font(fig, font, font_size, row, col)
 
 
-def set_xticklabel_monospaced(fig: go.Figure) -> None:
+def set_xticklabel_monospaced(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
     """Sets the font of the x-axis ticklabels to a monospace font."""
-    set_xticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE)
+    set_xticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE, row=row, col=col)
 
 
-def set_yticklabel_monospaced(fig: go.Figure) -> None:
+def set_yticklabel_monospaced(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
     """Sets the font of the y-axis ticklabels to a monospace font."""
-    set_yticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE)
+    set_yticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE, row=row, col=col)
 
 
-def set_ticklabel_monospaced(fig: go.Figure) -> None:
+def set_ticklabel_monospaced(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
     """Sets the font of both the x- and y-axis ticklabels to a monospace font."""
-    set_xticklabel_monospaced(fig)
-    set_yticklabel_monospaced(fig)
+    set_xticklabel_monospaced(fig, row, col)
+    set_yticklabel_monospaced(fig, row, col)
 
 
 def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
@@ -83,6 +101,28 @@ def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
     """
     fig.update_layout(xaxis=dict(tickformat=","))
     fig.update_layout(yaxis=dict(tickformat=","))
+
+
+def hide_yaxis_line(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Hides the line on the y-axis."""
+    fig.update_yaxes(showline=False, row=row, col=col)
+
+
+def hide_xaxis_line(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Hides the line on the x-axis."""
+    fig.update_xaxes(showline=False, row=row, col=col)
+
+
+def hide_axis_lines(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Hides the lines on both the x- and y-axes."""
+    hide_yaxis_line(fig, row, col)
+    hide_xaxis_line(fig, row, col)
 
 
 def set_figure_width(fig: go.Figure, width: str) -> None:
