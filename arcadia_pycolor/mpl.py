@@ -223,6 +223,7 @@ def capitalize_xticklabels(axes: Union[Axes, None] = None) -> None:
     ax = _try_get_current_axes(axes)
 
     xticklabels = [label.get_text().capitalize() for label in ax.get_xticklabels()]
+    ax.set_xticks(ax.get_xticks())
     ax.set_xticklabels(xticklabels)
 
 
@@ -231,6 +232,7 @@ def capitalize_yticklabels(axes: Union[Axes, None] = None) -> None:
     ax = _try_get_current_axes(axes)
 
     yticklabels = [label.get_text().capitalize() for label in ax.get_yticklabels()]
+    ax.set_yticks(ax.get_yticks())
     ax.set_yticklabels(yticklabels)
 
 
