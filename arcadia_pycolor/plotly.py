@@ -7,7 +7,7 @@ from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
     DEFAULT_FONT_PLOTLY,
     FIGURE_PADDING_PIXELS,
-    FIGURE_WIDTHS_IN_PIXELS,
+    FIGURE_SIZES_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
     TITLE_FONT_SIZE,
@@ -285,11 +285,11 @@ def style_plot(
         set_colorbar_ticklabel_monospaced(fig)
 
 
-def set_figure_width(fig: go.Figure, width: str) -> None:
-    """Sets the width of a figure.
+def set_figure_dimensions(fig: go.Figure, size: str) -> None:
+    """Sets the width and height of a figure.
 
     Args:
-        width (str): Figure width, which must be one of the following:
+        size (str): Figure size, which must be one of the following:
             - "full_wide"
             - "full_square"
             - "float_wide"
@@ -297,12 +297,16 @@ def set_figure_width(fig: go.Figure, width: str) -> None:
             - "half_square"
 
     Raises:
-        ValueError: If the width is not one of the predefined sizes.
+        ValueError: If the size is not one of the predefined sizes.
     """
-    if width not in FIGURE_WIDTHS_IN_PIXELS.keys():
-        raise ValueError(f"Width must be one of {list(FIGURE_WIDTHS_IN_PIXELS.keys())}.")
+    if size not in FIGURE_SIZES_IN_PIXELS.keys():
+        raise ValueError(f"Size must be one of {list(FIGURE_SIZES_IN_PIXELS.keys())}.")
 
-    fig.update_layout(width=FIGURE_WIDTHS_IN_PIXELS[width] - 2 * FIGURE_PADDING_PIXELS)
+    width, height = FIGURE_SIZES_IN_PIXELS[size]
+    fig.update_layout(
+        width=width - 2 * FIGURE_PADDING_PIXELS,
+        height=height - 2 * FIGURE_PADDING_PIXELS,
+    )
 
 
 def setup() -> None:

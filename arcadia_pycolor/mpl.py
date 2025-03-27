@@ -425,8 +425,7 @@ def get_figure_dimensions(size: str) -> tuple[float, float]:
     if size not in FIGURE_SIZES_IN_INCHES:
         raise ValueError(f"Size must be one of {list(FIGURE_SIZES_IN_INCHES.keys())}.")
 
-    width, height = FIGURE_SIZES_IN_INCHES[size]
-    return (width - 2 * FIGURE_PADDING_INCHES, height - 2 * FIGURE_PADDING_INCHES)
+    return FIGURE_SIZES_IN_INCHES[size]
 
 
 def add_legend_line(legend: Legend, linewidth: float = LEGEND_SEPARATOR_LINEWIDTH):

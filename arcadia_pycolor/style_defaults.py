@@ -19,13 +19,13 @@ FLOAT_WIDE = (9.16667, 5.27777)
 FLOAT_SQUARE = (4.44444, 4.44444)
 HALF_SQUARE = (6.38888, 6.38888)
 
-FULL_WIDE_WIDTH_PIXELS = 1000
-FULL_SQUARE_WIDTH_PIXELS = 500
-FLOAT_WIDE_WIDTH_PIXELS = 700
-FLOAT_SQUARE_WIDTH_PIXELS = 350
-HALF_SQUARE_WIDTH_PIXELS = 500
+FULL_WIDE_PIXELS = (1000, 400)
+FULL_SQUARE_PIXELS = (500, 490)
+FLOAT_WIDE_PIXELS = (700, 400)
+FLOAT_SQUARE_PIXELS = (350, 360)
+HALF_SQUARE_PIXELS = (500, 480)
 
-# Dictionary of common figure sizes.
+# Dictionary of common figure sizes in inches.
 FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
     "full_wide": FULL_WIDE,
     "full_square": FULL_SQUARE,
@@ -34,13 +34,13 @@ FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
     "half_square": HALF_SQUARE,
 }
 
-# Dictionary of common figure widths.
-FIGURE_WIDTHS_IN_PIXELS: dict[str, int] = {
-    "full_wide": FULL_WIDE_WIDTH_PIXELS,
-    "full_square": FULL_SQUARE_WIDTH_PIXELS,
-    "float_wide": FLOAT_WIDE_WIDTH_PIXELS,
-    "float_square": FLOAT_SQUARE_WIDTH_PIXELS,
-    "half_square": HALF_SQUARE_WIDTH_PIXELS,
+# Dictionary of common figure sizes in pixels.
+FIGURE_SIZES_IN_PIXELS: dict[str, tuple[int, int]] = {
+    "full_wide": FULL_WIDE_PIXELS,
+    "full_square": FULL_SQUARE_PIXELS,
+    "float_wide": FLOAT_WIDE_PIXELS,
+    "float_square": FLOAT_SQUARE_PIXELS,
+    "half_square": HALF_SQUARE_PIXELS,
 }
 
 # Font family to look for in the font folder.
@@ -215,6 +215,10 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     ),
     legend=go.layout.Legend(
         font=dict(size=BASE_FONT_SIZE, color="black"),
+        yanchor="top",
+        y=1,
+        xanchor="right",
+        x=1,
     ),
     margin=go.layout.Margin(
         l=FIGURE_PADDING_PIXELS,
