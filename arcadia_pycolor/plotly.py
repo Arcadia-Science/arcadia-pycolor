@@ -6,7 +6,6 @@ import plotly.io as pio
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
     DEFAULT_FONT_PLOTLY,
-    FIGURE_PADDING_PIXELS,
     FIGURE_SIZES_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
@@ -304,8 +303,8 @@ def set_figure_dimensions(fig: go.Figure, size: str) -> None:
 
     width, height = FIGURE_SIZES_IN_PIXELS[size]
     fig.update_layout(
-        width=width - 2 * FIGURE_PADDING_PIXELS,
-        height=height - 2 * FIGURE_PADDING_PIXELS,
+        width=width,
+        height=height,
     )
 
 
