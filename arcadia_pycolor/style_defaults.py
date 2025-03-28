@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients as gradients
 import arcadia_pycolor.palettes as palettes
-
-### SIZING AND SPACING ###
 
 # Units in inches when dpi is 72
 BASE_DPI = 72
@@ -14,14 +13,20 @@ FIGURE_PADDING_PIXELS = 20
 FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
-FULL_WIDE = (13.33333, 5.27777)
-FULL_SQUARE = (6.52777, 6.52777)
-FLOAT_WIDE = (9.16667, 5.27777)
-FLOAT_SQUARE = (4.44444, 4.44444)
-HALF_SQUARE = (6.38888, 6.38888)
+FULL_WIDE = (13.333333333333334, 5.277777777777778)
+FULL_SQUARE = (6.527777777777778, 6.527777777777778)
+FLOAT_WIDE = (9.166666666666667, 5.277777777777778)
+FLOAT_SQUARE = (4.444444444444445, 4.444444444444445)
+HALF_SQUARE = (6.388888888888889, 6.388888888888889)
 
-# Dictionary of common figure sizes.
-FIGURE_SIZES: dict[str, tuple[float, float]] = {
+FULL_WIDE_PIXELS = (960, 380)
+FULL_SQUARE_PIXELS = (470, 470)
+FLOAT_WIDE_PIXELS = (660, 380)
+FLOAT_SQUARE_PIXELS = (320, 320)
+HALF_SQUARE_PIXELS = (460, 460)
+
+# Dictionary of common figure sizes in inches.
+FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
     "full_wide": FULL_WIDE,
     "full_square": FULL_SQUARE,
     "float_wide": FLOAT_WIDE,
@@ -29,11 +34,19 @@ FIGURE_SIZES: dict[str, tuple[float, float]] = {
     "half_square": HALF_SQUARE,
 }
 
-### FONTS ###
+# Dictionary of common figure sizes in pixels.
+FIGURE_SIZES_IN_PIXELS: dict[str, tuple[int, int]] = {
+    "full_wide": FULL_WIDE_PIXELS,
+    "full_square": FULL_SQUARE_PIXELS,
+    "float_wide": FLOAT_WIDE_PIXELS,
+    "float_square": FLOAT_SQUARE_PIXELS,
+    "half_square": HALF_SQUARE_PIXELS,
+}
 
 # Font family to look for in the font folder.
 FONT_FILTER = "Suisse"
 DEFAULT_FONT = "Suisse Int'l"
+DEFAULT_FONT_PLOTLY = DEFAULT_FONT.replace(" ", "").replace("'", "")
 
 # Base font size for text.
 BASE_FONT_SIZE = 15
@@ -41,25 +54,25 @@ TITLE_FONT_SIZE = 16
 
 # Font family to use for monospace fonts.
 MONOSPACE_FONT = "Suisse Int'l Mono"
+MONOSPACE_FONT_PLOTLY = MONOSPACE_FONT.replace(" ", "").replace("'", "")
 MONOSPACE_FONT_SIZE = 14.5
 
 # Specifications for categorical axes.
 CATEGORICAL_AXIS_TICKLENGTH = 0
 CATEGORICAL_AXIS_TICKPADDING = 10
 
-### LEGEND ###
-
+# Legend.
 LEGEND_SEPARATOR_LINEWIDTH = 1.5
 
-### AXES ###
-
+# Axes.
 NUMERICAL_AXIS_TICKLENGTH = 5
 NUMERICAL_AXIS_TICKPADDING = 5
 LINEWEIGHT = 0.75
 
-### MATPLOTLIB RUNTIME CONFIGURATION PARAMETERS ###
+# Matplotlib runtime configuration parameters.
+# API reference: https://matplotlib.org/stable/api/matplotlib_configuration_api.html.
 
-ARCADIA_RC_PARAMS = {
+ARCADIA_MATPLOTLIB_RC_PARAMS = {
     # Fonts.
     "font.family": "sans-serif",
     "font.size": BASE_FONT_SIZE,
@@ -171,3 +184,83 @@ ARCADIA_RC_PARAMS = {
     "image.resample": True,
     "image.composite_image": True,
 }
+
+# Plotly template layout.
+# API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.Layout.html.
+
+ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
+    bargap=0.20,
+    # TODO: Investigate why these styles are not being applied.
+    coloraxis=go.layout.Coloraxis(
+        colorbar=go.layout.coloraxis.ColorBar(
+            outlinecolor="white",
+            thickness=15,
+            ticks="outside",
+            tickfont=dict(family=MONOSPACE_FONT_PLOTLY, size=MONOSPACE_FONT_SIZE),
+            title=dict(
+                font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE),
+                side="right",
+            ),
+        ),
+    ),
+    colorscale=go.layout.Colorscale(
+        sequential=gradients.magma.to_plotly_colorscale(),
+        sequentialminus=gradients.magma.reverse().to_plotly_colorscale(),
+        diverging=gradients.orange_sage.to_plotly_colorscale(),
+    ),
+    font=go.layout.Font(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
+    hoverlabel=go.layout.Hoverlabel(
+        font_family=DEFAULT_FONT_PLOTLY,
+        font_size=13,
+    ),
+    legend=go.layout.Legend(
+        font=dict(size=BASE_FONT_SIZE, color="black"),
+        yanchor="top",
+        y=1,
+        xanchor="right",
+        x=1,
+    ),
+    margin=go.layout.Margin(
+        l=FIGURE_PADDING_PIXELS + 55,
+        b=FIGURE_PADDING_PIXELS + 45,
+        r=FIGURE_PADDING_PIXELS,
+        t=FIGURE_PADDING_PIXELS,
+    ),
+    title=go.layout.Title(
+        font=dict(size=TITLE_FONT_SIZE, color="black", weight=800),
+        automargin=True,
+        yref="container",
+    ),
+    xaxis=go.layout.XAxis(
+        automargin=True,
+        linecolor="black",
+        linewidth=1,
+        showgrid=False,
+        showline=True,
+        ticklabelstandoff=2,
+        ticks="outside",
+        tickwidth=1,
+        title=dict(
+            font=dict(size=BASE_FONT_SIZE, color="black", weight=600),
+            standoff=10,
+        ),
+        zerolinecolor="rgba(0,0,0,0)",
+        zerolinewidth=0,
+    ),
+    yaxis=go.layout.YAxis(
+        automargin=True,
+        linecolor="black",
+        linewidth=1,
+        showgrid=False,
+        showline=True,
+        ticklabelstandoff=2,
+        ticks="outside",
+        tickwidth=1,
+        title=dict(
+            font=dict(size=BASE_FONT_SIZE, color="black", weight=600),
+            standoff=10,
+        ),
+        zerolinecolor="rgba(0,0,0,0)",
+        zerolinewidth=0,
+    ),
+)
