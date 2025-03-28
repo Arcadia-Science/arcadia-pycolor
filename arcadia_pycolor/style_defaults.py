@@ -220,10 +220,9 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         xanchor="right",
         x=1,
     ),
-    # TODO: Investigate why margins are not being applied correctly.
     margin=go.layout.Margin(
-        l=FIGURE_PADDING_PIXELS,
-        b=FIGURE_PADDING_PIXELS,
+        l=FIGURE_PADDING_PIXELS + 55,
+        b=FIGURE_PADDING_PIXELS + 45,
         r=FIGURE_PADDING_PIXELS,
         t=FIGURE_PADDING_PIXELS,
     ),
