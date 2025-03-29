@@ -172,11 +172,10 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
 
-        filename = f"{filename}.{ftype}"
-        plt.savefig(fname=filename, **kwargs)  # type: ignore
+        plt.savefig(fname=f"{filename}.{ftype}", **kwargs)  # type: ignore
 
         if ftype == "svg":
-            _fix_svg_fonts_for_illustrator(filename)
+            _fix_svg_fonts_for_illustrator(f"{filename}.{ftype}")
 
 
 def set_yticklabel_font(
