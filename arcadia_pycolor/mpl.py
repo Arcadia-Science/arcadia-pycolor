@@ -101,11 +101,11 @@ def _find_macos_arcadia_fonts() -> list[str]:
 def _fix_svg_fonts_for_illustrator(filename: str) -> None:
     """Replaces shorthand font styles in SVG exports with individual CSS font properties.
 
-    This is needed because Adobe Illustrator does not respect font weights in shorthand font styles
-    like "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title had some font
-    weight applied, and because of this, they were not being rendered in Illustrator.
+    This is needed because Adobe Illustrator cannot parse font weights in shorthand font styles
+    like "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
+    weights applied, and because of this, font styles are not being rendered in Illustrator.
 
-    As a workaround, we explicitly set each CSS font property:
+    As a workaround, each CSS font property is explicitly set:
 
     ```html
     <text style="font-family: SuisseIntl, sans-serif; font-size: 15px; font-weight: 500;">
