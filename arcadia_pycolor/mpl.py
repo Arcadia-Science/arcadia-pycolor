@@ -99,17 +99,22 @@ def _find_macos_arcadia_fonts() -> list[str]:
 
 
 def _fix_svg_fonts_for_illustrator(filename: str) -> None:
-    """Replaces shorthand font styles in SVG exports with individual CSS font properties.
+    """Fixes CSS font styles in SVG exports for Adobe Illustrator.
 
-    This is needed because Adobe Illustrator cannot parse font weights in shorthand font styles
-    like "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
-    weights applied, and because of this, font styles are not being rendered in Illustrator.
+    Adobe Illustrator cannot parse font weights in shorthand font styles like
+    "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
+    weights applied, and because of this, their fonts are not being rendered correctly
+    in Illustrator.
 
     As a workaround, each CSS font property is explicitly set:
 
     ```html
     <text style="font-family: SuisseIntl, sans-serif; font-size: 15px; font-weight: 500;">
     ```
+
+    Additionally, the font family is not being applied correctly in Illustrator
+    when it is encoded as "&quot;Suisse Int&apos;l&quot;". To fix this, we replace
+    all instances of this encoding with "SuisseIntl".
 
     For more context, see https://github.com/Arcadia-Science/arcadia-pycolor/issues/68.
 
@@ -129,6 +134,7 @@ def _fix_svg_fonts_for_illustrator(filename: str) -> None:
         return f"font-family: {font_family},{fallback}; font-size: {size}px; font-weight: {weight};"
 
     new_content = re.sub(pattern, replace_font_style, content)
+    new_content = new_content.replace("&quot;Suisse Int&apos;l&quot;", "SuisseIntl")
 
     with open(filename, "w") as f:
         f.write(new_content)
