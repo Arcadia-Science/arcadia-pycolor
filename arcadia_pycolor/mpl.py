@@ -1,4 +1,5 @@
 import logging
+import re
 import sys
 from pathlib import Path
 from typing import Any, Literal, Union, cast
@@ -97,6 +98,48 @@ def _find_macos_arcadia_fonts() -> list[str]:
     return font_paths
 
 
+def _fix_svg_fonts_for_illustrator(filename: str) -> None:
+    """Fixes CSS font styles in SVG exports for Adobe Illustrator.
+
+    Adobe Illustrator cannot parse font weights in shorthand font styles like
+    "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
+    weights applied, and because of this, their fonts are not being rendered correctly
+    in Illustrator.
+
+    As a workaround, each CSS font property is explicitly set:
+
+    ```html
+    <text style="font-family: SuisseIntl, sans-serif; font-size: 15px; font-weight: 500;">
+    ```
+
+    Additionally, the font family is not being applied correctly in Illustrator
+    when it is encoded as "&quot;Suisse Int&apos;l&quot;". To fix this, we replace
+    all instances of this encoding with "SuisseIntl".
+
+    For more context, see https://github.com/Arcadia-Science/arcadia-pycolor/issues/68.
+
+    Args:
+        filename (str): The path to the SVG file to fix.
+    """
+    with open(filename) as f:
+        content = f.read()
+
+    pattern = r'font:\s*(\d+)\s+(\d+)px\s+(.+),\s*([^"]+);'
+
+    def replace_font_style(match):
+        weight = match.group(1)
+        size = match.group(2)
+        font_family = match.group(3)
+        fallback = match.group(4)
+        return f"font-family: {font_family},{fallback}; font-size: {size}px; font-weight: {weight};"
+
+    new_content = re.sub(pattern, replace_font_style, content)
+    new_content = new_content.replace("&quot;Suisse Int&apos;l&quot;", "SuisseIntl")
+
+    with open(filename, "w") as f:
+        f.write(new_content)
+
+
 def save_figure(
     filepath: str,
     filetypes: Union[list[str], None] = None,
@@ -136,6 +179,9 @@ def save_figure(
             continue
 
         plt.savefig(fname=f"{filename}.{ftype}", **kwargs)  # type: ignore
+
+        if ftype == "svg":
+            _fix_svg_fonts_for_illustrator(f"{filename}.{ftype}")
 
 
 def set_yticklabel_font(
