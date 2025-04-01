@@ -1,3 +1,5 @@
+import re
+from textwrap import dedent
 from typing import Sequence, Union
 
 import numpy as np
@@ -95,6 +97,35 @@ def add_margin(
         margin_color (tuple[int, int, int, int]):
             Color of the margin in RGBA format.
     """
-    img = Image.open(input_image_path)
-    img_with_margin = ImageOps.expand(img, border=margin_size, fill=margin_color)
-    img_with_margin.save(output_image_path)
+    # If the input image is an SVG, add margins to the <style> tag.
+    if input_image_path.lower().endswith(".svg"):
+        with open(input_image_path) as file:
+            svg_content = file.read()
+
+        margin_left, margin_top, margin_right, margin_bottom = (
+            (margin_size, margin_size, margin_size, margin_size)
+            if isinstance(margin_size, int)
+            else margin_size
+        )
+
+        margin_styles = dedent(f"""
+        <style type="text/css">
+            * {{
+                \\1;
+                margin-left: {margin_left}px;
+                margin-top: {margin_top}px;
+                margin-right: {margin_right}px;
+                margin-bottom: {margin_bottom}px;
+            }}
+        </style>
+        """)
+
+        pattern = r'<style type="text\/css">\*{(.*)}<\/style>'
+        svg_content = re.sub(pattern, margin_styles, svg_content)
+
+        with open(output_image_path, "w") as file:
+            file.write(svg_content)
+    else:
+        img = Image.open(input_image_path)
+        img_with_margin = ImageOps.expand(img, border=margin_size, fill=margin_color)
+        img_with_margin.save(output_image_path)
