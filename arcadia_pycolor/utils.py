@@ -1,6 +1,7 @@
 from typing import Sequence, Union
 
 import numpy as np
+from PIL import Image, ImageOps
 
 NumericSequence = Union[Sequence[int], Sequence[float]]
 
@@ -73,3 +74,27 @@ def rescale_and_concatenate_values(list1: list[float], list2: list[float]) -> li
     rescaled_list1 = [0.5 * x for x in list1]
     rescaled_list2 = [0.5 * x + 0.5 for x in list2]
     return rescaled_list1 + rescaled_list2
+
+
+def add_margin(
+    input_image_path: str,
+    output_image_path: str,
+    margin_size: Union[int, tuple[int, int, int, int]],
+    margin_color: tuple[int, int, int, int] = (0, 0, 0, 255),
+):
+    """Adds margins to an image.
+
+    Args:
+        input_image_path (str):
+            Path to the input image.
+        output_image_path (str):
+            Path to save the image with margin.
+        margin_size (int | tuple[int, int, int, int]):
+            Size of the margin in pixels.
+            Can be an integer for equal margins or a tuple (left, top, right, bottom).
+        margin_color (tuple[int, int, int, int]):
+            Color of the margin in RGBA format.
+    """
+    img = Image.open(input_image_path)
+    img_with_margin = ImageOps.expand(img, border=margin_size, fill=margin_color)
+    img_with_margin.save(output_image_path)
