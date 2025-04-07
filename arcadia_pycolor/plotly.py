@@ -27,6 +27,8 @@ def set_yticklabel_font(
         font (str): The font family to use for the tick labels.
         font_size (float, optional): The font size to use for the tick labels.
             If None, keeps current size.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
     """
     fig.update_yaxes(tickfont_family=font, row=row, col=col)
     if font_size is not None:
@@ -47,6 +49,8 @@ def set_xticklabel_font(
         font (str): The font family to use for the tick labels.
         font_size (float, optional): The font size to use for the tick labels.
             If None, keeps current size.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
     """
     fig.update_xaxes(tickfont_family=font, row=row, col=col)
     if font_size is not None:
@@ -67,6 +71,8 @@ def set_ticklabel_font(
         font (str, optional): The font family to use for the ticklabels.
         font_size (float, optional): The font size to use for the ticklabels.
             If None, keeps current size.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
     """
     set_xticklabel_font(fig, font, font_size, row, col)
     set_yticklabel_font(fig, font, font_size, row, col)
@@ -75,21 +81,39 @@ def set_ticklabel_font(
 def set_xticklabel_monospaced(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the font of the x-axis ticklabels to a monospace font."""
+    """Sets the font of the x-axis ticklabels to a monospace font.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     set_xticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE, row=row, col=col)
 
 
 def set_yticklabel_monospaced(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the font of the y-axis ticklabels to a monospace font."""
+    """Sets the font of the y-axis ticklabels to a monospace font.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     set_yticklabel_font(fig, MONOSPACE_FONT_PLOTLY, font_size=MONOSPACE_FONT_SIZE, row=row, col=col)
 
 
 def set_colorbar_ticklabel_monospaced(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the font of the colorbar ticklabels to a monospace font."""
+    """Sets the font of the colorbar ticklabels to a monospace font.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_coloraxes(
         tickfont_family=MONOSPACE_FONT_PLOTLY, tickfont_size=MONOSPACE_FONT_SIZE, row=row, col=col
     )
@@ -98,25 +122,55 @@ def set_colorbar_ticklabel_monospaced(
 def set_ticklabel_monospaced(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the font of both the x- and y-axis ticklabels to a monospace font."""
+    """Sets the font of both the x- and y-axis ticklabels to a monospace font.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     set_xticklabel_monospaced(fig, row, col)
     set_yticklabel_monospaced(fig, row, col)
 
 
-def capitalize_xticklabels(fig: go.Figure) -> None:
-    """Capitalizes the x-axis ticklabels."""
-    fig.update_xaxes(ticktext=fig.xaxes[0].ticktext.capitalize())  # type: ignore
+def capitalize_xticklabels(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes the x-axis ticklabels.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
+    fig.update_xaxes(ticktext=fig.xaxes[0].ticktext.capitalize(), row=row, col=col)  # type: ignore
 
 
-def capitalize_yticklabels(fig: go.Figure) -> None:
-    """Capitalizes the y-axis ticklabels."""
-    fig.update_yaxes(ticktext=fig.yaxes[0].ticktext.capitalize())  # type: ignore
+def capitalize_yticklabels(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes the y-axis ticklabels.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
+    fig.update_yaxes(ticktext=fig.yaxes[0].ticktext.capitalize(), row=row, col=col)  # type: ignore
 
 
-def capitalize_ticklabels(fig: go.Figure) -> None:
-    """Capitalizes both the x- and y-axis ticklabels."""
-    capitalize_xticklabels(fig)
-    capitalize_yticklabels(fig)
+def capitalize_ticklabels(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes both the x- and y-axis ticklabels.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
+    capitalize_xticklabels(fig, row, col)
+    capitalize_yticklabels(fig, row, col)
 
 
 def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
@@ -131,21 +185,39 @@ def add_commas_to_axis_tick_labels(fig: go.Figure) -> None:
 def set_xaxis_categorical(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the style of the x-axis to a categorical axis, removing ticks and adjusting padding."""
+    """Sets the style of the x-axis to a categorical axis, removing ticks and adjusting padding.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_xaxes(ticks="", row=row, col=col)
 
 
 def set_yaxis_categorical(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the style of the y-axis to a categorical axis, removing ticks and adjusting padding."""
+    """Sets the style of the y-axis to a categorical axis, removing ticks and adjusting padding.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_yaxes(ticks="", row=row, col=col)
 
 
 def set_axes_categorical(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets both the x- and y-axes to categorical axes, removing ticks and adjusting padding."""
+    """Sets both the x- and y-axes to categorical axes, removing ticks and adjusting padding.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     set_xaxis_categorical(fig, row, col)
     set_yaxis_categorical(fig, row, col)
 
@@ -153,21 +225,39 @@ def set_axes_categorical(
 def capitalize_ylabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the y-axis label."""
+    """Capitalizes the y-axis label.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_yaxes(title_text=fig.yaxes[0].title.text.capitalize(), row=row, col=col)  # type: ignore
 
 
 def capitalize_xlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the x-axis label."""
+    """Capitalizes the x-axis label.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_xaxes(title_text=fig.xaxes[0].title.text.capitalize(), row=row, col=col)  # type: ignore
 
 
 def capitalize_axislabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes both the x and y axis labels."""
+    """Capitalizes both the x and y axis labels.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     capitalize_xlabel(fig, row, col)
     capitalize_ylabel(fig, row, col)
 
@@ -175,19 +265,37 @@ def capitalize_axislabels(
 def hide_xaxis_ticks(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Hides the ticks on the x-axis."""
+    """Hides the ticks on the x-axis.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_xaxes(ticks="", showticklabels=False, row=row, col=col)
 
 
 def hide_yaxis_ticks(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Hides the ticks on the y-axis."""
+    """Hides the ticks on the y-axis.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_yaxes(ticks="", showticklabels=False, row=row, col=col)
 
 
 def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None) -> None:
-    """Hides the ticks on both the x- and y-axes."""
+    """Hides the ticks on both the x- and y-axes.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     hide_xaxis_ticks(fig, row, col)
     hide_yaxis_ticks(fig, row, col)
 
@@ -195,21 +303,39 @@ def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, Non
 def hide_yaxis_line(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Hides the line on the y-axis."""
+    """Hides the line on the y-axis.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_yaxes(showline=False, row=row, col=col)
 
 
 def hide_xaxis_line(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Hides the line on the x-axis."""
+    """Hides the line on the x-axis.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     fig.update_xaxes(showline=False, row=row, col=col)
 
 
 def hide_axis_lines(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Hides the lines on both the x- and y-axes."""
+    """Hides the lines on both the x- and y-axes.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
     hide_yaxis_line(fig, row, col)
     hide_xaxis_line(fig, row, col)
 

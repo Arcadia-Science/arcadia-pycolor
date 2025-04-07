@@ -13,11 +13,12 @@ FIGURE_PADDING_PIXELS = 20
 FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
-FULL_WIDE = (13.333333333333334, 5.277777777777778)
-FULL_SQUARE = (6.527777777777778, 6.527777777777778)
-FLOAT_WIDE = (9.166666666666667, 5.277777777777778)
-FLOAT_SQUARE = (4.444444444444445, 4.444444444444445)
-HALF_SQUARE = (6.388888888888889, 6.388888888888889)
+# These correspond to the panel sizes, not the full figure sizes with padding applied.
+FULL_WIDE = (13.33333, 5.27777)
+FULL_SQUARE = (6.52777, 6.52777)
+FLOAT_WIDE = (9.16667, 5.27777)
+FLOAT_SQUARE = (4.44444, 4.44444)
+HALF_SQUARE = (6.38888, 6.38888)
 
 FULL_WIDE_PIXELS = (960, 380)
 FULL_SQUARE_PIXELS = (470, 470)
@@ -25,7 +26,6 @@ FLOAT_WIDE_PIXELS = (660, 380)
 FLOAT_SQUARE_PIXELS = (320, 320)
 HALF_SQUARE_PIXELS = (460, 460)
 
-# Dictionary of common figure sizes in inches.
 FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
     "full_wide": FULL_WIDE,
     "full_square": FULL_SQUARE,
@@ -34,7 +34,6 @@ FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
     "half_square": HALF_SQUARE,
 }
 
-# Dictionary of common figure sizes in pixels.
 FIGURE_SIZES_IN_PIXELS: dict[str, tuple[int, int]] = {
     "full_wide": FULL_WIDE_PIXELS,
     "full_square": FULL_SQUARE_PIXELS,
@@ -43,18 +42,17 @@ FIGURE_SIZES_IN_PIXELS: dict[str, tuple[int, int]] = {
     "half_square": HALF_SQUARE_PIXELS,
 }
 
-# Font family to look for in the font folder.
+# Font families.
 FONT_FILTER = "Suisse"
 DEFAULT_FONT = "Suisse Int'l"
-DEFAULT_FONT_PLOTLY = DEFAULT_FONT.replace(" ", "").replace("'", "")
+MONOSPACE_FONT = "Suisse Int'l Mono"
 
-# Base font size for text.
+DEFAULT_FONT_PLOTLY = "SuisseIntl"
+MONOSPACE_FONT_PLOTLY = "SuisseIntlMono"
+
+# Font sizes.
 BASE_FONT_SIZE = 15
 TITLE_FONT_SIZE = 16
-
-# Font family to use for monospace fonts.
-MONOSPACE_FONT = "Suisse Int'l Mono"
-MONOSPACE_FONT_PLOTLY = MONOSPACE_FONT.replace(" ", "").replace("'", "")
 MONOSPACE_FONT_SIZE = 14.5
 
 # Specifications for categorical axes.
@@ -71,7 +69,6 @@ LINEWEIGHT = 0.75
 
 # Matplotlib runtime configuration parameters.
 # API reference: https://matplotlib.org/stable/api/matplotlib_configuration_api.html.
-
 ARCADIA_MATPLOTLIB_RC_PARAMS = {
     # Fonts.
     "font.family": "sans-serif",
@@ -186,8 +183,7 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 }
 
 # Plotly template layout.
-# API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.Layout.html.
-
+# API reference: https://plotly.com/python/reference/layout/.
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     bargap=0.20,
     # TODO: Investigate why these styles are not being applied.
