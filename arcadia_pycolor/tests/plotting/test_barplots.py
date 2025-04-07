@@ -193,7 +193,7 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
         plot_vertical_barplot_with_seaborn_with_categories,
     ],
 )
-@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
+@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES_IN_INCHES.keys())
 def test_barplots(output_dirpath, plotting_function, figure_size):
     fig, ax = plt.subplots(figsize=apc.mpl.get_figure_dimensions(figure_size), layout="constrained")
     plotting_function(ax)

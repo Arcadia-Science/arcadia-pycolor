@@ -59,7 +59,7 @@ def plot_seaborn_violinplot(ax):
     apc.mpl.style_plot(categorical_axes="x", monospaced_axes="y")
 
 
-@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
+@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES_IN_INCHES.keys())
 @pytest.mark.parametrize(
     "plotting_function",
     [plot_seaborn_scatterplot, plot_seaborn_violinplot],
