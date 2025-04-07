@@ -183,10 +183,9 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 }
 
 # Plotly template layout.
-# API reference: https://plotly.com/python/reference/layout/.
+# API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.layout.html.
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     bargap=0.20,
-    # TODO: Investigate why these styles are not being applied.
     coloraxis=go.layout.Coloraxis(
         colorbar=go.layout.coloraxis.ColorBar(
             outlinecolor="white",
@@ -194,7 +193,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
             ticks="outside",
             tickfont=dict(family=MONOSPACE_FONT_PLOTLY, size=MONOSPACE_FONT_SIZE),
             title=dict(
-                font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE),
+                font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Semibold", size=BASE_FONT_SIZE),
                 side="right",
             ),
         ),

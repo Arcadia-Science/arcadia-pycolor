@@ -1,7 +1,8 @@
-from typing import Literal, Union
+from typing import Any, Literal, Union
 
 import plotly.graph_objects as go
 import plotly.io as pio
+from narwhals import Unknown
 
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
@@ -359,6 +360,35 @@ def capitalize_legend_text(fig: go.Figure) -> None:
 def justify_legend_text(fig: go.Figure) -> None:
     """Justify the legend to the left and change legend title font to Medium weight."""
     fig.update_layout(legend_title_font_weight=600, legend_title_font_size=TITLE_FONT_SIZE)
+
+
+def get_styles(key: Union[str, None] = None) -> Union[dict[Unknown, Unknown], Unknown]:
+    """Returns the styles for the given key from the Arcadia Plotly template.
+
+    Args:
+        key (str, optional): The key (or nested keys separated by dots) to access the styles.
+            If None, returns the entire Arcadia Plotly template.
+
+    Returns:
+        dict[Unknown, Unknown] | Unknown: The styles for the given key.
+    """
+    value = ARCADIA_PLOTLY_TEMPLATE_LAYOUT.to_plotly_json()
+    if key is None:
+        return value
+
+    keys = key.split(".")
+
+    for key in keys:
+        value = value.get(key)
+        if value is None:
+            raise ValueError(f"Key {key} not found in Arcadia Plotly template.")
+
+    return value
+
+
+def get_colorbar_styles() -> Union[dict[str, Any], Any]:
+    """Returns the colorbar styles from the Arcadia Plotly template."""
+    return get_styles("coloraxis.colorbar")
 
 
 def style_legend(fig: go.Figure) -> None:
