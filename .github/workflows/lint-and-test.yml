@@ -54,11 +54,11 @@ jobs:
       - name: Run Ruff formatter
         run: poetry run ruff format --check .
 
-      - name: Run tests
-        run: poetry run pytest
-
       - name: Install arcadia-pycolor
         run: poetry run pip install .
+
+      - name: Run tests
+        run: poetry run pytest
 
       - name: Execute notebooks
         run: make execute-all-notebooks
