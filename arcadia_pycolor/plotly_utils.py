@@ -14,32 +14,6 @@ from arcadia_pycolor.style_defaults import (
 )
 
 
-def _fix_svg_fonts_for_illustrator(filename: str) -> None:
-    """Fixes CSS font styles in SVG exports for Adobe Illustrator.
-
-    Adobe Illustrator cannot parse font weights in shorthand font styles like
-    "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
-    weights applied, and because of this, their fonts are not being rendered correctly
-    in Illustrator.
-
-    As a workaround, each CSS font property is explicitly set:
-
-    ```html
-    <text style="font-family: SuisseIntl, sans-serif; font-size: 15px; font-weight: 500;">
-    ```
-
-    Additionally, the font family is not being applied correctly in Illustrator
-    when it is encoded as "&quot;Suisse Int&apos;l&quot;". To fix this, we replace
-    all instances of this encoding with "SuisseIntl".
-
-    For more context, see https://github.com/Arcadia-Science/arcadia-pycolor/issues/68.
-
-    Args:
-        filename (str): The path to the SVG file to fix.
-    """
-    pass
-
-
 def save_figure(
     fig: go.Figure,
     filepath: str,
@@ -64,7 +38,8 @@ def save_figure(
     # By default, our Plotly template results in a margin of 40 pixels on all sides.
     # We want to reduce this to 20 pixels on all sides, and update the dimensions to
     # account for the reduced margin.
-    updated_margins = {key: (value - 20) for key, value in get_arcadia_styles("margin").items()}
+    margins = get_arcadia_styles()["margin"]
+    updated_margins = {key: (value - 20) for key, value in margins.items()}
     updated_width = fig.layout.width - 20  # type: ignore
     updated_height = fig.layout.height - 20  # type: ignore
 
@@ -85,9 +60,6 @@ def save_figure(
             continue
 
         fig.write_image(f"{filename}.{ftype}", **write_image_kwargs)
-
-        if ftype == "svg":
-            _fix_svg_fonts_for_illustrator(f"{filename}.svg")
 
 
 def set_yticklabel_font(
@@ -441,33 +413,9 @@ def capitalize_legend_text(fig: go.Figure) -> None:
     capitalize_legend_entries(fig)
 
 
-def get_arcadia_styles(key: Union[str, None] = None) -> Union[dict[str, Any], Any]:
-    """Returns the styles for the given key from the Arcadia Plotly template.
-
-    Args:
-        key (str, optional): The key (or nested keys separated by dots) to access the styles.
-            If None, returns the entire Arcadia Plotly template.
-
-    Returns:
-        dict[str, Any] | Any: The styles for the given key.
-    """
-    value = ARCADIA_PLOTLY_TEMPLATE_LAYOUT.to_plotly_json()
-    if key is None:
-        return value
-
-    keys = key.split(".")
-
-    for key in keys:
-        value = value.get(key)
-        if value is None:
-            raise ValueError(f"Key {key} not found in Arcadia Plotly template.")
-
-    return value
-
-
-def get_colorbar_styles() -> Union[dict[str, Any], Any]:
-    """Returns the colorbar styles from the Arcadia Plotly template."""
-    return get_arcadia_styles("coloraxis.colorbar")
+def get_arcadia_styles() -> dict[str, Any]:
+    """Returns the Arcadia Plotly layout template as a dictionary."""
+    return ARCADIA_PLOTLY_TEMPLATE_LAYOUT.to_plotly_json()
 
 
 def style_legend(fig: go.Figure) -> None:
@@ -486,7 +434,7 @@ def style_plot(
     Args:
         axes (Axes, optional): The matplotlib Axes to modify.
             If None, uses the most recent Axes.
-        monospaced_axes (str, optional): Which axes to set to a monospaced font.
+        monospaced_axes (str, optional): Which axes to set to the default monospaced font.
             Either 'x', 'y', 'both', or None.
         categorical_axes (str, optional): Which axes to set to categorical.
             Either 'x', 'y', 'both', or None.
