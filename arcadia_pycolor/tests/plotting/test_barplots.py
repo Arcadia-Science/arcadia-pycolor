@@ -1,3 +1,4 @@
+import plotly.express as px
 import pytest
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -182,6 +183,74 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
     legend.set_bbox_to_anchor((1.06, 1))
 
 
+def plot_vertical_barplot_with_plotly_with_error_bars():
+    """Plot a vertical barplot using Plotly with error bars."""
+    fig = px.bar(x=BARPLOT_SAMPLE_IDS, y=BARPLOT_NUM_READS, error_y=BARPLOT_ERRORS)
+    fig.update_layout(
+        xaxis_title="Sample",
+        yaxis_title="Number of reads",
+        showlegend=False,
+    )
+    fig.update_traces(
+        marker_color=apc.aster,
+        error_y_color=apc.crow,
+        error_y_thickness=1.5,
+        error_y_width=0,
+    )
+    apc.plotly.style_plot(fig, categorical_axes="x", monospaced_axes="y")
+    apc.plotly.add_commas_to_axis_tick_labels(fig)
+    apc.plotly.set_figure_dimensions(fig, "full_wide")
+    return fig
+
+
+def plot_horizontal_barplot_with_plotly_with_error_bars():
+    """Plot a horizontal barplot using Plotly with error bars."""
+    fig = px.bar(x=BARPLOT_NUM_READS, y=BARPLOT_SAMPLE_IDS, error_x=BARPLOT_ERRORS)
+    fig.update_layout(
+        xaxis_title="Number of reads",
+        yaxis_title="Sample",
+        showlegend=False,
+    )
+    fig.update_traces(
+        marker_color=apc.aster,
+        error_x_color=apc.crow,
+        error_x_thickness=1.5,
+        error_x_width=0,
+    )
+    apc.plotly.style_plot(fig, categorical_axes="y", monospaced_axes="x")
+    apc.plotly.add_commas_to_axis_tick_labels(fig)
+    apc.plotly.set_figure_dimensions(fig, "half_square")
+    return fig
+
+def plot_vertical_barplot_with_plotly_with_categories():
+    """
+    Plot a vertical barplot using Plotly, with bar colors based on categories
+    derived from the sample IDs.
+    """
+    color_labels = [idx.split(" ")[0] for idx in BARPLOT_SAMPLE_IDS]
+    color_dict = {
+        label: color
+        for label, color in zip(
+            set(color_labels), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose]
+        )
+    }
+    fig = px.bar(
+        x=BARPLOT_SAMPLE_IDS,
+        y=BARPLOT_NUM_READS,
+        color=color_labels,
+        color_discrete_map=color_dict,
+        title=None,
+    )
+    fig.update_layout(
+        xaxis_title="Sample",
+        yaxis_title="Number of reads",
+        legend=dict(title="ID", yanchor="top", y=1, xanchor="left", x=1.06),
+    )
+    apc.plotly.style_plot(fig, categorical_axes="x", monospaced_axes="y")
+    apc.plotly.add_commas_to_axis_tick_labels(fig)
+    apc.plotly.set_figure_dimensions(fig, "full_wide")
+    return fig
+
 @pytest.mark.parametrize(
     "plotting_function",
     [
@@ -202,3 +271,16 @@ def test_barplots(output_dirpath, plotting_function, figure_size):
         filetypes=["pdf"],
     )
     plt.close(fig)
+
+
+@pytest.mark.parametrize(
+    "plotting_function",
+    [
+        plot_vertical_barplot_with_plotly_with_error_bars,
+        plot_horizontal_barplot_with_plotly_with_error_bars,
+        plot_vertical_barplot_with_plotly_with_categories,
+    ],
+)
+def test_barplots_with_plotly(output_dirpath, plotting_function):
+    fig = plotting_function()
+    fig.write_html(output_dirpath / f"{plotting_function.__name__}.html")
