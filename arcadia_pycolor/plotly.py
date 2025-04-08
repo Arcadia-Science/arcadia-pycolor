@@ -10,7 +10,6 @@ from arcadia_pycolor.style_defaults import (
     FIGURE_SIZES_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
-    TITLE_FONT_SIZE,
     FigureSize,
 )
 
@@ -420,23 +419,26 @@ def hide_axis_lines(
 
 def capitalize_legend_title(fig: go.Figure) -> None:
     """Capitalizes the legend title."""
-    fig.update_layout(legend_title_text=fig.layout.legend.title.text.capitalize())  # type: ignore
+    legend_title_text = fig.layout.legend.title.text  # type: ignore
+    if legend_title_text and not legend_title_text.isupper():
+        fig.update_layout(legend_title_text=legend_title_text.capitalize())
 
 
 def capitalize_legend_entries(fig: go.Figure) -> None:
-    """Capitalizes the legend entries."""
-    pass
+    """Capitalizes the legend entries.
+
+    Plotly does have the `legend_font_textcase` attribute, but the CSS styles are not
+    applied correctly in SVG exports, so we manually mutate the legend entries instead.
+    """
+    for trace in fig.data:
+        if trace.name and not trace.name.isupper():
+            trace.name = trace.name.capitalize()
 
 
 def capitalize_legend_text(fig: go.Figure) -> None:
     """Capitalize the legend title and entries."""
     capitalize_legend_title(fig)
     capitalize_legend_entries(fig)
-
-
-def justify_legend_text(fig: go.Figure) -> None:
-    """Justify the legend to the left and change legend title font to Medium weight."""
-    fig.update_layout(legend_title_font_weight=600, legend_title_font_size=TITLE_FONT_SIZE)
 
 
 def get_arcadia_styles(key: Union[str, None] = None) -> Union[dict[str, Any], Any]:
@@ -471,7 +473,6 @@ def get_colorbar_styles() -> Union[dict[str, Any], Any]:
 def style_legend(fig: go.Figure) -> None:
     """Styles the legend according to Arcadia's style guide."""
     capitalize_legend_text(fig)
-    justify_legend_text(fig)
 
 
 def style_plot(

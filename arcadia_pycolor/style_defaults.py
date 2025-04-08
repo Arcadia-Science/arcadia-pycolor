@@ -190,7 +190,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
             ticks="outside",
             tickfont=dict(family=MONOSPACE_FONT_PLOTLY, size=MONOSPACE_FONT_SIZE),
             title=dict(
-                font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Semibold", size=BASE_FONT_SIZE),
+                font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=BASE_FONT_SIZE),
                 side="right",
             ),
         ),
@@ -207,13 +207,14 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     ),
     legend=go.layout.Legend(
         title=dict(
-            font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Semibold", size=TITLE_FONT_SIZE, color="black")
+            font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=TITLE_FONT_SIZE, color="black")
         ),
-        font=dict(size=BASE_FONT_SIZE, color="black"),
-        yanchor="top",
-        y=1,
+        font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
+        indentation=-12,
         xanchor="right",
         x=1,
+        yanchor="top",
+        y=1,
     ),
     margin=go.layout.Margin(
         l=FIGURE_PADDING_PIXELS + 75,
@@ -222,7 +223,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         t=FIGURE_PADDING_PIXELS + 20,
     ),
     title=go.layout.Title(
-        font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Semibold", size=TITLE_FONT_SIZE, color="black"),
+        font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=TITLE_FONT_SIZE, color="black"),
         automargin=True,
         yref="container",
     ),
