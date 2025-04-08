@@ -105,3 +105,9 @@ exclude = ["**/tests/**"]
 # Pyright reports a lot of unknown-member errors for matplotlib objects.
 # For now, rather than add even more `type: ignore` comments, we'll just disable these errors.
 reportUnknownMemberType = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # Ignore deprecation warnings for Plotly.
+    'ignore:.* is deprecated!:DeprecationWarning',
+]

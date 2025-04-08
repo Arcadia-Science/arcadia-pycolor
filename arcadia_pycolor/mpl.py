@@ -32,6 +32,7 @@ from arcadia_pycolor.style_defaults import (
     MONOSPACE_FONT,
     MONOSPACE_FONT_SIZE,
     PRINT_DPI,
+    FigureSize,
 )
 
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
@@ -402,14 +403,14 @@ def style_plot(
         set_colorbar_ticklabel_monospaced(ax)
 
 
-def get_figure_dimensions(size: str) -> tuple[float, float]:
+def get_figure_dimensions(size: FigureSize) -> tuple[float, float]:
     """Returns the dimensions of a figure given a predefined size.
 
     The dimensions are calculated by subtracting the spacing needed for padding
     from the width and height of the predefined size.
 
     Args:
-        size (str): Figure size, which must be one of the following:
+        size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
             - "full_square"
             - "float_wide"

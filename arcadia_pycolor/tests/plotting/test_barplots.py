@@ -222,6 +222,7 @@ def plot_horizontal_barplot_with_plotly_with_error_bars():
     apc.plotly.set_figure_dimensions(fig, "half_square")
     return fig
 
+
 def plot_vertical_barplot_with_plotly_with_categories():
     """
     Plot a vertical barplot using Plotly, with bar colors based on categories
@@ -250,6 +251,7 @@ def plot_vertical_barplot_with_plotly_with_categories():
     apc.plotly.add_commas_to_axis_tick_labels(fig)
     apc.plotly.set_figure_dimensions(fig, "full_wide")
     return fig
+
 
 @pytest.mark.parametrize(
     "plotting_function",

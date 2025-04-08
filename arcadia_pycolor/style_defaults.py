@@ -1,3 +1,5 @@
+from typing import Literal
+
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
@@ -13,33 +15,28 @@ FIGURE_PADDING_PIXELS = 20
 FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
-# These correspond to the panel sizes, not the full figure sizes with padding applied.
-FULL_WIDE = (13.33333, 5.27777)
-FULL_SQUARE = (6.52777, 6.52777)
-FLOAT_WIDE = (9.16667, 5.27777)
-FLOAT_SQUARE = (4.44444, 4.44444)
-HALF_SQUARE = (6.38888, 6.38888)
+FigureSize = Literal["full_wide", "full_square", "float_wide", "float_square", "half_square"]
 
-FULL_WIDE_PIXELS = (1000, 420)
-FULL_SQUARE_PIXELS = (500, 500)
-FLOAT_WIDE_PIXELS = (700, 420)
-FLOAT_SQUARE_PIXELS = (360, 360)
-HALF_SQUARE_PIXELS = (500, 500)
-
-FIGURE_SIZES_IN_INCHES: dict[str, tuple[float, float]] = {
-    "full_wide": FULL_WIDE,
-    "full_square": FULL_SQUARE,
-    "float_wide": FLOAT_WIDE,
-    "float_square": FLOAT_SQUARE,
-    "half_square": HALF_SQUARE,
+# This dictionary contains figure sizes in inches WITHOUT padding.
+# For example, the "full_wide" figure width is 13.33333 inches, or 960 pixels at 72 DPI.
+# They are used to set dimensions for matplotlib figures.
+FIGURE_SIZES_IN_INCHES: dict[FigureSize, tuple[float, float]] = {
+    "full_wide": (13.33333, 5.27777),
+    "full_square": (6.52777, 6.52777),
+    "float_wide": (9.16667, 5.27777),
+    "float_square": (4.44444, 4.44444),
+    "half_square": (6.38888, 6.38888),
 }
 
-FIGURE_SIZES_IN_PIXELS: dict[str, tuple[int, int]] = {
-    "full_wide": FULL_WIDE_PIXELS,
-    "full_square": FULL_SQUARE_PIXELS,
-    "float_wide": FLOAT_WIDE_PIXELS,
-    "float_square": FLOAT_SQUARE_PIXELS,
-    "half_square": HALF_SQUARE_PIXELS,
+# This dictionary contains full figure sizes in pixels WITH padding.
+# For example, the "full_wide" figure width is 960 pixels plus 20 pixels of padding on each side.
+# They are used to set dimensions for Plotly figures.
+FIGURE_SIZES_IN_PIXELS: dict[FigureSize, tuple[int, int]] = {
+    "full_wide": (1000, 420),
+    "full_square": (500, 500),
+    "float_wide": (700, 420),
+    "float_square": (360, 360),
+    "half_square": (500, 500),
 }
 
 # Font families.

@@ -1,8 +1,8 @@
+from pathlib import Path
 from typing import Any, Literal, Union
 
 import plotly.graph_objects as go
 import plotly.io as pio
-from narwhals import Unknown
 
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
@@ -11,7 +11,84 @@ from arcadia_pycolor.style_defaults import (
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
     TITLE_FONT_SIZE,
+    FigureSize,
 )
+
+
+def _fix_svg_fonts_for_illustrator(filename: str) -> None:
+    """Fixes CSS font styles in SVG exports for Adobe Illustrator.
+
+    Adobe Illustrator cannot parse font weights in shorthand font styles like
+    "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
+    weights applied, and because of this, their fonts are not being rendered correctly
+    in Illustrator.
+
+    As a workaround, each CSS font property is explicitly set:
+
+    ```html
+    <text style="font-family: SuisseIntl, sans-serif; font-size: 15px; font-weight: 500;">
+    ```
+
+    Additionally, the font family is not being applied correctly in Illustrator
+    when it is encoded as "&quot;Suisse Int&apos;l&quot;". To fix this, we replace
+    all instances of this encoding with "SuisseIntl".
+
+    For more context, see https://github.com/Arcadia-Science/arcadia-pycolor/issues/68.
+
+    Args:
+        filename (str): The path to the SVG file to fix.
+    """
+    pass
+
+
+def save_figure(
+    fig: go.Figure,
+    filepath: str,
+    filetypes: Union[list[str], None] = None,
+    **write_image_kwargs: dict[Any, Any],
+) -> None:
+    """Saves the current figure to a file using Arcadia's margin and padding settings.
+
+    Args:
+        fig (go.Figure): The figure to save.
+        filepath (str): Path to save the figure to.
+        filetypes (list[str], optional): The file types(s) to save the figure to.
+            If None, the original filetype of `filepath` is used.
+            If the original filetype is not in `filetypes`, it is appended to the list.
+        **write_image_kwargs: Additional keyword arguments to pass to `fig.write_image`.
+    """
+    valid_filetypes = ["png", "jpg", "jpeg", "webp", "svg", "pdf"]
+
+    filename = Path(filepath).with_suffix("")
+    filetype = Path(filepath).suffix[1:]
+
+    # By default, our Plotly template results in a margin of 40 pixels on all sides.
+    # We want to reduce this to 20 pixels on all sides, and update the dimensions to
+    # account for the reduced margin.
+    updated_margins = {key: (value - 20) for key, value in get_arcadia_styles("margin").items()}
+    updated_width = fig.layout.width - 20  # type: ignore
+    updated_height = fig.layout.height - 20  # type: ignore
+
+    fig_export = go.Figure(fig)
+    fig_export.update_layout(margin=updated_margins, width=updated_width, height=updated_height)
+
+    # If no file types are provided, use the filetype from the file path.
+    if filetypes is None:
+        if not filetype:
+            raise ValueError("The filename must include a filetype if no filetypes are provided.")
+        filetypes = [filetype]
+    else:
+        filetypes.append(filetype)
+
+    for ftype in filetypes:
+        if ftype not in valid_filetypes:
+            print(f"Invalid filetype '{ftype}'. Skipping.")
+            continue
+
+        fig.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+
+        if ftype == "svg":
+            _fix_svg_fonts_for_illustrator(f"{filename}.svg")
 
 
 def set_yticklabel_font(
@@ -362,7 +439,7 @@ def justify_legend_text(fig: go.Figure) -> None:
     fig.update_layout(legend_title_font_weight=600, legend_title_font_size=TITLE_FONT_SIZE)
 
 
-def get_styles(key: Union[str, None] = None) -> Union[dict[Unknown, Unknown], Unknown]:
+def get_arcadia_styles(key: Union[str, None] = None) -> Union[dict[str, Any], Any]:
     """Returns the styles for the given key from the Arcadia Plotly template.
 
     Args:
@@ -370,7 +447,7 @@ def get_styles(key: Union[str, None] = None) -> Union[dict[Unknown, Unknown], Un
             If None, returns the entire Arcadia Plotly template.
 
     Returns:
-        dict[Unknown, Unknown] | Unknown: The styles for the given key.
+        dict[str, Any] | Any: The styles for the given key.
     """
     value = ARCADIA_PLOTLY_TEMPLATE_LAYOUT.to_plotly_json()
     if key is None:
@@ -388,7 +465,7 @@ def get_styles(key: Union[str, None] = None) -> Union[dict[Unknown, Unknown], Un
 
 def get_colorbar_styles() -> Union[dict[str, Any], Any]:
     """Returns the colorbar styles from the Arcadia Plotly template."""
-    return get_styles("coloraxis.colorbar")
+    return get_arcadia_styles("coloraxis.colorbar")
 
 
 def style_legend(fig: go.Figure) -> None:
@@ -440,11 +517,12 @@ def style_plot(
         set_colorbar_ticklabel_monospaced(fig)
 
 
-def set_figure_dimensions(fig: go.Figure, size: str) -> None:
+def set_figure_dimensions(fig: go.Figure, size: FigureSize) -> None:
     """Sets the width and height of a figure.
 
     Args:
-        size (str): Figure size, which must be one of the following:
+        fig (go.Figure): The figure to modify.
+        size (PanelSize): The size of the figure, which must be one of the following:
             - "full_wide"
             - "full_square"
             - "float_wide"
@@ -452,16 +530,13 @@ def set_figure_dimensions(fig: go.Figure, size: str) -> None:
             - "half_square"
 
     Raises:
-        ValueError: If the size is not one of the predefined sizes.
+        ValueError: If the size is not one of the predefined panel sizes.
     """
-    if size not in FIGURE_SIZES_IN_PIXELS.keys():
+    if size not in FIGURE_SIZES_IN_PIXELS:
         raise ValueError(f"Size must be one of {list(FIGURE_SIZES_IN_PIXELS.keys())}.")
 
     width, height = FIGURE_SIZES_IN_PIXELS[size]
-    fig.update_layout(
-        width=width,
-        height=height,
-    )
+    fig.update_layout(width=width, height=height)
 
 
 def setup() -> None:
