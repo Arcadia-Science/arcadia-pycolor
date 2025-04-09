@@ -20,7 +20,7 @@ def save_figure(
     filetypes: Union[list[str], None] = None,
     **write_image_kwargs: dict[Any, Any],
 ) -> None:
-    """Saves the current figure to a file using Arcadia's margin and padding settings.
+    """Saves the current figure to a file without any margins or padding.
 
     Args:
         fig (go.Figure): The figure to save.
@@ -35,16 +35,29 @@ def save_figure(
     filename = Path(filepath).with_suffix("")
     filetype = Path(filepath).suffix[1:]
 
-    # By default, our Plotly template results in a margin of 40 pixels on all sides.
-    # We want to reduce this to 20 pixels on all sides, and update the dimensions to
-    # account for the reduced margin.
-    margins = get_arcadia_styles()["margin"]
-    updated_margins = {key: (value - 20) for key, value in margins.items()}
-    updated_width = fig.layout.width - 20  # type: ignore
-    updated_height = fig.layout.height - 20  # type: ignore
+    # By default, our Plotly template attempts to add 40 pixels of margin on all sides.
+    # However, due to Plotly's internal automargin strategy, the margin is not always
+    # applied correctly, resulting in a figure that is not the correct size.
+    #
+    # For exports, we want to remove the margins and update the figure dimensions
+    # so that the correct margins can be applied in Adobe Illustrator.
+    # TODO(#69): We should just apply the margin ourselves with a custom function.
+    updated_margins = dict(l=0, r=0, t=0, b=0)
+    updated_width = fig.layout.width - 80  # type: ignore
+    updated_height = fig.layout.height - 80  # type: ignore
+
+    # For some reason, the axis linewidths (which are set to 1 px) are being rendered as
+    # 1 pt in Illustrator. Manually setting these to 0.75 px renders them as 0.75 pt.
+    updated_axis_linewidth = 0.75
 
     fig_export = go.Figure(fig)
-    fig_export.update_layout(margin=updated_margins, width=updated_width, height=updated_height)
+    fig_export.update_layout(
+        margin=updated_margins,
+        width=updated_width,
+        height=updated_height,
+        xaxis=dict(linewidth=updated_axis_linewidth),
+        yaxis=dict(linewidth=updated_axis_linewidth),
+    )
 
     # If no file types are provided, use the filetype from the file path.
     if filetypes is None:
@@ -58,8 +71,7 @@ def save_figure(
         if ftype not in valid_filetypes:
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
-
-        fig.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+        fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
 
 
 def set_yticklabel_font(

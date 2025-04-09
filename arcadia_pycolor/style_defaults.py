@@ -17,7 +17,7 @@ FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 # Common figure sizes for Arcadia Creative Cloud library templates.
 FigureSize = Literal["full_wide", "full_square", "float_wide", "float_square", "half_square"]
 
-# This dictionary contains figure sizes in inches WITHOUT padding.
+# This dictionary contains figure sizes in inches WITHOUT padding for the transparent border.
 # For example, the "full_wide" figure width is 13.33333 inches, or 960 pixels at 72 DPI.
 # They are used to set dimensions for matplotlib figures.
 FIGURE_SIZES_IN_INCHES: dict[FigureSize, tuple[float, float]] = {
@@ -28,7 +28,7 @@ FIGURE_SIZES_IN_INCHES: dict[FigureSize, tuple[float, float]] = {
     "half_square": (6.38888, 6.38888),
 }
 
-# This dictionary contains full figure sizes in pixels WITH padding.
+# This dictionary contains full figure sizes in pixels WITH padding for the transparent border.
 # For example, the "full_wide" figure width is 960 pixels plus 20 pixels of padding on each side.
 # They are used to set dimensions for Plotly figures.
 FIGURE_SIZES_IN_PIXELS: dict[FigureSize, tuple[int, int]] = {
