@@ -36,6 +36,7 @@ def test_plotly_save_figure_filetype_examples(tmp_path, fname, filetypes, expect
     apc.plotly.save_figure(
         fig,
         tmp_path / fname,
+        "full_square",
         filetypes=filetypes,
     )
     for output in expected_outputs:
@@ -57,6 +58,7 @@ def test_plotly_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys)
     apc.plotly.save_figure(
         fig,
         tmp_path / fname,
+        "float_square",
         filetypes=filetypes,
     )
     captured = capsys.readouterr()
@@ -69,5 +71,6 @@ def test_plotly_save_figure_no_filetype(tmp_path):
         apc.plotly.save_figure(
             fig,
             tmp_path / "test",
+            "full_wide",
             filetypes=None,
         )
