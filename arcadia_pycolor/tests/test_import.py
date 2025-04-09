@@ -8,6 +8,7 @@ def test_import_arcadia_pycolor():
         "colors",
         "gradients",
         "mpl",
+        "plotly",
         "palettes",
         "plot",
         "style_defaults",

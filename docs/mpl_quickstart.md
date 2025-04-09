@@ -20,8 +20,6 @@ The package can then be imported in notebooks or scripts using the following com
 import arcadia_pycolor as apc
 ```
 
-Note: the package should be compatible with most existing Python environments. It requires Python version 3.9 or higher and has only two direct dependencies (`matplotlib` and `colorspacious`).
-
 ## Set the default Matplotlib styles
 
 The package provides a function called `apc.mpl.setup` that sets the default Matplotlib styles to match the Arcadia style guide. This function only needs to be called once, ideally at the beginning of the notebook or script. The styles it sets will automatically apply to all plots in the notebook or script.

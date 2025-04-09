@@ -1,4 +1,5 @@
 from arcadia_pycolor import colors, cvd, gradients, mpl, palettes, plot, style_defaults
+from arcadia_pycolor import plotly_utils as plotly
 
 from .colors import *
 from .gradient import Gradient
@@ -17,6 +18,7 @@ __all__ = [
     "Palette",
     "palettes",
     "plot",
+    "plotly",
     "style_defaults",
 ]
 

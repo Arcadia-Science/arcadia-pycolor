@@ -61,6 +61,12 @@ class HexCode(str):
     def hex_code(self, value: str) -> None:
         self._hex_code = value
 
+    def __copy__(self) -> HexCode:
+        return HexCode(self.name, self.hex_code)
+
+    def __deepcopy__(self, _: dict) -> HexCode:
+        return HexCode(self.name, self.hex_code)
+
     def to_rgb(self) -> list[int]:
         """Returns a tuple of RGB values for the color."""
         return [int(c * 255) for c in mcolors.to_rgb(self.hex_code)]

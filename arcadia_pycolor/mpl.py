@@ -21,18 +21,19 @@ import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
-    ARCADIA_RC_PARAMS,
+    ARCADIA_MATPLOTLIB_RC_PARAMS,
     BASE_DPI,
     CATEGORICAL_AXIS_TICKLENGTH,
     CATEGORICAL_AXIS_TICKPADDING,
     DEFAULT_FONT,
     FIGURE_PADDING_INCHES,
-    FIGURE_SIZES,
+    FIGURE_SIZES_IN_INCHES,
     FONT_FILTER,
     LEGEND_SEPARATOR_LINEWIDTH,
     MONOSPACE_FONT,
     MONOSPACE_FONT_SIZE,
     PRINT_DPI,
+    FigureSize,
 )
 
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
@@ -50,7 +51,10 @@ MACOS_FONT_DIRECTORIES = [
 
 LEGEND_PARAMS = dict(
     alignment="left",
-    title_fontproperties={"weight": "semibold", "size": ARCADIA_RC_PARAMS["legend.title_fontsize"]},
+    title_fontproperties={
+        "weight": "semibold",
+        "size": ARCADIA_MATPLOTLIB_RC_PARAMS["legend.title_fontsize"],
+    },
 )
 
 SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, bbox_inches="tight", pad_inches=FIGURE_PADDING_INCHES)
@@ -445,14 +449,14 @@ def style_plot(
         set_colorbar_ticklabel_monospaced(ax)
 
 
-def get_figure_dimensions(size: str) -> tuple[float, float]:
+def get_figure_dimensions(size: FigureSize) -> tuple[float, float]:
     """Returns the dimensions of a figure given a predefined size.
 
     The dimensions are calculated by subtracting the spacing needed for padding
     from the width and height of the predefined size.
 
     Args:
-        size (str): Figure size, which must be one of the following:
+        size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
             - "full_square"
             - "float_wide"
@@ -465,10 +469,10 @@ def get_figure_dimensions(size: str) -> tuple[float, float]:
     Raises:
         ValueError: If the size is not one of the predefined sizes.
     """
-    if size not in FIGURE_SIZES:
-        raise ValueError(f"Size must be one of {list(FIGURE_SIZES.keys())}.")
+    if size not in FIGURE_SIZES_IN_INCHES:
+        raise ValueError(f"Size must be one of {list(FIGURE_SIZES_IN_INCHES.keys())}.")
 
-    width, height = FIGURE_SIZES[size]
+    width, height = FIGURE_SIZES_IN_INCHES[size]
     return (width - 2 * FIGURE_PADDING_INCHES, height - 2 * FIGURE_PADDING_INCHES)
 
 
@@ -590,7 +594,7 @@ def load_colormaps() -> None:
 
 def load_styles() -> None:
     """Updates matplotlib's runtime configuration parameters with Arcadia's style settings."""
-    plt.rcParams.update(ARCADIA_RC_PARAMS)
+    plt.rcParams.update(ARCADIA_MATPLOTLIB_RC_PARAMS)
 
 
 def setup(font_dirpath: Union[str, None] = None) -> None:
