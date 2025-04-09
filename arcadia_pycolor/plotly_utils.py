@@ -501,7 +501,7 @@ def set_figure_dimensions(fig: go.Figure, size: FigureSize) -> None:
 
 
 def setup() -> None:
-    """Loads all Arcadia colors, fonts, styles, and colormaps into Plotly."""
+    """Loads Arcadia fonts and styles into Plotly."""
     arcadia_template = go.layout.Template(layout=ARCADIA_PLOTLY_TEMPLATE_LAYOUT)
     pio.templates["arcadia"] = arcadia_template
     pio.templates.default = "arcadia"
