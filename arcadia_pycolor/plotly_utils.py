@@ -480,7 +480,7 @@ def set_axes_categorical(
 def capitalize_ylabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the y-axis label.
+    """Capitalizes the y-axis label and removes underscores.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -488,23 +488,23 @@ def capitalize_ylabel(
         col (int, optional): The column index of the subplot to modify.
     """
     if _is_3d_plot(fig):
-        label = fig.scenes[0].yaxis.title.text  # type: ignore
+        label = fig.layout.scene.yaxis.title.text  # type: ignore
         if label and not label.isupper():
             fig.update_scenes(
-                yaxis_title_text=label.capitalize(),
+                yaxis_title_text=label.capitalize().replace("_", " "),
                 row=row,
                 col=col,
             )
     else:
         label = fig.layout.yaxis.title.text  # type: ignore
         if label and not label.isupper():
-            fig.update_yaxes(title_text=label.capitalize(), row=row, col=col)
+            fig.update_yaxes(title_text=label.capitalize().replace("_", " "), row=row, col=col)
 
 
 def capitalize_xlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the x-axis label.
+    """Capitalizes the x-axis label and removes underscores.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -512,32 +512,32 @@ def capitalize_xlabel(
         col (int, optional): The column index of the subplot to modify.
     """
     if _is_3d_plot(fig):
-        label = fig.scenes[0].xaxis.title.text  # type: ignore
+        label = fig.layout.scene.xaxis.title.text  # type: ignore
         if label and not label.isupper():
             fig.update_scenes(
-                xaxis_title_text=label.capitalize(),
+                xaxis_title_text=label.capitalize().replace("_", " "),
                 row=row,
                 col=col,
             )
     else:
         label = fig.layout.xaxis.title.text  # type: ignore
         if label and not label.isupper():
-            fig.update_xaxes(title_text=label.capitalize(), row=row, col=col)
+            fig.update_xaxes(title_text=label.capitalize().replace("_", " "), row=row, col=col)
 
 
 def capitalize_zlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the z-axis label.
+    """Capitalizes the z-axis label and removes underscores.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    label = fig.scenes[0].zaxis.title.text  # type: ignore
+    label = fig.layout.scene.zaxis.title.text  # type: ignore
     if label and not label.isupper():
-        fig.update_scenes(title_text=label.capitalize(), row=row, col=col)
+        fig.update_scenes(zaxis_title_text=label.capitalize().replace("_", " "), row=row, col=col)
 
 
 def capitalize_axislabels(
@@ -746,16 +746,12 @@ def style_plot(
     if categorical_axes is not None:
         if categorical_axes == "x":
             set_xaxis_categorical(fig)
-            capitalize_xlabel(fig)
         elif categorical_axes == "y":
             set_yaxis_categorical(fig)
-            capitalize_ylabel(fig)
         elif categorical_axes == "z":
             set_zaxis_categorical(fig)
-            capitalize_zlabel(fig)
         elif categorical_axes == "all":
             set_axes_categorical(fig)
-            capitalize_axislabels(fig)
         else:
             raise ValueError(
                 "Invalid categorical_axes option. Please choose from 'x', 'y', or 'both'."
@@ -768,7 +764,7 @@ def style_plot(
         set_colorbar_ticklabel_monospaced(fig)
 
     if _is_3d_plot(fig):
-        fig.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+        fig.update_layout(margin=dict(l=40, r=40, t=40, b=40))
 
 
 def set_figure_dimensions(fig: go.Figure, size: FigureSize) -> None:
