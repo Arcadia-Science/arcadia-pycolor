@@ -485,7 +485,7 @@ def set_axes_categorical(
 def capitalize_ylabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the y-axis label and removes underscores.
+    """Capitalizes the y-axis label.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -496,20 +496,20 @@ def capitalize_ylabel(
         label = fig.layout.scene.yaxis.title.text  # type: ignore
         if label and not label.isupper():
             fig.update_scenes(
-                yaxis_title_text=label.capitalize().replace("_", " "),
+                yaxis_title_text=label.capitalize(),
                 row=row,
                 col=col,
             )
     else:
         label = fig.layout.yaxis.title.text  # type: ignore
         if label and not label.isupper():
-            fig.update_yaxes(title_text=label.capitalize().replace("_", " "), row=row, col=col)
+            fig.update_yaxes(title_text=label.capitalize(), row=row, col=col)
 
 
 def capitalize_xlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the x-axis label and removes underscores.
+    """Capitalizes the x-axis label.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -520,20 +520,20 @@ def capitalize_xlabel(
         label = fig.layout.scene.xaxis.title.text  # type: ignore
         if label and not label.isupper():
             fig.update_scenes(
-                xaxis_title_text=label.capitalize().replace("_", " "),
+                xaxis_title_text=label.capitalize(),
                 row=row,
                 col=col,
             )
     else:
         label = fig.layout.xaxis.title.text  # type: ignore
         if label and not label.isupper():
-            fig.update_xaxes(title_text=label.capitalize().replace("_", " "), row=row, col=col)
+            fig.update_xaxes(title_text=label.capitalize(), row=row, col=col)
 
 
 def capitalize_zlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the z-axis label and removes underscores.
+    """Capitalizes the z-axis label.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -542,13 +542,13 @@ def capitalize_zlabel(
     """
     label = fig.layout.scene.zaxis.title.text  # type: ignore
     if label and not label.isupper():
-        fig.update_scenes(zaxis_title_text=label.capitalize().replace("_", " "), row=row, col=col)
+        fig.update_scenes(zaxis_title_text=label.capitalize(), row=row, col=col)
 
 
 def capitalize_colorbar_label(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the colorbar label and removes underscores.
+    """Capitalizes the colorbar label.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -557,7 +557,7 @@ def capitalize_colorbar_label(
     """
     label = fig.layout.coloraxis.colorbar.title.text  # type: ignore
     if label and not label.isupper():
-        new_label = label.capitalize().replace("_", " ")
+        new_label = label.capitalize()
         fig.update_coloraxes(colorbar_title_text=new_label, row=row, col=col)
 
 
