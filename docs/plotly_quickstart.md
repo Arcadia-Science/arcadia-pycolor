@@ -53,7 +53,7 @@ import arcadia_pycolor as apc
 apc.plotly.setup()
 
 fig = px.line(x=[0, 1, 2, 3, 4], y=[3, 1, 4, 1, 5])
-apc.plotly.style_plot(fig, monospaced_axes="both")
+apc.plotly.style_plot(fig, monospaced_axes="all")
 fig.show()
 ```
 
@@ -79,7 +79,7 @@ apc.plotly.setup()
 
 fig = px.line(x=[0, 1, 2, 3, 4], y=[3, 1, 4, 1, 5])
 fig.update_traces(line_color=apc.rose)
-apc.plotly.style_plot(fig, monospaced_axes="both")
+apc.plotly.style_plot(fig, monospaced_axes="all")
 fig.show()
 ```
 

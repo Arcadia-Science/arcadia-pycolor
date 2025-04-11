@@ -181,6 +181,18 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
 
 # Plotly template layout.
 # API reference: https://plotly.com/python-api-reference/generated/plotly.graph_objects.layout.html.
+PLOTLY_3D_AXIS_ATTRIBUTES = dict(
+    linecolor="black",
+    linewidth=1,
+    showgrid=True,
+    showline=True,
+    ticks="outside",
+    tickwidth=1,
+    title=dict(
+        font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Medium", size=BASE_FONT_SIZE, color="black"),
+    ),
+)
+
 ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     bargap=0.20,
     coloraxis=go.layout.Coloraxis(
@@ -221,6 +233,11 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         b=FIGURE_PADDING_PIXELS + 65,
         r=FIGURE_PADDING_PIXELS + 20,
         t=FIGURE_PADDING_PIXELS + 20,
+    ),
+    scene=go.layout.Scene(
+        xaxis=go.layout.scene.XAxis(**PLOTLY_3D_AXIS_ATTRIBUTES),
+        yaxis=go.layout.scene.YAxis(**PLOTLY_3D_AXIS_ATTRIBUTES),
+        zaxis=go.layout.scene.ZAxis(**PLOTLY_3D_AXIS_ATTRIBUTES),
     ),
     title=go.layout.Title(
         font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=TITLE_FONT_SIZE, color="black"),
