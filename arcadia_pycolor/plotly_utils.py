@@ -34,7 +34,7 @@ def _is_3d_plot(fig: go.Figure) -> bool:
 
 def _is_plot_with_colorbar(fig: go.Figure) -> bool:
     """Returns True if the figure contains a colorbar."""
-    return any(hasattr(trace, "colorbar") for trace in fig.data)
+    return len(fig.layout.coloraxis.colorbar.to_plotly_json()) > 0
 
 
 def _is_plot_with_legend(fig: go.Figure) -> bool:
@@ -253,14 +253,17 @@ def set_colorbar_ticklabel_monospaced(
         col (int, optional): The column index of the subplot to modify.
     """
     fig.update_coloraxes(
-        tickfont_family=MONOSPACE_FONT_PLOTLY, tickfont_size=MONOSPACE_FONT_SIZE, row=row, col=col
+        colorbar_tickfont_family=MONOSPACE_FONT_PLOTLY,
+        colorbar_tickfont_size=MONOSPACE_FONT_SIZE,
+        row=row,
+        col=col,
     )
 
 
 def set_ticklabel_monospaced(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets the font of both the x- and y-axis ticklabels to the default monospace font.
+    """Sets the font of all ticklabels to the default monospace font.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -271,6 +274,8 @@ def set_ticklabel_monospaced(
     set_yticklabel_monospaced(fig, row, col)
     if _is_3d_plot(fig):
         set_zticklabel_monospaced(fig, row, col)
+    if _is_plot_with_colorbar(fig):
+        set_colorbar_ticklabel_monospaced(fig, row, col)
 
 
 def capitalize_xticklabels(
@@ -338,7 +343,7 @@ def capitalize_zticklabels(
 def capitalize_ticklabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes both the x- and y-axis ticklabels.
+    """Capitalizes ticklabels for the x- and y-axes, and z-axis if applicable.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -464,7 +469,7 @@ def set_zaxis_categorical(
 def set_axes_categorical(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Sets both the x- and y-axes to categorical axes by removing ticks.
+    """Sets all axes to categorical axes by removing ticks.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -540,10 +545,26 @@ def capitalize_zlabel(
         fig.update_scenes(zaxis_title_text=label.capitalize().replace("_", " "), row=row, col=col)
 
 
+def capitalize_colorbar_label(
+    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+) -> None:
+    """Capitalizes the colorbar label and removes underscores.
+
+    Args:
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+    """
+    label = fig.layout.coloraxis.colorbar.title.text  # type: ignore
+    if label and not label.isupper():
+        new_label = label.capitalize().replace("_", " ")
+        fig.update_coloraxes(colorbar_title_text=new_label, row=row, col=col)
+
+
 def capitalize_axislabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes both the x and y axis labels.
+    """Capitalizes all axis labels.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -554,6 +575,8 @@ def capitalize_axislabels(
     capitalize_ylabel(fig, row, col)
     if _is_3d_plot(fig):
         capitalize_zlabel(fig, row, col)
+    if _is_plot_with_colorbar(fig):
+        capitalize_colorbar_label(fig, row, col)
 
 
 def hide_yaxis_ticks(
@@ -600,7 +623,7 @@ def hide_zaxis_ticks(
 
 
 def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None) -> None:
-    """Hides the ticks and ticklabels on both the x- and y-axes.
+    """Hides the ticks and ticklabels on all axes.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -754,14 +777,11 @@ def style_plot(
             set_axes_categorical(fig)
         else:
             raise ValueError(
-                "Invalid categorical_axes option. Please choose from 'x', 'y', or 'both'."
+                "Invalid categorical_axes option. Please choose from 'x', 'y', 'z', or 'all'."
             )
 
     if _is_plot_with_legend(fig):
         style_legend(fig)
-
-    if _is_plot_with_colorbar(fig):
-        set_colorbar_ticklabel_monospaced(fig)
 
     if _is_3d_plot(fig):
         fig.update_layout(margin=dict(l=40, r=40, t=40, b=40))
