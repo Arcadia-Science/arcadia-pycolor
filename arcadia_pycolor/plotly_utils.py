@@ -28,17 +28,25 @@ PLOTLY_3D_TRACE_TYPES = [
 
 
 def _is_3d_plot(fig: go.Figure) -> bool:
-    """Returns True if the figure contains 3D traces."""
-    return any(isinstance(trace, tuple(PLOTLY_3D_TRACE_TYPES)) for trace in fig.data)
+    """Returns True if the figure data only contains 3D traces."""
+    is_plot_with_3d_traces = all(
+        isinstance(trace, tuple(PLOTLY_3D_TRACE_TYPES)) for trace in fig.data
+    )
+    # Figure layouts could contain both 2D and 3D traces. For now, this function will
+    # return True only if the figure data only contains 3D traces. This means that `style_plot`
+    # will not automatically style figures with such subplots, but users can still use the
+    # individual axis styling functions in the meantime.
+    # TODO: Take figures with such subplots into account.
+    return is_plot_with_3d_traces
 
 
 def _is_plot_with_colorbar(fig: go.Figure) -> bool:
-    """Returns True if the figure contains a colorbar."""
+    """Returns True if the figure layout contains a non-emptycolorbar."""
     return len(fig.layout.coloraxis.colorbar.to_plotly_json()) > 0
 
 
 def _is_plot_with_legend(fig: go.Figure) -> bool:
-    """Returns True if the figure contains a legend."""
+    """Returns True if the figure layout contains a non-empty legend."""
     return len(fig.layout.legend.to_plotly_json()) > 0
 
 
@@ -509,7 +517,7 @@ def capitalize_ylabel(
 def capitalize_xlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the x-axis label.
+    """Capitalizes the x-axis label if it is not already uppercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -533,7 +541,7 @@ def capitalize_xlabel(
 def capitalize_zlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the z-axis label.
+    """Capitalizes the z-axis label if it is not already uppercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -548,7 +556,7 @@ def capitalize_zlabel(
 def capitalize_colorbar_label(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the colorbar label.
+    """Capitalizes the colorbar label if it is not already uppercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -564,7 +572,7 @@ def capitalize_colorbar_label(
 def capitalize_axislabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes all axis labels.
+    """Capitalizes all axis labels if they are not already uppercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -684,7 +692,7 @@ def hide_zaxis_line(
 def hide_axis_lines(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Hides the x-axis and y-axis lines.
+    """Hides all axis lines.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
