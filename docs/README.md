@@ -4,7 +4,7 @@ This directory contains the documentation for the `arcadia_pycolor` package.
 
 ## Quickstart guide
 
-If you are new to using the package, we recommend starting with the [quickstart guide](quickstart.md). This provides a quick introduction to the `arcadia_pycolor` package and how to use it to style Matplotlib and seaborn plots so that they comply with the Arcadia style guide.
+If you are new to using the package, we recommend starting with the quickstart guide for [Matplotlib](mpl_quickstart.md) or [Plotly](plotly_quickstart.md). Each provides a quick introduction to `arcadia_pycolor` and how to use it to style plots so that they comply with the Arcadia style guide.
 
 ## Detailed documentation
 
@@ -16,4 +16,4 @@ If you are new to using the package, we recommend starting with the [quickstart 
 
 ## Examples
 
-The [examples](examples/) directory contains examples of some common plot types that demonstrate how to use the package to style Matplotlib and seaborn plots.
+The [examples](examples/) directory contains examples of some common plot types that demonstrate how to use the package to style Matplotlib, Seaborn, and Plotly plots.

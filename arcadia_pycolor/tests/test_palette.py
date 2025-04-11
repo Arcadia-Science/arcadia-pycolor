@@ -63,7 +63,7 @@ def test_palette_iteration():
     for i, color in enumerate(palette):
         assert color == colors[i]
 
-    assert [color.hex_code for color in palette] == ["#FFFFFF", "#000000"]
+    assert [color for color in palette] == ["#FFFFFF", "#000000"]
 
 
 def test_palette_indexing():

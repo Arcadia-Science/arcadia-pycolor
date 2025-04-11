@@ -1,6 +1,6 @@
 # arcadia-pycolor
 
-This repo contains a Python package called `arcadia_pycolor` that provides tools for using the Arcadia color palettes and for styling Matplotlib figures to comply with Arcadia's style guide.
+This repo contains a Python package called `arcadia_pycolor` that provides tools for styling Matplotlib, Seaborn, and Plotly figures to comply with Arcadia's style guide.
 
 ## Installation
 
@@ -12,7 +12,7 @@ pip install arcadia-pycolor
 
 ## Usage
 
-Please see [the quickstart guide](docs/quickstart.md) for an introduction to the package and how to use it to style Matplotlib and seaborn plots.
+Please see the quickstart guide for [Matplotlib](docs/mpl_quickstart.md) or [Plotly](docs/plotly_quickstart.md) for an introduction to the package, as well as how to use it to style plots.
 
 For detailed documentation about the package and links to example plots, see the [documentation README](docs/README.md).
 

@@ -47,6 +47,8 @@ colorspacious = ">=1.1.2"
 matplotlib = ">=3.7,!=3.8.0"
 numpy = ">=1.20"
 python = ">=3.9,<4.0"
+plotly = ">=6.0.0"
+kaleido = "==0.2.1"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = ">=6.25.2"
@@ -104,3 +106,9 @@ exclude = ["**/tests/**"]
 # Pyright reports a lot of unknown-member errors for matplotlib objects.
 # For now, rather than add even more `type: ignore` comments, we'll just disable these errors.
 reportUnknownMemberType = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # Ignore deprecation warnings for Plotly.
+    'ignore:.* is deprecated!:DeprecationWarning',
+]

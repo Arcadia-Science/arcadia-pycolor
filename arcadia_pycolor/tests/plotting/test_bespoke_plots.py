@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import arcadia_pycolor as apc
 
 
-@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
+@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES_IN_INCHES.keys())
 def test_plot_stacked_barplot(output_dirpath, figure_size):
     """
     Plot a stacked barplot using custom mocked data and colors from the Arcadia palette.
@@ -49,7 +49,7 @@ def test_plot_stacked_barplot(output_dirpath, figure_size):
     plt.close(fig)
 
 
-@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
+@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES_IN_INCHES.keys())
 def test_plot_multiple_line_plot(output_dirpath, figure_size):
     """
     Plot multiple line plots using custom mocked data and colors from the Arcadia palette.
@@ -65,7 +65,7 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
     cmap = apc.Gradient(name="", colors=colors).to_mpl_cmap()
 
     for ind, line in enumerate(lines):
-        ax = axes[ind]
+        ax = axes[ind]  # type: ignore
         color = cmap(ind / len(lines))
         ax.plot(line, color=color)
         apc.mpl.style_plot(axes=ax, monospaced_axes="both")
@@ -86,7 +86,7 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
     plt.close(fig)
 
 
-@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES.keys())
+@pytest.mark.parametrize("figure_size", apc.style_defaults.FIGURE_SIZES_IN_INCHES.keys())
 def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     """
     Plot a heatmap using Seaborn with a colormap from an Arcadia gradient.
@@ -98,7 +98,7 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     )
     sns.heatmap(
         random_data,
-        ax=axes[0],
+        ax=axes[0],  # type: ignore
         square=True,
         cmap="apc:magma",
         cbar_kws={"label": "Intensity"},
@@ -107,13 +107,13 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     )
     sns.heatmap(
         random_data - 0.5,
-        ax=axes[1],
+        ax=axes[1],  # type: ignore
         square=True,
         cmap="apc:purple_green",
         cbar_kws={"label": "Intensity"},
     )
 
-    for ax in axes:
+    for ax in axes:  # type: ignore
         apc.mpl.style_plot(
             ax,
             categorical_axes="both",
