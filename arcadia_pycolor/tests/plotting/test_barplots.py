@@ -270,6 +270,7 @@ def test_barplots(output_dirpath, plotting_function, figure_size):
     plotting_function(ax)
     apc.mpl.save_figure(
         output_dirpath / f"{plotting_function.__name__}_{figure_size}.pdf",
+        size=figure_size,
         filetypes=["pdf"],
     )
     plt.close(fig)

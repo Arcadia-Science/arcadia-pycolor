@@ -29,6 +29,7 @@ def test_mpl_save_figure_filetype_examples(tmp_path, fname, filetypes, expected_
     simple_plot()
     apc.mpl.save_figure(
         tmp_path / fname,
+        size="half_square",
         filetypes=filetypes,
     )
 
@@ -51,6 +52,7 @@ def test_mpl_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys):
 
     apc.mpl.save_figure(
         tmp_path / fname,
+        size="half_square",
         filetypes=filetypes,
     )
 
@@ -64,5 +66,6 @@ def test_mpl_save_figure_no_filetype(tmp_path):
     with pytest.raises(ValueError):
         apc.mpl.save_figure(
             tmp_path / "test",
+            size="half_square",
             filetypes=None,
         )

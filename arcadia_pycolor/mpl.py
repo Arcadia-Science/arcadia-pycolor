@@ -156,6 +156,7 @@ def save_figure(
 
     Args:
         filepath (str): Path to save the figure to.
+        size (FigureSize): The size of the figure to save.
         filetypes (list[str], optional): The file types(s) to save the figure to.
             If None, the original filetype of `filepath` is used.
             If the original filetype is not in `filetypes`, it is appended to the list.
