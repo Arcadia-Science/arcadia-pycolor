@@ -14,6 +14,7 @@ from matplotlib.legend import Legend
 from matplotlib.lines import Line2D
 from matplotlib.offsetbox import DrawingArea
 from matplotlib.pyplot import Axes  # type: ignore
+from matplotlib.transforms import Bbox  # type: ignore
 
 import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
@@ -57,8 +58,8 @@ LEGEND_PARAMS = dict(
     },
 )
 
-SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, bbox_inches="tight", pad_inches=FIGURE_PADDING_INCHES)
-SAVEFIG_KWARGS_PRINT = dict(dpi=PRINT_DPI, bbox_inches="tight", pad_inches=FIGURE_PADDING_INCHES)
+SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, pad_inches=FIGURE_PADDING_INCHES)
+SAVEFIG_KWARGS_PRINT = dict(dpi=PRINT_DPI, pad_inches=FIGURE_PADDING_INCHES)
 
 
 def _try_get_current_axes(axes: Union[Axes, None] = None) -> Axes:
@@ -146,6 +147,7 @@ def _fix_svg_fonts_for_illustrator(filename: str) -> None:
 
 def save_figure(
     filepath: str,
+    size: FigureSize,
     filetypes: Union[list[str], None] = None,
     context: str = "web",
     **savefig_kwargs: dict[Any, Any],
@@ -160,8 +162,16 @@ def save_figure(
         context (str): The context to save the figure in, either 'web' or 'print'.
         **savefig_kwargs: Additional keyword arguments to pass to `plt.savefig`.
     """
+    width, height = FIGURE_SIZES_IN_INCHES[size]
+    bbox_inches = Bbox.from_bounds(
+        -FIGURE_PADDING_INCHES,
+        -FIGURE_PADDING_INCHES,
+        width,
+        height,
+    )
+
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
-    kwargs.update(**savefig_kwargs)  # type: ignore
+    kwargs.update(**savefig_kwargs, bbox_inches=bbox_inches)  # type: ignore
 
     # Gets a list of valid filetypes for saving figures from matplotlib.
     valid_filetypes = list(FigureCanvasBase.get_supported_filetypes().keys())

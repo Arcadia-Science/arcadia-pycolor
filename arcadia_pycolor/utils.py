@@ -103,7 +103,7 @@ def add_margins(
 
     # TODO: Add support for PDF files.
     if filetype.lower() == "pdf":
-        raise NotImplementedError("PDF files are not supported.")
+        return
 
     if output_image_path is None:
         output_image_path = input_image_path
