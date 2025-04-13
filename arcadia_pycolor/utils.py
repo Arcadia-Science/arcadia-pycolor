@@ -2,7 +2,6 @@ import xml.etree.ElementTree as ET
 from typing import Sequence, Union
 
 import numpy as np
-from PIL import Image, ImageOps
 
 NumericSequence = Union[Sequence[int], Sequence[float]]
 
@@ -77,60 +76,3 @@ def rescale_and_concatenate_values(list1: list[float], list2: list[float]) -> li
     rescaled_list1 = [0.5 * x for x in list1]
     rescaled_list2 = [0.5 * x + 0.5 for x in list2]
     return rescaled_list1 + rescaled_list2
-
-
-def add_margins(
-    input_image_path: str,
-    margin_size: Union[int, tuple[int, int, int, int]],
-    output_image_path: Union[str, None] = None,
-):
-    """Adds transparent margins to an image.
-
-    If the image is an SVG, margins are added via CSS styles in the `<style>` tag.
-    Otherwise, the image is opened and the margins are added using `ImageOps.expand`.
-
-    Args:
-        input_image_path (str):
-            Path to the input image.
-        margin_size (int | tuple[int, int, int, int]):
-            Size of the margin in pixels.
-            Can be an integer for equal margins or a tuple (left, top, right, bottom).
-        output_image_path (str | None):
-            Path to save the image with margin.
-            If `None`, the original image is overwritten.
-    """
-    filetype = input_image_path.split(".")[-1]
-
-    # TODO: Add support for PDF files.
-    if filetype.lower() == "pdf":
-        return
-
-    if output_image_path is None:
-        output_image_path = input_image_path
-
-    # If the input image is an SVG, add margins to the <style> tag.
-    if filetype.lower() == "svg":
-        margin_left, margin_top, margin_right, margin_bottom = (
-            (margin_size, margin_size, margin_size, margin_size)
-            if isinstance(margin_size, int)
-            else margin_size
-        )
-
-        tree = ET.parse(input_image_path)
-        root = tree.getroot()
-
-        viewBox = root.attrib.get("viewBox")
-        if viewBox:
-            min_x, min_y, width, height = map(float, viewBox.split())
-            min_x -= margin_left
-            min_y -= margin_top
-            width += margin_left + margin_right
-            height += margin_top + margin_bottom
-            root.attrib["viewBox"] = f"{min_x} {min_y} {width} {height}"
-
-        tree.write(output_image_path)
-    else:
-        # Otherwise, open the image and add margins using `PIL`.
-        img = Image.open(input_image_path)
-        img_with_margin = ImageOps.expand(img, border=margin_size, fill=(0, 0, 0, 0))
-        img_with_margin.save(output_image_path)

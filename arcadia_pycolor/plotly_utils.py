@@ -12,7 +12,6 @@ from arcadia_pycolor.style_defaults import (
     MONOSPACE_FONT_SIZE,
     FigureSize,
 )
-from arcadia_pycolor.utils import add_margins
 
 # Reference: https://plotly.com/python/3d-charts/.
 PLOTLY_3D_TRACE_TYPES = [
@@ -109,7 +108,6 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
         fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
-        add_margins(f"{filename}.{ftype}", margin_size=20)
 
 
 def set_yticklabel_font(
