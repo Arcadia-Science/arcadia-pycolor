@@ -12,6 +12,7 @@ from arcadia_pycolor.style_defaults import (
     MONOSPACE_FONT_SIZE,
     FigureSize,
 )
+from arcadia_pycolor.utils import add_margins
 
 # Reference: https://plotly.com/python/3d-charts/.
 PLOTLY_3D_TRACE_TYPES = [
@@ -71,10 +72,8 @@ def save_figure(
     # By default, our Plotly template attempts to add 40 pixels of margin on all sides.
     # However, due to Plotly's internal automargin strategy, the margin is not always
     # applied correctly, resulting in a figure that is not the correct size.
-    #
-    # For exports, we want to remove the margins and update the figure dimensions
-    # so that the correct margins can be applied in Adobe Illustrator.
-    # TODO(#69): Write a custom function to apply the margins.
+    # Here, we remove the margins and update the figure dimensions. After exporting
+    # the plot, we apply the margins using our custom `add_margins` function.
     updated_margins = dict(l=0, r=0, t=0, b=0)
     updated_width = FIGURE_SIZES_IN_PIXELS[size][0] - 80
     updated_height = FIGURE_SIZES_IN_PIXELS[size][1] - 80
@@ -110,6 +109,7 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
         fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+        add_margins(f"{filename}.{ftype}", margin_size=20)
 
 
 def set_yticklabel_font(

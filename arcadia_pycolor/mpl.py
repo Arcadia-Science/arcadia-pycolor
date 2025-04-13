@@ -19,7 +19,6 @@ import arcadia_pycolor.colors as colors
 import arcadia_pycolor.gradients
 import arcadia_pycolor.palettes
 from arcadia_pycolor.gradient import Gradient
-from arcadia_pycolor.hexcode import HexCode
 from arcadia_pycolor.palette import Palette
 from arcadia_pycolor.style_defaults import (
     ARCADIA_MATPLOTLIB_RC_PARAMS,
@@ -36,7 +35,6 @@ from arcadia_pycolor.style_defaults import (
     PRINT_DPI,
     FigureSize,
 )
-from arcadia_pycolor.utils import add_margin
 
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
 logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
@@ -150,8 +148,6 @@ def save_figure(
     filepath: str,
     filetypes: Union[list[str], None] = None,
     context: str = "web",
-    background_color: Union[HexCode, None] = None,
-    transparent_border: bool = False,
     **savefig_kwargs: dict[Any, Any],
 ) -> None:
     """Saves the current figure to a file using Arcadia's margin, padding, and dpi settings.
@@ -162,9 +158,6 @@ def save_figure(
             If None, the original filetype of `filepath` is used.
             If the original filetype is not in `filetypes`, it is appended to the list.
         context (str): The context to save the figure in, either 'web' or 'print'.
-        background_color (HexCode, optional): The background color of the figure.
-            If None, the background color is transparent.
-        transparent_border (bool): Whether to add a transparent 20px border to the figure.
         **savefig_kwargs: Additional keyword arguments to pass to `plt.savefig`.
     """
     kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
@@ -189,22 +182,10 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
 
-        plt.savefig(
-            fname=f"{filename}.{ftype}",
-            facecolor=background_color,
-            **kwargs,
-        )  # type: ignore
+        plt.savefig(fname=f"{filename}.{ftype}", **kwargs)
 
         if ftype == "svg":
             _fix_svg_fonts_for_illustrator(f"{filename}.{ftype}")
-
-        if transparent_border:
-            add_margin(
-                f"{filename}.{ftype}",
-                f"{filename}.{ftype}",
-                margin_size=20,
-                margin_color=(0, 0, 0, 0),
-            )
 
 
 def set_yticklabel_font(
