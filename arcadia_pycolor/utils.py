@@ -1,11 +1,8 @@
-import xml.etree.ElementTree as ET
 from typing import Sequence, Union
 
 import numpy as np
 
 NumericSequence = Union[Sequence[int], Sequence[float]]
-
-ET.register_namespace("", "http://www.w3.org/2000/svg")
 
 
 def distribute_values(num_points: int, min_val: float = 0.0, max_val: float = 1.0) -> list[float]:

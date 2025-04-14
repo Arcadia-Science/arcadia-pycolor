@@ -71,8 +71,10 @@ def save_figure(
     # By default, our Plotly template attempts to add 40 pixels of margin on all sides.
     # However, due to Plotly's internal automargin strategy, the margin is not always
     # applied correctly, resulting in a figure that is not the correct size.
-    # Here, we remove the margins and update the figure dimensions. After exporting
-    # the plot, we apply the margins using our custom `add_margins` function.
+    #
+    # For exports, we want to remove the margins and update the figure dimensions
+    # so that the correct margins can be applied in Adobe Illustrator.
+    # TODO(#69): Write a custom function to apply the margins.
     updated_margins = dict(l=0, r=0, t=0, b=0)
     updated_width = FIGURE_SIZES_IN_PIXELS[size][0] - 80
     updated_height = FIGURE_SIZES_IN_PIXELS[size][1] - 80
