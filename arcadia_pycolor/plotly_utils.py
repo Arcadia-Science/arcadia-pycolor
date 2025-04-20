@@ -297,18 +297,14 @@ def capitalize_xticklabels(
         col (int, optional): The column index of the subplot to modify.
     """
     if _is_3d_plot(fig):
-        ticktext = fig.scenes[0].xaxis_ticktext  # type: ignore
-        if not ticktext.isupper():
-            fig.update_scenes(
-                xaxis_ticktext=ticktext.capitalize(),
-                row=row,
-                col=col,
-            )
+        capitalized_ticktext = fig.scenes[0].xaxis_ticktext.capitalize()  # type: ignore
+        fig.update_scenes(
+            xaxis_ticktext=capitalized_ticktext,
+            row=row,
+            col=col,
+        )
     else:
-        capitalized_ticklabels = [
-            label.capitalize() if not label.isupper() else label
-            for label in fig.data[0].x  # type: ignore
-        ]
+        capitalized_ticklabels = [label.capitalize() for label in fig.data[0].x]  # type: ignore
         fig.update_xaxes(ticktext=capitalized_ticklabels, row=row, col=col)
 
 
@@ -323,18 +319,14 @@ def capitalize_yticklabels(
         col (int, optional): The column index of the subplot to modify.
     """
     if _is_3d_plot(fig):
-        ticktext = fig.scenes[0].yaxis_ticktext  # type: ignore
-        if not ticktext.isupper():
-            fig.update_scenes(
-                yaxis_ticktext=ticktext.capitalize(),
-                row=row,
-                col=col,
-            )
+        capitalized_ticktext = fig.scenes[0].yaxis_ticktext.capitalize()  # type: ignore
+        fig.update_scenes(
+            yaxis_ticktext=capitalized_ticktext,
+            row=row,
+            col=col,
+        )
     else:
-        capitalized_ticklabels = [
-            label.capitalize() if not label.isupper() else label
-            for label in fig.data[0].y  # type: ignore
-        ]
+        capitalized_ticklabels = [label.capitalize() for label in fig.data[0].y]  # type: ignore
         fig.update_yaxes(ticktext=capitalized_ticklabels, row=row, col=col)
 
 
@@ -348,13 +340,12 @@ def capitalize_zticklabels(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    ticktext = fig.scenes[0].zaxis_ticktext  # type: ignore
-    if not ticktext.isupper():
-        fig.update_scenes(
-            zaxis_ticktext=ticktext.capitalize(),
-            row=row,
-            col=col,
-        )
+    capitalized_ticktext = fig.scenes[0].zaxis_ticktext.capitalize()  # type: ignore
+    fig.update_scenes(
+        zaxis_ticktext=capitalized_ticktext,
+        row=row,
+        col=col,
+    )
 
 
 def capitalize_ticklabels(
