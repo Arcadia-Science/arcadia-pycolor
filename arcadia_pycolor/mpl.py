@@ -280,11 +280,11 @@ def set_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
 
 
 def capitalize_xticklabels(axes: Union[Axes, None] = None) -> None:
-    """Capitalizes the x-axis ticklabels."""
+    """Capitalizes the x-axis ticklabels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
     xticklabels = [
-        label.get_text().capitalize() if not label.get_text().isupper() else label.get_text()
+        label.get_text().capitalize() if label.get_text().islower() else label.get_text()
         for label in ax.get_xticklabels()
     ]
     ax.set_xticks(ax.get_xticks())
@@ -292,11 +292,11 @@ def capitalize_xticklabels(axes: Union[Axes, None] = None) -> None:
 
 
 def capitalize_yticklabels(axes: Union[Axes, None] = None) -> None:
-    """Capitalizes the y-axis ticklabels."""
+    """Capitalizes the y-axis ticklabels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
     yticklabels = [
-        label.get_text().capitalize() if not label.get_text().isupper() else label.get_text()
+        label.get_text().capitalize() if label.get_text().islower() else label.get_text()
         for label in ax.get_yticklabels()
     ]
     ax.set_yticks(ax.get_yticks())
@@ -304,7 +304,7 @@ def capitalize_yticklabels(axes: Union[Axes, None] = None) -> None:
 
 
 def capitalize_ticklabels(axes: Union[Axes, None] = None) -> None:
-    """Capitalizes both the x- and y-axis ticklabels."""
+    """Capitalizes both the x- and y-axis ticklabels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
     capitalize_yticklabels(ax)
@@ -352,25 +352,25 @@ def set_axes_categorical(axes: Union[Axes, None] = None) -> None:
 
 
 def capitalize_ylabel(axes: Union[Axes, None] = None) -> None:
-    """Capitalizes the y-axis label."""
+    """Capitalizes the y-axis label if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
     ylabel = ax.get_yaxis().get_label().get_text()
-    if not ylabel.isupper():
+    if ylabel.islower():
         ax.set_ylabel(ylabel.capitalize())
 
 
 def capitalize_xlabel(axes: Union[Axes, None] = None) -> None:
-    """Capitalizes the x-axis label."""
+    """Capitalizes the x-axis label if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
     xlabel = ax.get_xaxis().get_label().get_text()
-    if not xlabel.isupper():
+    if xlabel.islower():
         ax.set_xlabel(xlabel.capitalize())
 
 
 def capitalize_axislabels(axes: Union[Axes, None] = None) -> None:
-    """Capitalizes both the x and y axis labels."""
+    """Capitalizes both the x and y axis labels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
     capitalize_xlabel(ax)
@@ -378,22 +378,22 @@ def capitalize_axislabels(axes: Union[Axes, None] = None) -> None:
 
 
 def capitalize_legend_title(legend: Legend) -> None:
-    """Capitalizes the legend title."""
+    """Capitalizes the legend title if all letters are lowercase."""
     title = legend.get_title().get_text()
-    if not title.isupper():
+    if title.islower():
         legend.set_title(title.capitalize())
 
 
 def capitalize_legend_entries(legend: Legend) -> None:
-    """Capitalizes the legend entries."""
+    """Capitalizes the legend entries if all letters are lowercase."""
     for text in legend.get_texts():
         text_content = text.get_text()
-        if not text_content.isupper():
+        if text_content.islower():
             text.set_text(text_content.capitalize())
 
 
 def capitalize_legend_text(legend: Legend) -> None:
-    """Capitalize the legend title and entries."""
+    """Capitalizes the legend title and entries if all letters are lowercase."""
     capitalize_legend_title(legend)
     capitalize_legend_entries(legend)
 

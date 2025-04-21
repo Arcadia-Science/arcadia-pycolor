@@ -298,7 +298,7 @@ def capitalize_xticklabels(
     """
     if _is_3d_plot(fig):
         ticktext = fig.scenes[0].xaxis_ticktext  # type: ignore
-        if not ticktext.isupper():
+        if ticktext.islower():
             fig.update_scenes(
                 xaxis_ticktext=ticktext.capitalize(),
                 row=row,
@@ -306,7 +306,7 @@ def capitalize_xticklabels(
             )
     else:
         capitalized_ticklabels = [
-            label.capitalize() if not label.isupper() else label
+            label.capitalize() if label.islower() else label
             for label in fig.data[0].x  # type: ignore
         ]
         fig.update_xaxes(ticktext=capitalized_ticklabels, row=row, col=col)
@@ -315,7 +315,7 @@ def capitalize_xticklabels(
 def capitalize_yticklabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the y-axis ticklabels.
+    """Capitalizes the y-axis ticklabels if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -324,7 +324,7 @@ def capitalize_yticklabels(
     """
     if _is_3d_plot(fig):
         ticktext = fig.scenes[0].yaxis_ticktext  # type: ignore
-        if not ticktext.isupper():
+        if ticktext.islower():
             fig.update_scenes(
                 yaxis_ticktext=ticktext.capitalize(),
                 row=row,
@@ -332,7 +332,7 @@ def capitalize_yticklabels(
             )
     else:
         capitalized_ticklabels = [
-            label.capitalize() if not label.isupper() else label
+            label.capitalize() if label.islower() else label
             for label in fig.data[0].y  # type: ignore
         ]
         fig.update_yaxes(ticktext=capitalized_ticklabels, row=row, col=col)
@@ -341,7 +341,7 @@ def capitalize_yticklabels(
 def capitalize_zticklabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the z-axis ticklabels.
+    """Capitalizes the z-axis ticklabels if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -349,7 +349,7 @@ def capitalize_zticklabels(
         col (int, optional): The column index of the subplot to modify.
     """
     ticktext = fig.scenes[0].zaxis_ticktext  # type: ignore
-    if not ticktext.isupper():
+    if ticktext.islower():
         fig.update_scenes(
             zaxis_ticktext=ticktext.capitalize(),
             row=row,
@@ -360,7 +360,8 @@ def capitalize_zticklabels(
 def capitalize_ticklabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes ticklabels for the x- and y-axes, and z-axis if applicable.
+    """Capitalizes ticklabels for the x- and y-axes, and z-axis if applicable,
+    if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -502,7 +503,7 @@ def set_axes_categorical(
 def capitalize_ylabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the y-axis label.
+    """Capitalizes the y-axis label if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -511,7 +512,7 @@ def capitalize_ylabel(
     """
     if _is_3d_plot(fig):
         label = fig.layout.scene.yaxis.title.text  # type: ignore
-        if label and not label.isupper():
+        if label and label.islower():
             fig.update_scenes(
                 yaxis_title_text=label.capitalize(),
                 row=row,
@@ -519,14 +520,14 @@ def capitalize_ylabel(
             )
     else:
         label = fig.layout.yaxis.title.text  # type: ignore
-        if label and not label.isupper():
+        if label and label.islower():
             fig.update_yaxes(title_text=label.capitalize(), row=row, col=col)
 
 
 def capitalize_xlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the x-axis label if it is not already uppercase.
+    """Capitalizes the x-axis label if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -535,7 +536,7 @@ def capitalize_xlabel(
     """
     if _is_3d_plot(fig):
         label = fig.layout.scene.xaxis.title.text  # type: ignore
-        if label and not label.isupper():
+        if label and label.islower():
             fig.update_scenes(
                 xaxis_title_text=label.capitalize(),
                 row=row,
@@ -543,14 +544,14 @@ def capitalize_xlabel(
             )
     else:
         label = fig.layout.xaxis.title.text  # type: ignore
-        if label and not label.isupper():
+        if label and label.islower():
             fig.update_xaxes(title_text=label.capitalize(), row=row, col=col)
 
 
 def capitalize_zlabel(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the z-axis label if it is not already uppercase.
+    """Capitalizes the z-axis label if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -558,14 +559,14 @@ def capitalize_zlabel(
         col (int, optional): The column index of the subplot to modify.
     """
     label = fig.layout.scene.zaxis.title.text  # type: ignore
-    if label and not label.isupper():
+    if label and label.islower():
         fig.update_scenes(zaxis_title_text=label.capitalize(), row=row, col=col)
 
 
 def capitalize_colorbar_label(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes the colorbar label if it is not already uppercase.
+    """Capitalizes the colorbar label if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -573,7 +574,7 @@ def capitalize_colorbar_label(
         col (int, optional): The column index of the subplot to modify.
     """
     label = fig.layout.coloraxis.colorbar.title.text  # type: ignore
-    if label and not label.isupper():
+    if label and label.islower():
         new_label = label.capitalize()
         fig.update_coloraxes(colorbar_title_text=new_label, row=row, col=col)
 
@@ -581,7 +582,7 @@ def capitalize_colorbar_label(
 def capitalize_axislabels(
     fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
 ) -> None:
-    """Capitalizes all axis labels if they are not already uppercase.
+    """Capitalizes all axis labels if all letters are lowercase.
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
@@ -715,24 +716,24 @@ def hide_axis_lines(
 
 
 def capitalize_legend_title(fig: go.Figure) -> None:
-    """Capitalizes the legend title.
+    """Capitalizes the legend title if all letters are lowercase.
 
     Plotly does have the `legend_font_textcase` attribute, but the CSS styles are not
     applied correctly in SVG exports, so we manually mutate the legend entries instead.
     """
     legend_title_text = fig.layout.legend.title.text  # type: ignore
-    if legend_title_text and not legend_title_text.isupper():
+    if legend_title_text and legend_title_text.islower():
         fig.update_layout(legend_title_text=legend_title_text.capitalize())
 
 
 def capitalize_legend_entries(fig: go.Figure) -> None:
-    """Capitalizes the legend entries.
+    """Capitalizes the legend entries if all letters are lowercase.
 
     Plotly does have the `legend_font_textcase` attribute, but the CSS styles are not
     applied correctly in SVG exports, so we manually mutate the legend entries instead.
     """
     for trace in fig.data:
-        if trace.name and not trace.name.isupper():  # type: ignore
+        if trace.name and trace.name.islower():  # type: ignore
             trace.name = trace.name.capitalize()  # type: ignore
 
 
