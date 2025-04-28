@@ -14,7 +14,7 @@ from arcadia_pycolor.style_defaults import (
 )
 
 # Reference: https://plotly.com/python/3d-charts/.
-PLOTLY_3D_TRACE_TYPES = [
+PLOTLY_3D_TRACE_TYPES = (
     go.Mesh3d,
     go.Scatter3d,
     go.Cone,
@@ -24,30 +24,31 @@ PLOTLY_3D_TRACE_TYPES = [
     go.Contour,
     go.Parcoords,
     go.Streamtube,
-]
+)
 
 
-def _is_3d_plot(fig: go.Figure) -> bool:
+def _has_subplots(fig):
+    layout_keys = fig.layout.to_plotly_json().keys()
+    xaxes = [key for key in layout_keys if key.startswith("xaxis")]
+    yaxes = [key for key in layout_keys if key.startswith("yaxis")]
+    return len(xaxes) > 1 or len(yaxes) > 1
+
+
+def _is_3d_plot(fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None) -> bool:
     """Returns True if the figure data only contains 3D traces."""
-    is_plot_with_3d_traces = all(
-        isinstance(trace, tuple(PLOTLY_3D_TRACE_TYPES)) for trace in fig.data
-    )
-    # Figure layouts could contain both 2D and 3D traces. For now, this function will
-    # return True only if the figure data only contains 3D traces. This means that `style_plot`
-    # will not automatically style figures with such subplots, but users can still use the
-    # individual axis styling functions in the meantime.
-    # TODO: Take figures with such subplots into account.
-    return is_plot_with_3d_traces
+    if _has_subplots(fig) and row is not None and col is not None:
+        return isinstance(fig.get_subplot(row, col), go.layout.Scene)
+    return isinstance(fig.data[0], PLOTLY_3D_TRACE_TYPES)
 
 
 def _is_plot_with_colorbar(fig: go.Figure) -> bool:
     """Returns True if the figure layout contains a non-emptycolorbar."""
-    return len(fig.layout.coloraxis.colorbar.to_plotly_json()) > 0
+    return len(fig.layout.coloraxis.colorbar.to_plotly_json()) > 0  # type: ignore
 
 
 def _is_plot_with_legend(fig: go.Figure) -> bool:
     """Returns True if the figure layout contains a non-empty legend."""
-    return len(fig.layout.legend.to_plotly_json()) > 0
+    return len(fig.layout.legend.to_plotly_json()) > 0  # type: ignore
 
 
 def save_figure(
@@ -129,7 +130,7 @@ def set_yticklabel_font(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(yaxis_tickfont_family=font, row=row, col=col)
         if font_size is not None:
             fig.update_scenes(yaxis_tickfont_size=font_size, row=row, col=col)
@@ -156,7 +157,7 @@ def set_xticklabel_font(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(xaxis_tickfont_family=font, row=row, col=col)
         if font_size is not None:
             fig.update_scenes(xaxis_tickfont_size=font_size, row=row, col=col)
@@ -207,7 +208,7 @@ def set_ticklabel_font(
     """
     set_xticklabel_font(fig, font, font_size, row, col)
     set_yticklabel_font(fig, font, font_size, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         set_zticklabel_font(fig, font, font_size, row, col)
 
 
@@ -280,7 +281,7 @@ def set_ticklabel_monospaced(
     """
     set_xticklabel_monospaced(fig, row, col)
     set_yticklabel_monospaced(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         set_zticklabel_monospaced(fig, row, col)
     if _is_plot_with_colorbar(fig):
         set_colorbar_ticklabel_monospaced(fig, row, col)
@@ -296,7 +297,7 @@ def capitalize_xticklabels(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         ticktext = fig.scenes[0].xaxis_ticktext  # type: ignore
         if ticktext.islower():
             fig.update_scenes(
@@ -322,7 +323,7 @@ def capitalize_yticklabels(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         ticktext = fig.scenes[0].yaxis_ticktext  # type: ignore
         if ticktext.islower():
             fig.update_scenes(
@@ -370,7 +371,7 @@ def capitalize_ticklabels(
     """
     capitalize_xticklabels(fig, row, col)
     capitalize_yticklabels(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         capitalize_zticklabels(fig, row, col)
 
 
@@ -384,7 +385,7 @@ def add_commas_to_xaxis_ticklabels(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(xaxis_tickformat=",", row=row, col=col)
     else:
         fig.update_xaxes(tickformat=",", row=row, col=col)
@@ -400,7 +401,7 @@ def add_commas_to_yaxis_ticklabels(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(yaxis_tickformat=",", row=row, col=col)
     else:
         fig.update_yaxes(tickformat=",", row=row, col=col)
@@ -433,7 +434,7 @@ def add_commas_to_axis_tick_labels(
     """
     add_commas_to_xaxis_ticklabels(fig, row, col)
     add_commas_to_yaxis_ticklabels(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         add_commas_to_zaxis_ticklabels(fig, row, col)
 
 
@@ -448,7 +449,7 @@ def set_xaxis_categorical(
         col (int, optional): The column index of the subplot to modify.
     """
     # TODO: We should also adjust the margins between the ticklabels and the axis labels.
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(xaxis_ticks="", row=row, col=col)
     else:
         fig.update_xaxes(ticks="", row=row, col=col)
@@ -465,7 +466,7 @@ def set_yaxis_categorical(
         col (int, optional): The column index of the subplot to modify.
     """
     # TODO: We should also adjust the margins between the ticklabels and the axis labels.
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(yaxis_ticks="", row=row, col=col)
     else:
         fig.update_yaxes(ticks="", row=row, col=col)
@@ -496,7 +497,7 @@ def set_axes_categorical(
     """
     set_xaxis_categorical(fig, row, col)
     set_yaxis_categorical(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         set_zaxis_categorical(fig, row, col)
 
 
@@ -510,7 +511,7 @@ def capitalize_ylabel(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         label = fig.layout.scene.yaxis.title.text  # type: ignore
         if label and label.islower():
             fig.update_scenes(
@@ -534,7 +535,7 @@ def capitalize_xlabel(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         label = fig.layout.scene.xaxis.title.text  # type: ignore
         if label and label.islower():
             fig.update_scenes(
@@ -591,7 +592,7 @@ def capitalize_axislabels(
     """
     capitalize_xlabel(fig, row, col)
     capitalize_ylabel(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         capitalize_zlabel(fig, row, col)
     if _is_plot_with_colorbar(fig):
         capitalize_colorbar_label(fig, row, col)
@@ -608,7 +609,7 @@ def hide_yaxis_ticks(
         col (int, optional): The column index of the subplot to modify.
     """
     fig.update_yaxes(ticks="", showticklabels=False, row=row, col=col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(yaxis_ticks="", yaxis_showticklabels=False, row=row, col=col)
 
 
@@ -623,7 +624,7 @@ def hide_xaxis_ticks(
         col (int, optional): The column index of the subplot to modify.
     """
     fig.update_xaxes(ticks="", showticklabels=False, row=row, col=col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(xaxis_ticks="", xaxis_showticklabels=False, row=row, col=col)
 
 
@@ -650,7 +651,7 @@ def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, Non
     """
     hide_xaxis_ticks(fig, row, col)
     hide_yaxis_ticks(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         hide_zaxis_ticks(fig, row, col)
 
 
@@ -664,7 +665,7 @@ def hide_yaxis_line(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(yaxis_showline=False, row=row, col=col)
     else:
         fig.update_yaxes(showline=False, row=row, col=col)
@@ -680,7 +681,7 @@ def hide_xaxis_line(
         row (int, optional): The row index of the subplot to modify.
         col (int, optional): The column index of the subplot to modify.
     """
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         fig.update_scenes(xaxis_showline=False, row=row, col=col)
     else:
         fig.update_xaxes(showline=False, row=row, col=col)
@@ -711,7 +712,7 @@ def hide_axis_lines(
     """
     hide_yaxis_line(fig, row, col)
     hide_xaxis_line(fig, row, col)
-    if _is_3d_plot(fig):
+    if _is_3d_plot(fig, row, col):
         hide_zaxis_line(fig, row, col)
 
 
@@ -752,6 +753,8 @@ def style_plot(
     fig: go.Figure,
     monospaced_axes: Literal["x", "y", "z", "all", None] = None,
     categorical_axes: Literal["x", "y", "z", "all", None] = None,
+    row: Union[int, None] = None,
+    col: Union[int, None] = None,
 ) -> None:
     """Styles the plot according to Arcadia's style guide.
 
@@ -764,21 +767,21 @@ def style_plot(
             Either 'x', 'y', 'z', 'all', or None.
         colorbar_exists (bool): Whether a colorbar exists on the axis.
     """
-    capitalize_axislabels(fig)
+    capitalize_axislabels(fig, row, col)
 
     if monospaced_axes is not None:
         if monospaced_axes == "x":
-            set_xticklabel_monospaced(fig)
-            add_commas_to_xaxis_ticklabels(fig)
+            set_xticklabel_monospaced(fig, row, col)
+            add_commas_to_xaxis_ticklabels(fig, row, col)
         elif monospaced_axes == "y":
-            set_yticklabel_monospaced(fig)
-            add_commas_to_yaxis_ticklabels(fig)
+            set_yticklabel_monospaced(fig, row, col)
+            add_commas_to_yaxis_ticklabels(fig, row, col)
         elif monospaced_axes == "z":
-            set_zticklabel_monospaced(fig)
-            add_commas_to_zaxis_ticklabels(fig)
+            set_zticklabel_monospaced(fig, row, col)
+            add_commas_to_zaxis_ticklabels(fig, row, col)
         elif monospaced_axes == "all":
-            set_ticklabel_monospaced(fig)
-            add_commas_to_axis_tick_labels(fig)
+            set_ticklabel_monospaced(fig, row, col)
+            add_commas_to_axis_tick_labels(fig, row, col)
         else:
             raise ValueError(
                 "Invalid monospaced_axes option. Please choose from 'x', 'y', 'z', or 'all'."
@@ -786,13 +789,13 @@ def style_plot(
 
     if categorical_axes is not None:
         if categorical_axes == "x":
-            set_xaxis_categorical(fig)
+            set_xaxis_categorical(fig, row, col)
         elif categorical_axes == "y":
-            set_yaxis_categorical(fig)
+            set_yaxis_categorical(fig, row, col)
         elif categorical_axes == "z":
-            set_zaxis_categorical(fig)
+            set_zaxis_categorical(fig, row, col)
         elif categorical_axes == "all":
-            set_axes_categorical(fig)
+            set_axes_categorical(fig, row, col)
         else:
             raise ValueError(
                 "Invalid categorical_axes option. Please choose from 'x', 'y', 'z', or 'all'."
@@ -801,7 +804,11 @@ def style_plot(
     if _is_plot_with_legend(fig):
         style_legend(fig)
 
-    if _is_3d_plot(fig):
+    if _is_plot_with_colorbar(fig):
+        set_colorbar_ticklabel_monospaced(fig, row, col)
+
+    # For single 3D plots, we overwrite the default margin from the template.
+    if _is_3d_plot(fig, 1, 1) and row is None and col is None:
         fig.update_layout(margin=dict(l=40, r=40, t=40, b=40))
 
 
