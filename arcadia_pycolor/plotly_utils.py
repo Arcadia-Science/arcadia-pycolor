@@ -756,8 +756,8 @@ def get_arcadia_styles() -> dict[str, Any]:
 
 def style_plot(
     fig: go.Figure,
-    monospaced_axes: Literal["x", "y", "z", "all", None] = None,
-    categorical_axes: Literal["x", "y", "z", "all", None] = None,
+    monospaced_axes: Literal["x", "y", "z", "xy", "yz", "xz", "all", None] = None,
+    categorical_axes: Literal["x", "y", "z", "xy", "yz", "xz", "all", None] = None,
     row: Union[int, None] = None,
     col: Union[int, None] = None,
 ) -> None:
@@ -772,41 +772,36 @@ def style_plot(
             Either 'x', 'y', 'z', 'all', or None.
         colorbar_exists (bool): Whether a colorbar exists on the axis.
     """
+    valid_axes = ("x", "y", "z", "xy", "yz", "xz", "all")
+
+    if monospaced_axes is not None and monospaced_axes not in valid_axes:
+        raise ValueError(f"monospaced_axes must be one of {valid_axes}, got {monospaced_axes}")
+    if categorical_axes is not None and categorical_axes not in valid_axes:
+        raise ValueError(f"categorical_axes must be one of {valid_axes}, got {categorical_axes}")
+
     capitalize_axislabels(fig, row, col)
 
     if categorical_axes == "all":
         set_axes_categorical(fig, row, col)
-    elif categorical_axes == "x":
+    if categorical_axes in ("x", "xy", "xz"):
         set_xaxis_categorical(fig, row, col)
-    elif categorical_axes == "y":
+    if categorical_axes in ("y", "xy", "yz"):
         set_yaxis_categorical(fig, row, col)
-    elif categorical_axes == "z":
+    if categorical_axes in ("z", "yz", "xz"):
         set_zaxis_categorical(fig, row, col)
-    elif categorical_axes is None:
-        pass
-    else:
-        raise ValueError(
-            "Invalid categorical_axes option. Please choose from 'x', 'y', 'z', or 'all'."
-        )
 
     if monospaced_axes == "all":
         set_ticklabel_monospaced(fig, row, col)
         add_commas_to_axis_tick_labels(fig, row, col)
-    elif monospaced_axes == "x":
+    if monospaced_axes in ("x", "xy", "xz"):
         set_xticklabel_monospaced(fig, row, col)
         add_commas_to_xaxis_ticklabels(fig, row, col)
-    elif monospaced_axes == "y":
+    if monospaced_axes in ("y", "xy", "yz"):
         set_yticklabel_monospaced(fig, row, col)
         add_commas_to_yaxis_ticklabels(fig, row, col)
-    elif monospaced_axes == "z":
+    if monospaced_axes in ("z", "yz", "xz"):
         set_zticklabel_monospaced(fig, row, col)
         add_commas_to_zaxis_ticklabels(fig, row, col)
-    elif monospaced_axes is None:
-        pass
-    else:
-        raise ValueError(
-            "Invalid monospaced_axes option. Please choose from 'x', 'y', 'z', or 'all'."
-        )
 
     if _is_plot_with_legend(fig):
         style_legend(fig)
