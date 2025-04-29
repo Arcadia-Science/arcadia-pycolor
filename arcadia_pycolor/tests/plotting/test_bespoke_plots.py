@@ -69,7 +69,7 @@ def test_plot_multiple_line_plot(output_dirpath, figure_size):
         ax = axes[ind]  # type: ignore
         color = cmap(ind / len(lines))
         ax.plot(line, color=color)
-        apc.mpl.style_plot(axes=ax, monospaced_axes="both")
+        apc.mpl.style_plot(axes=ax, monospaced_axes="all")
         ax.set_yticks([])
 
         if ind != len(lines) - 1:
@@ -118,8 +118,8 @@ def test_plot_heatmaps_with_seaborn(output_dirpath, figure_size):
     for ax in axes:  # type: ignore
         apc.mpl.style_plot(
             ax,
-            categorical_axes="both",
-            monospaced_axes="both",
+            categorical_axes="all",
+            monospaced_axes="all",
             colorbar_exists=True,
         )
         ax.set_xlabel("Category 1")
