@@ -767,11 +767,10 @@ def style_plot(
 
     Args:
         fig (go.Figure): The Plotly figure to modify.
-        row (int, optional): The row index of the subplot to modify.
-        col (int, optional): The column index of the subplot to modify.
         monospaced_axes (AxisSelector, optional): Which axes to set to the default monospaced font.
         categorical_axes (AxisSelector, optional): Which axes to set to categorical.
-        colorbar_exists (bool): Whether a colorbar exists on the axis.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
     """
     valid_axes = get_args(AxisSelector)
 

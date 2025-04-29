@@ -429,7 +429,7 @@ def style_plot(
     Args:
         axes (Axes, optional): The matplotlib Axes to modify.
             If None, uses the most recent Axes.
-        monospaced_axes (str, optional): Which axes to set to a monospaced font.
+        monospaced_axes (str, optional): Which axes to set to the default monospaced font.
             Either 'x', 'y', 'both', 'all', or None.
         categorical_axes (str, optional): Which axes to set to categorical.
             Either 'x', 'y', 'both', 'all', or None.
