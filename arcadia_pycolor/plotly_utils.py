@@ -41,6 +41,11 @@ def _is_3d_plot(fig: go.Figure, row: Union[int, None] = None, col: Union[int, No
     return isinstance(fig.data[0], PLOTLY_3D_TRACE_TYPES)
 
 
+def _is_plot_with_3d_traces_only(fig: go.Figure) -> bool:
+    """Returns True if the figure data only contains 3D traces."""
+    return all(isinstance(trace, PLOTLY_3D_TRACE_TYPES) for trace in fig.data)
+
+
 def _is_plot_with_colorbar(fig: go.Figure) -> bool:
     """Returns True if the figure layout contains a non-emptycolorbar."""
     return len(fig.layout.coloraxis.colorbar.to_plotly_json()) > 0  # type: ignore
@@ -809,8 +814,8 @@ def style_plot(
     if _is_plot_with_colorbar(fig):
         set_colorbar_ticklabel_monospaced(fig, row, col)
 
-    # For single 3D plots, we overwrite the default margin from the template.
-    if _is_3d_plot(fig, 1, 1) and row is None and col is None:
+    # For 3D plots, we overwrite the default margin from the template.
+    if _is_plot_with_3d_traces_only(fig):
         fig.update_layout(margin=dict(l=40, r=40, t=40, b=40))
 
 
