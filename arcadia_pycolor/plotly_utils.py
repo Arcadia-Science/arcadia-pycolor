@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Literal, Union
+from typing import Any, Literal, Union, get_args
 
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -26,9 +26,11 @@ PLOTLY_3D_TRACE_TYPES = (
     go.Streamtube,
 )
 
+AxisSelector = Literal["x", "y", "z", "xy", "yz", "xz", "xyz", "all"]
 
-def _has_subplots(fig):
-    layout_keys = fig.layout.to_plotly_json().keys()
+
+def _has_subplots(fig: go.Figure) -> bool:
+    layout_keys = fig.layout.to_plotly_json().keys()  # type: ignore
     xaxes = [key for key in layout_keys if key.startswith("xaxis")]
     yaxes = [key for key in layout_keys if key.startswith("yaxis")]
     return len(xaxes) > 1 or len(yaxes) > 1
@@ -756,23 +758,22 @@ def get_arcadia_styles() -> dict[str, Any]:
 
 def style_plot(
     fig: go.Figure,
-    monospaced_axes: Literal["x", "y", "z", "xy", "yz", "xz", "all", None] = None,
-    categorical_axes: Literal["x", "y", "z", "xy", "yz", "xz", "all", None] = None,
+    monospaced_axes: Union[AxisSelector, None] = None,
+    categorical_axes: Union[AxisSelector, None] = None,
     row: Union[int, None] = None,
     col: Union[int, None] = None,
 ) -> None:
     """Styles the plot according to Arcadia's style guide.
 
     Args:
-        axes (Axes, optional): The matplotlib Axes to modify.
-            If None, uses the most recent Axes.
-        monospaced_axes (str, optional): Which axes to set to the default monospaced font.
-            Either 'x', 'y', 'z', 'all', or None.
-        categorical_axes (str, optional): Which axes to set to categorical.
-            Either 'x', 'y', 'z', 'all', or None.
+        fig (go.Figure): The Plotly figure to modify.
+        row (int, optional): The row index of the subplot to modify.
+        col (int, optional): The column index of the subplot to modify.
+        monospaced_axes (AxisSelector, optional): Which axes to set to the default monospaced font.
+        categorical_axes (AxisSelector, optional): Which axes to set to categorical.
         colorbar_exists (bool): Whether a colorbar exists on the axis.
     """
-    valid_axes = ("x", "y", "z", "xy", "yz", "xz", "all")
+    valid_axes = get_args(AxisSelector)
 
     if monospaced_axes is not None and monospaced_axes not in valid_axes:
         raise ValueError(f"monospaced_axes must be one of {valid_axes}, got {monospaced_axes}")
