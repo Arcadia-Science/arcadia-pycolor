@@ -36,7 +36,7 @@ def plot_seaborn_scatterplot(ax):
         ax=ax,
         s=80,
     )
-    apc.mpl.style_plot(monospaced_axes="both")
+    apc.mpl.style_plot(monospaced_axes="all")
 
 
 def plot_seaborn_violinplot(ax):

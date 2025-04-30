@@ -420,8 +420,8 @@ def set_colorbar_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
 
 def style_plot(
     axes: Union[Axes, None] = None,
-    monospaced_axes: Literal["x", "y", "both", None] = None,
-    categorical_axes: Literal["x", "y", "both", None] = None,
+    monospaced_axes: Literal["x", "y", "both", "all", None] = None,
+    categorical_axes: Literal["x", "y", "both", "all", None] = None,
     colorbar_exists: bool = False,
 ) -> None:
     """Styles the plot according to Arcadia's style guide.
@@ -429,10 +429,10 @@ def style_plot(
     Args:
         axes (Axes, optional): The matplotlib Axes to modify.
             If None, uses the most recent Axes.
-        monospaced_axes (str, optional): Which axes to set to a monospaced font.
-            Either 'x', 'y', 'both', or None.
+        monospaced_axes (str, optional): Which axes to set to the default monospaced font.
+            Either 'x', 'y', 'both', 'all', or None ('both' and 'all' are equivalent).
         categorical_axes (str, optional): Which axes to set to categorical.
-            Either 'x', 'y', 'both', or None.
+            Either 'x', 'y', 'both', 'all', or None ('both' and 'all' are equivalent).
         colorbar_exists (bool): Whether a colorbar exists on the axis.
     """
 
@@ -445,7 +445,7 @@ def style_plot(
     if legend is not None:
         style_legend(legend)
 
-    if categorical_axes == "both":
+    if categorical_axes in ("both", "all"):
         set_axes_categorical(ax)
         capitalize_ticklabels(ax)
     elif categorical_axes == "x":
@@ -457,9 +457,11 @@ def style_plot(
     elif categorical_axes is None:
         pass
     else:
-        print("Invalid categorical_axes option. Please choose from 'x', 'y', or 'both'.")
+        raise ValueError(
+            "Invalid categorical_axes option. Please choose from 'x', 'y', 'both', or 'all'."
+        )
 
-    if monospaced_axes == "both":
+    if monospaced_axes in ("both", "all"):
         set_ticklabel_monospaced(ax)
     elif monospaced_axes == "x":
         set_xticklabel_monospaced(ax)
@@ -468,7 +470,9 @@ def style_plot(
     elif monospaced_axes is None:
         pass
     else:
-        print("Invalid monospaced_axes option. Please choose from 'x', 'y', or 'both'.")
+        raise ValueError(
+            "Invalid monospaced_axes option. Please choose from 'x', 'y', 'both', or 'all'."
+        )
 
     if colorbar_exists:
         set_colorbar_ticklabel_monospaced(ax)
