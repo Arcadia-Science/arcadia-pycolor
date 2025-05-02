@@ -9,7 +9,7 @@ NumericSequence = Union[Sequence[int], Sequence[float]]
 PLOTLY_HTML_EXPORT_CSS = dedent(
     """
     @font-face {
-      font-family: "SuisseIntl-Regular";
+      font-family: "SuisseIntl";
       src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Regular.woff2")
         format("woff2");
       font-weight: normal;
