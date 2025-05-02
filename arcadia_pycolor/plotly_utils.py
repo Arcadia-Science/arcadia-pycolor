@@ -12,6 +12,7 @@ from arcadia_pycolor.style_defaults import (
     MONOSPACE_FONT_SIZE,
     FigureSize,
 )
+from arcadia_pycolor.utils import add_fonts_to_plotly_html_export
 
 # Reference: https://plotly.com/python/3d-charts/.
 PLOTLY_3D_TRACE_TYPES = (
@@ -118,6 +119,19 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
         fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+
+
+def export_to_html(fig: go.Figure, filepath: str) -> None:
+    """Exports the current figure to an HTML file, with fonts loaded from arcadiascience.com.
+
+    Allows the figure to be embedded on webpages without requiring the user to have fonts installed.
+
+    Args:
+        fig (go.Figure): The figure to export.
+        filepath (str): The path to save the figure to.
+    """
+    fig.write_html(filepath)
+    add_fonts_to_plotly_html_export(filepath)
 
 
 def set_yticklabel_font(
