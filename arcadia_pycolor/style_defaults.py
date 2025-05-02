@@ -1,3 +1,4 @@
+from textwrap import dedent
 from typing import Literal
 
 import matplotlib.pyplot as plt
@@ -276,4 +277,40 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         zerolinecolor="rgba(0,0,0,0)",
         zerolinewidth=0,
     ),
+)
+
+PLOTLY_HTML_EXPORT_CSS = dedent(
+    """
+    @font-face {
+      font-family: "SuisseIntl";
+      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Regular.woff2")
+        format("woff2");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "SuisseIntl-Medium";
+      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Medium.woff2")
+        format("woff2");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "SuisseIntl-SemiBold";
+      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-SemiBold.woff2")
+        format("woff2");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "SuisseIntlMono";
+      src: url("https://www.arcadiascience.com/fonts/SuisseIntlMono.woff2")
+        format("woff2");
+      font-weight: normal;
+      font-style: normal;
+    }
+    """
 )

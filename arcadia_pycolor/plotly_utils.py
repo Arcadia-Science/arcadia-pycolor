@@ -3,6 +3,7 @@ from typing import Any, Literal, Union, get_args
 
 import plotly.graph_objects as go
 import plotly.io as pio
+from bs4 import BeautifulSoup
 
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
@@ -10,6 +11,7 @@ from arcadia_pycolor.style_defaults import (
     FIGURE_SIZES_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
+    PLOTLY_HTML_EXPORT_CSS,
     FigureSize,
 )
 
@@ -43,6 +45,11 @@ def _is_3d_plot(fig: go.Figure, row: Union[int, None] = None, col: Union[int, No
     return isinstance(fig.data[0], PLOTLY_3D_TRACE_TYPES)
 
 
+def _is_plot_with_3d_traces(fig: go.Figure) -> bool:
+    """Returns True if the figure data contains any 3D traces."""
+    return any(isinstance(trace, PLOTLY_3D_TRACE_TYPES) for trace in fig.data)
+
+
 def _is_plot_with_3d_traces_only(fig: go.Figure) -> bool:
     """Returns True if the figure data only contains 3D traces."""
     return all(isinstance(trace, PLOTLY_3D_TRACE_TYPES) for trace in fig.data)
@@ -56,6 +63,78 @@ def _is_plot_with_colorbar(fig: go.Figure) -> bool:
 def _is_plot_with_legend(fig: go.Figure) -> bool:
     """Returns True if the figure layout contains a non-empty legend."""
     return len(fig.layout.legend.to_plotly_json()) > 0  # type: ignore
+
+
+def _revert_to_default_fonts(fig: go.Figure) -> None:
+    """Reverts the fonts in a Plotly figure to the default Plotly fonts."""
+    template_without_fonts = go.Layout(**ARCADIA_PLOTLY_TEMPLATE_LAYOUT.to_plotly_json())
+
+    template_without_fonts.update(
+        font_family=None,
+        title_font_family=None,
+        legend_title_font_family=None,
+        legend_font_family=None,
+        hoverlabel_font_family=None,
+        coloraxis_colorbar_title_font_family=None,
+        coloraxis_colorbar_tickfont_family="monospace",
+        xaxis_title_font_family=None,
+        yaxis_title_font_family=None,
+        scene_xaxis_title_font_family=None,
+        scene_yaxis_title_font_family=None,
+        scene_zaxis_title_font_family=None,
+    )
+
+    is_monospaced_xaxis = fig.layout.xaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+    is_monospaced_yaxis = fig.layout.yaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+
+    fig.update_layout(
+        xaxis_tickfont_family="monospace" if is_monospaced_xaxis else None,
+        yaxis_tickfont_family="monospace" if is_monospaced_yaxis else None,
+        xaxis_tickfont_size=13.5 if is_monospaced_xaxis else None,
+        yaxis_tickfont_size=13.5 if is_monospaced_yaxis else None,
+    )
+
+    is_monospaced_xaxis = fig.layout.scene.xaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+    is_monospaced_yaxis = fig.layout.scene.yaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+    is_monospaced_zaxis = fig.layout.scene.zaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+
+    fig.update_scenes(
+        xaxis_title_font_family=None,
+        yaxis_title_font_family=None,
+        zaxis_title_font_family=None,
+        xaxis_tickfont_family="monospace" if is_monospaced_xaxis else None,
+        yaxis_tickfont_family="monospace" if is_monospaced_yaxis else None,
+        zaxis_tickfont_family="monospace" if is_monospaced_zaxis else None,
+        xaxis_tickfont_size=13.5 if is_monospaced_xaxis else None,
+        yaxis_tickfont_size=13.5 if is_monospaced_yaxis else None,
+        zaxis_tickfont_size=13.5 if is_monospaced_zaxis else None,
+    )
+
+    fig.update_layout(template=dict(layout=template_without_fonts))
+
+
+def _add_fonts_to_plotly_html_export(filepath: str) -> None:
+    """Adds a style tag with fonts loaded from arcadiascience.com to an HTML file's head section.
+
+    This is necessary for embeds of Plotly HTML exports to use the Suisse fonts.
+
+    Args:
+        filepath (str): Path to the HTML file to modify.
+    """
+    with open(filepath) as f:
+        content = f.read()
+
+    soup = BeautifulSoup(content, "html.parser")
+
+    style_tag = soup.new_tag("style")
+    style_tag.string = PLOTLY_HTML_EXPORT_CSS
+
+    if soup.head is None:
+        raise ValueError("Could not find <head> tag in HTML file.")
+    soup.head.append(style_tag)
+
+    with open(filepath, "w") as f:
+        f.write(str(soup))
 
 
 def save_figure(
@@ -118,6 +197,28 @@ def save_figure(
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
         fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+
+
+def export_to_html(fig: go.Figure, filepath: str) -> None:
+    """
+    Exports the current figure to an HTML file and adds fonts loaded from arcadiascience.com,
+    allowing the figure to be embedded on webpages without requiring fonts to be installed.
+
+    If the figure contains 3D traces, all fonts are reverted to default Plotly fonts.
+    This is because HTML exports of 3D plots do not apply remotely loaded fonts correctly.
+    See this issue for more details: https://github.com/plotly/plotly.js/issues/7413.
+
+    Args:
+        fig (go.Figure): The figure to export.
+        filepath (str): The path to save the figure to.
+    """
+
+    if _is_plot_with_3d_traces(fig):
+        _revert_to_default_fonts(fig)
+        fig.write_html(filepath)
+    else:
+        fig.write_html(filepath)
+        _add_fonts_to_plotly_html_export(filepath)
 
 
 def set_yticklabel_font(
