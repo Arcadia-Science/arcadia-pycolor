@@ -75,8 +75,8 @@ def _revert_to_default_fonts(fig: go.Figure) -> None:
         legend_title_font_family=None,
         legend_font_family=None,
         hoverlabel_font_family=None,
-        coloraxis_colorbar_tickfont_family=None,
         coloraxis_colorbar_title_font_family=None,
+        coloraxis_colorbar_tickfont_family="monospace",
         xaxis_title_font_family=None,
         yaxis_title_font_family=None,
         scene_xaxis_title_font_family=None,
@@ -84,15 +84,30 @@ def _revert_to_default_fonts(fig: go.Figure) -> None:
         scene_zaxis_title_font_family=None,
     )
 
-    fig.update_layout(xaxis_tickfont_family=None, yaxis_tickfont_family=None)
+    is_monospaced_xaxis = fig.layout.xaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+    is_monospaced_yaxis = fig.layout.yaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+
+    fig.update_layout(
+        xaxis_tickfont_family="monospace" if is_monospaced_xaxis else None,
+        yaxis_tickfont_family="monospace" if is_monospaced_yaxis else None,
+        xaxis_tickfont_size=13.5 if is_monospaced_xaxis else None,
+        yaxis_tickfont_size=13.5 if is_monospaced_yaxis else None,
+    )
+
+    is_monospaced_xaxis = fig.layout.scene.xaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+    is_monospaced_yaxis = fig.layout.scene.yaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
+    is_monospaced_zaxis = fig.layout.scene.zaxis.tickfont.family == MONOSPACE_FONT_PLOTLY  # type: ignore
 
     fig.update_scenes(
         xaxis_title_font_family=None,
         yaxis_title_font_family=None,
         zaxis_title_font_family=None,
-        xaxis_tickfont_family=None,
-        yaxis_tickfont_family=None,
-        zaxis_tickfont_family=None,
+        xaxis_tickfont_family="monospace" if is_monospaced_xaxis else None,
+        yaxis_tickfont_family="monospace" if is_monospaced_yaxis else None,
+        zaxis_tickfont_family="monospace" if is_monospaced_zaxis else None,
+        xaxis_tickfont_size=13.5 if is_monospaced_xaxis else None,
+        yaxis_tickfont_size=13.5 if is_monospaced_yaxis else None,
+        zaxis_tickfont_size=13.5 if is_monospaced_zaxis else None,
     )
 
     fig.update_layout(template=dict(layout=template_without_fonts))
