@@ -1,46 +1,8 @@
-from textwrap import dedent
 from typing import Sequence, Union
 
 import numpy as np
-from bs4 import BeautifulSoup
 
 NumericSequence = Union[Sequence[int], Sequence[float]]
-
-PLOTLY_HTML_EXPORT_CSS = dedent(
-    """
-    @font-face {
-      font-family: "SuisseIntl";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Regular.woff2")
-        format("woff2");
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    @font-face {
-      font-family: "SuisseIntl-Medium";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Medium.woff2")
-        format("woff2");
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    @font-face {
-      font-family: "SuisseIntl-SemiBold";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-SemiBold.woff2")
-        format("woff2");
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    @font-face {
-      font-family: "SuisseIntlMono";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntlMono.woff2")
-        format("woff2");
-      font-weight: normal;
-      font-style: normal;
-    }
-    """
-)
 
 
 def distribute_values(num_points: int, min_val: float = 0.0, max_val: float = 1.0) -> list[float]:
@@ -111,27 +73,3 @@ def rescale_and_concatenate_values(list1: list[float], list2: list[float]) -> li
     rescaled_list1 = [0.5 * x for x in list1]
     rescaled_list2 = [0.5 * x + 0.5 for x in list2]
     return rescaled_list1 + rescaled_list2
-
-
-def add_fonts_to_plotly_html_export(filepath: str) -> None:
-    """Adds a style tag with fonts loaded from arcadiascience.com to an HTML file's head section.
-
-    This is necessary for Plotly HTML exports to use the Suisse fonts.
-
-    Args:
-        filepath (str): Path to the HTML file to modify.
-    """
-    with open(filepath) as f:
-        content = f.read()
-
-    soup = BeautifulSoup(content, "html.parser")
-
-    style_tag = soup.new_tag("style")
-    style_tag.string = PLOTLY_HTML_EXPORT_CSS
-
-    if soup.head is None:
-        raise ValueError("Could not find <head> tag in HTML file.")
-    soup.head.append(style_tag)
-
-    with open(filepath, "w") as f:
-        f.write(str(soup))
