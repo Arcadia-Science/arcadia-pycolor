@@ -1,0 +1,7 @@
+site_name: arcadia-pycolor
+theme:
+  name: material
+  palette:
+    primary: custom
+extra_css:
+  - stylesheets/extra.css
