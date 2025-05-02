@@ -77,10 +77,14 @@ def _revert_to_default_fonts(fig: go.Figure) -> None:
         hoverlabel_font_family=None,
         coloraxis_colorbar_tickfont_family=None,
         coloraxis_colorbar_title_font_family=None,
+        xaxis_title_font_family=None,
+        yaxis_title_font_family=None,
         scene_xaxis_title_font_family=None,
         scene_yaxis_title_font_family=None,
         scene_zaxis_title_font_family=None,
     )
+
+    fig.update_layout(xaxis_tickfont_family=None, yaxis_tickfont_family=None)
 
     fig.update_scenes(
         xaxis_title_font_family=None,
@@ -97,7 +101,7 @@ def _revert_to_default_fonts(fig: go.Figure) -> None:
 def _add_fonts_to_plotly_html_export(filepath: str) -> None:
     """Adds a style tag with fonts loaded from arcadiascience.com to an HTML file's head section.
 
-    This is necessary for Plotly HTML exports to use the Suisse fonts.
+    This is necessary for embeds of Plotly HTML exports to use the Suisse fonts.
 
     Args:
         filepath (str): Path to the HTML file to modify.
