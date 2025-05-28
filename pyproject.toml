@@ -49,6 +49,7 @@ numpy = ">=1.20"
 python = ">=3.9,<4.0"
 plotly = ">=6.0.0"
 kaleido = "==0.2.1"
+mkdocs-jupyter = "^0.25.1"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = ">=6.25.2"
@@ -62,6 +63,7 @@ scikit-learn = "^1.5.0"
 seaborn = "^0.13.2"
 poetry-dynamic-versioning = {extras = ["plugin"], version = "^1.4.0"}
 mkdocs-material = "^9.6.12"
+mkdocs-jupyter = "^0.25.1"
 
 [tool.ruff]
 # The directories to consider when resolving first- vs. third-party imports.

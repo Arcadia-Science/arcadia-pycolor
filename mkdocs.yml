@@ -5,3 +5,32 @@ theme:
     primary: custom
 extra_css:
   - stylesheets/extra.css
+nav:
+  - Home: index.md
+  - Quickstart:
+      - Plotly: plotly_quickstart.md
+      - Matplotlib: mpl_quickstart.md
+  - Usage:
+      - Style usage: style_usage.ipynb
+      - Color usage: color_usage.ipynb
+  - Examples:
+      - Bar plots: ./examples/bar_plots.ipynb
+      - Scatter plots: ./examples/scatter_plots.ipynb
+      - Heatmaps: ./examples/heatmaps.ipynb
+      - Stacked bar plots: ./examples/stacked_bar_plots.ipynb
+      - Stacked line plots: ./examples/stacked_line_plots.ipynb
+      - Plotly subplots: ./examples/plotly_subplots.ipynb
+      - 3D plots: ./examples/3d_plots.ipynb
+  - Advanced:
+      - Color vision deficiency tools: color_vision_deficiency_tools.ipynb
+plugins:
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
