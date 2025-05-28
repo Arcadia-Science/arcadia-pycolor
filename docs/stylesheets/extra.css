@@ -68,3 +68,7 @@
 .md-grid {
 	max-width: 85%;
 }
+
+img[alt*="swatch"] {
+	width: 250px;
+}

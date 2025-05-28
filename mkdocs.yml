@@ -1,31 +1,58 @@
 site_name: arcadia-pycolor
+repo_name: arcadia-pycolor
+repo_url: https://github.com/arcadia-science/arcadia-pycolor
 theme:
   name: material
   palette:
     primary: custom
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - search.suggest
+    - header.autohide
+    - navigation.tabs
+    - navigation.footer
+copyright: Copyright &copy; 2025 Arcadia Science
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/arcadia-science
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/arcadia-science/
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/arcadiascience
 extra_css:
   - stylesheets/extra.css
 nav:
-  - Home: index.md
+  - Home: README.md
   - Quickstart:
       - Plotly: plotly_quickstart.md
       - Matplotlib: mpl_quickstart.md
   - Usage:
       - Style usage: style_usage.ipynb
       - Color usage: color_usage.ipynb
-  - Examples:
-      - Bar plots: ./examples/bar_plots.ipynb
-      - Scatter plots: ./examples/scatter_plots.ipynb
-      - Heatmaps: ./examples/heatmaps.ipynb
-      - Stacked bar plots: ./examples/stacked_bar_plots.ipynb
-      - Stacked line plots: ./examples/stacked_line_plots.ipynb
-      - Plotly subplots: ./examples/plotly_subplots.ipynb
-      - 3D plots: ./examples/3d_plots.ipynb
-  - Advanced:
       - Color vision deficiency tools: color_vision_deficiency_tools.ipynb
+  - Examples:
+      - Bar plots: examples/bar_plots.ipynb
+      - Scatter plots: examples/scatter_plots.ipynb
+      - Heatmaps: examples/heatmaps.ipynb
+      - Stacked bar plots: examples/stacked_bar_plots.ipynb
+      - Stacked line plots: examples/stacked_line_plots.ipynb
+      - Plotly subplots: examples/plotly_subplots.ipynb
+      - 3D plots: examples/3d_plots.ipynb
 plugins:
+  - search:
+      lang: en
   - mkdocs-jupyter:
       ignore_h1_titles: True
+      include_source: True
+  - git-revision-date-localized:
+      enabled: True
+  - git-committers:
+      enabled: True
+      repository: arcadia-science/arcadia-pycolor
+      branch: main
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
