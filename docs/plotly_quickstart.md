@@ -112,7 +112,7 @@ This outputs a list of color swatches with the names and hex codes of the colors
 
 The Arcadia style guide also defines continuous color gradients that can be used in plots like heatmaps. These gradients are accessible as attributes of the `apc.gradients` module.
 
-To use a gradient in a Plotly plot, you can convert it to a Plotly colorscale using the `to_plotly_colorscale` method. For example, to use the "magma" gradient in a heatmap, check out the [heatmap example notebook](/docs/examples/heatmap.ipynb).
+To use a gradient in a Plotly plot, you can convert it to a Plotly colorscale using the `to_plotly_colorscale` method. For example, to use the "magma" gradient in a heatmap, check out the [heatmap examples](examples/heatmaps.ipynb).
 
 Just like palettes, gradients can be visualized by evaluating a gradient object in a Jupyter notebook cell:
 

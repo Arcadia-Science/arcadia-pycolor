@@ -45,7 +45,7 @@ The `apc.mpl.setup` does several different things:
 - It registers Arcadia color palettes and gradients with Matplotlib (see the section ["Using Arcadia colors"](#using-arcadia-colors) below).
 - It sets the default Matplotlib styles to match the Arcadia style guide.
 
-**To see before-and-after examples of what `apc.mpl.setup` does, please refer to [the documentation about styling plots](/docs/style_usage.ipynb).**
+**To see before-and-after examples of what `apc.mpl.setup` does, please refer to [the documentation about styling plots](style_usage.ipynb).**
 
 ### A note about the Arcadia fonts
 
