@@ -1,11 +1,9 @@
 # Copied from: https://squidfunk.github.io/mkdocs-material/publishing-your-site/.
-name: Deploy MkDocs site
+name: deploy-mkdocs-site
+
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
