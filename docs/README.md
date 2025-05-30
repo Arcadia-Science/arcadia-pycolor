@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains the documentation for the `arcadia_pycolor` package.
+`arcadia-pycolor` is a Python package for styling Matplotlib, Seaborn, and Plotly figures according to [Arcadia's style guidelines](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7). The documentation provides quickstart guides and code examples to help you get started.
 
 ## Quickstart guide
 
@@ -17,3 +17,5 @@ If you are new to using the package, we recommend starting with the quickstart g
 ## Examples
 
 The [examples](examples/) directory contains examples of some common plot types that demonstrate how to use the package to style Matplotlib, Seaborn, and Plotly plots.
+
+For links to the Arcadia style guide, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7) on Notion.

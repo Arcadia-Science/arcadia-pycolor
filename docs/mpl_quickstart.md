@@ -1,10 +1,6 @@
-# Quickstart guide
+# Quickstart guide for Matplotlib
 
 This notebook provides a quick introduction to the `arcadia_pycolor` Python package and how to use it to style Matplotlib and seaborn plots so that they comply with the Arcadia style guide.
-
-For detailed documentation about the package and links to example plots, please see [the documentation README](/docs/README.md).
-
-For links to the Arcadia style guide, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7) on Notion.
 
 ## Install the `arcadia_pycolor` package
 
@@ -49,7 +45,7 @@ The `apc.mpl.setup` does several different things:
 - It registers Arcadia color palettes and gradients with Matplotlib (see the section ["Using Arcadia colors"](#using-arcadia-colors) below).
 - It sets the default Matplotlib styles to match the Arcadia style guide.
 
-**To see before-and-after examples of what `apc.mpl.setup` does, please refer to [the documentation about styling plots](/docs/style_usage.ipynb).**
+**To see before-and-after examples of what `apc.mpl.setup` does, please refer to [the documentation about styling plots](style_usage.ipynb).**
 
 ### A note about the Arcadia fonts
 
@@ -106,7 +102,7 @@ apc.aegean
 
 When the cell is evaluated, it will output the name and hex code of the color alongside a swatch showing what the color looks like:
 
-<img src="./images/aegean-swatch.png" alt="aegean color swatch" width="200"/>
+![aegean color swatch](images/aegean-swatch.png)
 
 ### Using color palettes
 
@@ -125,7 +121,7 @@ apc.palettes.primary
 
 This outputs a list of color swatches with the names and hex codes of the colors in the palette:
 
-<img src="./images/primary-palette.png" alt="primary palette swatches" width="250"/>
+![primary palette swatches](images/primary-palette.png)
 
 ### Using color gradients
 
@@ -150,7 +146,7 @@ apc.gradients.blues
 
 This outputs a gradient swatch showing the colors in the gradient:
 
-<img src="./images/blues-gradient.png" alt="blues gradient swatch" width="250"/>
+![blues gradient swatch](images/blues-gradient.png)
 
 ### Referring to color palettes and gradients by name
 

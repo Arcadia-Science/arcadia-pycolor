@@ -61,6 +61,10 @@ ruff = "0.4.4"
 scikit-learn = "^1.5.0"
 seaborn = "^0.13.2"
 poetry-dynamic-versioning = {extras = ["plugin"], version = "^1.4.0"}
+mkdocs-material = "^9.6.12"
+mkdocs-git-revision-date-localized-plugin = "^1.4.7"
+mkdocs-git-committers-plugin-2 = "^2.5.0"
+mkdocs-jupyter = "^0.25.1"
 
 [tool.ruff]
 # The directories to consider when resolving first- vs. third-party imports.

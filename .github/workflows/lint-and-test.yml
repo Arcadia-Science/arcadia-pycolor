@@ -1,14 +1,13 @@
 name: lint-and-test
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-      - feat/*
   pull_request:
     branches:
       - main
-      - feat/*
 
 jobs:
   lint-and-test:
@@ -38,15 +37,16 @@ jobs:
           version: 1.8.3
           virtualenvs-create: true
           virtualenvs-in-project: true
+
       - name: Cache Poetry dependencies
-        id: cache-deps-2025-04-08
+        id: cache-deps-2025-05-29
         uses: actions/cache@v3
         with:
           path: .venv
           key: pydeps-${{ hashFiles('**/poetry.lock') }}
 
       - run: poetry install --no-interaction --no-root --with=dev
-        if: steps.cache-deps-2025-04-08.outputs.cache-hit != 'true'
+        if: steps.cache-deps-2025-05-29.outputs.cache-hit != 'true'
       - name: Run Ruff
         run: poetry run ruff check --output-format=github .
 
