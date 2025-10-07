@@ -1,6 +1,22 @@
 @font-face {
-	font-family: "SuisseIntl-Regular";
+	font-family: "SuisseIntl";
 	src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Regular.woff2")
+		format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "SuisseIntl-Medium";
+	src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Medium.woff2")
+		format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "SuisseIntl-SemiBold";
+	src: url("https://www.arcadiascience.com/fonts/SuisseIntl-SemiBold.woff2")
 		format("woff2");
 	font-weight: normal;
 	font-style: normal;
@@ -48,7 +64,7 @@
 
 :root {
 	/* Fonts. */
-	--md-text-font: "SuisseIntl-Regular", Roboto, Helvetica, Arial, sans-serif;
+	--md-text-font: "SuisseIntl", Roboto, Helvetica, Arial, sans-serif;
 	--md-code-font: "SuisseIntlMono", "Roboto Mono", "Liberation Mono", monospace;
 
 	/* Primary color shades. */
