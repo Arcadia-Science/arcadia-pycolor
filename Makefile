@@ -58,3 +58,7 @@ build-and-publish: build
 	poetry publish \
 		--username __token__ \
 		--password ${POETRY_PYPI_TOKEN_PYPI}
+
+.PHONY: preview-docs
+preview-docs:
+	poetry run mkdocs serve

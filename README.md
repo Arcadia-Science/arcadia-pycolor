@@ -61,7 +61,25 @@ pytest -k barplots --output-dirpath ./test-outputs
 
 Some of the documentation is in the form of Jupyter notebooks. The inline graphical outputs of these notebooks are part of the documentation, so these notebooks are committed to the repo with their outputs included. It is therefore important to keep the notebook outputs up-to-date by re-running all of the notebooks when changes are made to the package.
 
-Run the makefile command `execute-all-notebooks` to execute all the notebooks. This 1) ensures that the notebooks execute without errors and 2) updates their outputs in-place. Then, commit any modified notebooks to the repo.
+Run the following command to execute all the notebooks:
+
+```sh
+make execute-all-notebooks
+```
+
+This 1) ensures that the notebooks execute without errors and 2) updates their outputs in-place. Then, commit any modified notebooks to the repo.
+
+## Updating the documentation site
+
+We use [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) to build the documentation site. Everything can be found in the [`docs/`](docs/) directory.
+
+You can use the following command to preview your changes as you make them:
+
+```sh
+make preview-docs
+```
+
+Additionally, this repo has a [GitHub Actions workflow](.github/workflows/deploy-mkdocs-site.yml) for building the documentation site and publishing it to GitHub Pages. It's triggered on pushes to main.
 
 ## Publishing a new version of the package on PyPI
 

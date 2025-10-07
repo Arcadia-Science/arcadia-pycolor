@@ -203,7 +203,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
             ticks="outside",
             tickfont=dict(family=MONOSPACE_FONT_PLOTLY, size=MONOSPACE_FONT_SIZE),
             title=dict(
-                font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=BASE_FONT_SIZE),
+                font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Medium", size=BASE_FONT_SIZE),
                 side="right",
             ),
         ),
