@@ -71,13 +71,15 @@ This 1) ensures that the notebooks execute without errors and 2) updates their o
 
 ## Updating the documentation site
 
-We use [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) to build the documentation site. You can use the following command to preview your changes as you make them:
+We use [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) to build the documentation site. Everything can be found in the [`docs/`](docs/) directory.
+
+You can use the following command to preview your changes as you make them:
 
 ```sh
 make preview-docs
 ```
 
-This repo has a [GitHub Actions workflow](.github/workflows/deploy-mkdocs-site.yml) for publishing the documentation site to GitHub Pages. It's triggered on pushes to main.
+Additionally, this repo has a [GitHub Actions workflow](.github/workflows/deploy-mkdocs-site.yml) for building the documentation site and publishing it to GitHub Pages. It's triggered on pushes to main.
 
 ## Publishing a new version of the package on PyPI
 
