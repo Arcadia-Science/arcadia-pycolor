@@ -49,9 +49,9 @@ The `apc.mpl.setup` does several different things:
 
 ### A note about the Arcadia fonts
 
-The Arcadia style guide uses the Suisse family of fonts. When `apc.mpl.setup` is called, it automatically configures Matplotlib to use these fonts. If they are not installed, Matplotlib will use its default fonts instead.
+The Arcadia style guide uses the Atkinson Hyperlegible family of fonts. When `apc.mpl.setup` is called, it automatically configures Matplotlib to use these fonts. If they are not installed, Matplotlib will use its default fonts instead.
 
-The Suisse fonts are proprietary. To install them, please refer to [the "brand assets" page](https://www.notion.so/arcadiascience/Brand-assets-ec521e5b599c4a5f88c5fae3a8ac14b7#d1cbc8fc315b4d10a8fd4cc7d9eb8c3f) on Notion for instructions. Please do not share these fonts outside of Arcadia.
+The Atkinson Hyperlegible fonts are open-source and available from [Google Fonts](https://fonts.google.com/?query=atkinson+hyperlegible). To install them, download and install both [Atkinson Hyperlegible Next](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next) and [Atkinson Hyperlegible Mono](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Mono).
 
 ## Styling individual plots
 

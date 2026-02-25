@@ -116,7 +116,7 @@ def _revert_to_default_fonts(fig: go.Figure) -> None:
 def _add_fonts_to_plotly_html_export(filepath: str) -> None:
     """Adds a style tag with fonts loaded from arcadiascience.com to an HTML file's head section.
 
-    This is necessary for embeds of Plotly HTML exports to use the Suisse fonts.
+    This is necessary for embeds of Plotly HTML exports to use the Atkinson Hyperlegible fonts.
 
     Args:
         filepath (str): Path to the HTML file to modify.

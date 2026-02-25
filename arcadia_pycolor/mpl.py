@@ -94,32 +94,33 @@ def _find_macos_arcadia_fonts() -> list[str]:
     for dirpath in MACOS_FONT_DIRECTORIES:
         if not Path(dirpath).exists():
             continue
-        paths = [
-            str(font_path)
-            for font_path in Path(dirpath).glob("*.ttf")
-            if FONT_FILTER.lower() in font_path.name.lower()
-        ]
-        font_paths.extend(paths)
+        for ext in ("*.ttf", "*.otf"):
+            paths = [
+                str(font_path)
+                for font_path in Path(dirpath).glob(ext)
+                if FONT_FILTER.lower() in font_path.name.lower()
+            ]
+            font_paths.extend(paths)
     return font_paths
 
 
 def _fix_svg_fonts_for_illustrator(filename: str) -> None:
     """Fixes CSS font styles in SVG exports for Adobe Illustrator.
 
-    Adobe Illustrator cannot parse font weights in shorthand font styles like
-    "font: 500 15px SuisseIntl, sans-serif;". The axis titles and legend title have font
-    weights applied, and because of this, their fonts are not being rendered correctly
-    in Illustrator.
+    Adobe Illustrator cannot parse shorthand font styles like
+    "font: 500 15px AtkinsonHyperlegibleNext, sans-serif;" or
+    "font: 14.5px 'AtkinsonHyperlegibleMono';".
 
     As a workaround, each CSS font property is explicitly set:
 
     ```html
-    <text style="font-family: SuisseIntl, sans-serif; font-size: 15px; font-weight: 500;">
+    <text style="font-family: AtkinsonHyperlegibleNext, sans-serif;
+                  font-size: 15px; font-weight: 500;">
     ```
 
-    Additionally, the font family is not being applied correctly in Illustrator
-    when it is encoded as "&quot;Suisse Int&apos;l&quot;". To fix this, we replace
-    all instances of this encoding with "SuisseIntl".
+    Additionally, the font family may not be applied correctly in Illustrator
+    when it contains spaces and is HTML-encoded. To fix this, we replace
+    HTML-encoded versions of the font name with the compact CSS name.
 
     For more context, see https://github.com/Arcadia-Science/arcadia-pycolor/issues/68.
 
@@ -129,17 +130,31 @@ def _fix_svg_fonts_for_illustrator(filename: str) -> None:
     with open(filename) as f:
         content = f.read()
 
-    pattern = r'font:\s*(\d+)\s+(\d+)px\s+(.+),\s*([^"]+);'
+    # Pattern 1: shorthand with weight, e.g. "font: 500 15px 'FontFamily', fallback;"
+    pattern_weighted = r'font:\s*(\d+)\s+(\d+)px\s+(.+),\s*([^"]+);'
 
-    def replace_font_style(match):
+    def replace_weighted(match):
         weight = match.group(1)
         size = match.group(2)
         font_family = match.group(3)
         fallback = match.group(4)
         return f"font-family: {font_family},{fallback}; font-size: {size}px; font-weight: {weight};"
 
-    new_content = re.sub(pattern, replace_font_style, content)
-    new_content = new_content.replace("&quot;Suisse Int&apos;l&quot;", "SuisseIntl")
+    new_content = re.sub(pattern_weighted, replace_weighted, content)
+
+    # Pattern 2: shorthand without weight, e.g. "font: 14.5px 'FontFamily';"
+    # or "font: 15px 'FontFamily', fallback;"
+    pattern_unweighted = r"font:\s*([\d.]+)px\s+([^;\"]+);"
+
+    def replace_unweighted(match):
+        size = match.group(1)
+        families = match.group(2).strip()
+        return f"font-family: {families}; font-size: {size}px;"
+
+    new_content = re.sub(pattern_unweighted, replace_unweighted, new_content)
+
+    new_content = new_content.replace("Atkinson Hyperlegible Next", "AtkinsonHyperlegibleNext")
+    new_content = new_content.replace("Atkinson Hyperlegible Mono", "AtkinsonHyperlegibleMono")
 
     with open(filename, "w") as f:
         f.write(new_content)
@@ -417,7 +432,7 @@ def style_legend(legend: Legend) -> None:
 
 
 def set_colorbar_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
-    """Set the font of the colorbar tick labels to Suisse Int'l Mono."""
+    """Set the font of the colorbar tick labels to the default monospace font."""
     ax = _try_get_current_axes(axes)
     if cbar := ax.collections[0].colorbar:  # type: ignore
         set_ticklabel_monospaced(axes=cbar.ax)
@@ -568,7 +583,7 @@ def load_colors() -> None:
 
 
 def load_fonts(font_dirpath: Union[str, None] = None) -> None:
-    """Detects the Suisse-family fonts installed on the system and loads them into matplotlib.
+    """Detects the fonts installed on the system and loads them into matplotlib.
 
     Args:
         font_dirpath (str, optional): Path to the directory to search for fonts in.
@@ -584,9 +599,10 @@ def load_fonts(font_dirpath: Union[str, None] = None) -> None:
 
     # If no fonts are found, fallback to full system search.
     if not arcadia_font_paths:
-        for font_path in font_manager.findSystemFonts(fontpaths=font_dirpath, fontext="ttf"):
-            if FONT_FILTER.lower() in font_path.lower():
-                arcadia_font_paths.append(font_path)
+        for fontext in ("ttf", "otf"):
+            for font_path in font_manager.findSystemFonts(fontpaths=font_dirpath, fontext=fontext):
+                if FONT_FILTER.lower() in font_path.lower():
+                    arcadia_font_paths.append(font_path)
 
     for font_path in arcadia_font_paths:
         font_manager.fontManager.addfont(font_path)
