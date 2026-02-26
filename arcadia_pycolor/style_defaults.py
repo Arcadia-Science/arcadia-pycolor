@@ -41,12 +41,12 @@ FIGURE_SIZES_IN_PIXELS: dict[FigureSize, tuple[int, int]] = {
 }
 
 # Font families.
-FONT_FILTER = "Suisse"
-DEFAULT_FONT = "Suisse Int'l"
-MONOSPACE_FONT = "Suisse Int'l Mono"
+FONT_FILTER = "Atkinson"
+DEFAULT_FONT = "Atkinson Hyperlegible Next"
+MONOSPACE_FONT = "Atkinson Hyperlegible Mono"
 
-DEFAULT_FONT_PLOTLY = "SuisseIntl"
-MONOSPACE_FONT_PLOTLY = "SuisseIntlMono"
+DEFAULT_FONT_PLOTLY = "AtkinsonHyperlegibleNext"
+MONOSPACE_FONT_PLOTLY = "AtkinsonHyperlegibleMono"
 
 # Font sizes.
 BASE_FONT_SIZE = 15
@@ -71,9 +71,8 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
     # Fonts.
     "font.family": "sans-serif",
     "font.size": BASE_FONT_SIZE,
-    "font.serif": "Suisse Works",
-    "font.sans-serif": "Suisse Int'l",
-    "font.monospace": "Suisse Int'l Mono",
+    "font.sans-serif": "Atkinson Hyperlegible Next",
+    "font.monospace": "Atkinson Hyperlegible Mono",
     "font.weight": "regular",
     # Figure.
     "figure.titlesize": TITLE_FONT_SIZE,
@@ -282,33 +281,33 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
 PLOTLY_HTML_EXPORT_CSS = dedent(
     """
     @font-face {
-      font-family: "SuisseIntl";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Regular.woff2")
-        format("woff2");
+      font-family: "AtkinsonHyperlegibleNext";
+      src: url("https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP4cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGscKFt4tOOfV4ZmW37LQhtA.ttf")
+        format("truetype");
       font-weight: normal;
       font-style: normal;
     }
 
     @font-face {
-      font-family: "SuisseIntl-Medium";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-Medium.woff2")
-        format("woff2");
+      font-family: "AtkinsonHyperlegibleNext-Medium";
+      src: url("https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP4cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGscKFt4tOOfV4ZmW33rQhtA.ttf")
+        format("truetype");
       font-weight: normal;
       font-style: normal;
     }
 
     @font-face {
-      font-family: "SuisseIntl-SemiBold";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntl-SemiBold.woff2")
-        format("woff2");
+      font-family: "AtkinsonHyperlegibleNext-SemiBold";
+      src: url("https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP4cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGscKFt4tOOfV4ZmW3MrMhtA.ttf")
+        format("truetype");
       font-weight: normal;
       font-style: normal;
     }
 
     @font-face {
-      font-family: "SuisseIntlMono";
-      src: url("https://www.arcadiascience.com/fonts/SuisseIntlMono.woff2")
-        format("woff2");
+      font-family: "AtkinsonHyperlegibleMono";
+      src: url("https://fonts.gstatic.com/s/atkinsonhyperlegiblemono/v8/tssNAoFBci4C4gvhPXrt3wjT1MqSzhA4t7IIcncBiyihrK15gZ4k_SaZHNeiDQ.ttf")
+        format("truetype");
       font-weight: normal;
       font-style: normal;
     }
