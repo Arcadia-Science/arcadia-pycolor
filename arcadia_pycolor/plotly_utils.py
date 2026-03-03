@@ -151,9 +151,7 @@ def save_figure(
         filepath (str): The path to save the figure to.
         size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
-            - "full_square"
             - "float_wide"
-            - "float_square"
             - "half_square"
         filetypes (list[str], optional): The file types(s) to save the figure to.
             If None, the original filetype of `filepath` is used.
@@ -927,9 +925,7 @@ def set_figure_dimensions(fig: go.Figure, size: FigureSize) -> None:
         fig (go.Figure): The figure to modify.
         size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
-            - "full_square"
             - "float_wide"
-            - "float_square"
             - "half_square"
 
     Raises:
