@@ -151,7 +151,7 @@ def save_figure(
         filepath (str): The path to save the figure to.
         size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
-            - "float_wide"
+            - "float"
             - "half_square"
         filetypes (list[str], optional): The file types(s) to save the figure to.
             If None, the original filetype of `filepath` is used.
@@ -166,8 +166,8 @@ def save_figure(
     # so that the correct margins can be applied in Adobe Illustrator.
     # TODO(#69): Write a custom function to apply the margins.
     updated_margins = dict(l=0, r=0, t=0, b=0)
-    updated_width = FIGURE_SIZES_IN_PIXELS[size][0] - 80
-    updated_height = FIGURE_SIZES_IN_PIXELS[size][1] - 80
+    updated_width = FIGURE_SIZES_IN_PIXELS[size][0] - 60
+    updated_height = FIGURE_SIZES_IN_PIXELS[size][1] - 60
 
     # For some reason, the axis linewidths (which are set to 1 px) are being rendered as
     # 1 pt in Illustrator. Manually setting these to 0.75 px renders them as 0.75 pt.
@@ -925,7 +925,7 @@ def set_figure_dimensions(fig: go.Figure, size: FigureSize) -> None:
         fig (go.Figure): The figure to modify.
         size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
-            - "float_wide"
+            - "float"
             - "half_square"
 
     Raises:

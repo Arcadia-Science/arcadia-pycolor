@@ -58,7 +58,7 @@ def test_plotly_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys)
     apc.plotly.save_figure(
         fig,
         tmp_path / fname,
-        "float_wide",
+        "float",
         filetypes=filetypes,
     )
     captured = capsys.readouterr()
