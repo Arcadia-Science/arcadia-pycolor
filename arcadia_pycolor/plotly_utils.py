@@ -925,9 +925,7 @@ def set_figure_dimensions(fig: go.Figure, size: FigureSize) -> None:
         fig (go.Figure): The figure to modify.
         size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
-            - "full_square"
             - "float_wide"
-            - "float_square"
             - "half_square"
 
     Raises:

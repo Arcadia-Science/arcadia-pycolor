@@ -13,7 +13,7 @@ def simple_plot():
         labels={"x": "Proteins", "y": "Molecular Weight (kDa)"},
     )
     apc.plotly.style_plot(fig, categorical_axes="x", monospaced_axes="y")
-    apc.plotly.set_figure_dimensions(fig, "full_square")
+    apc.plotly.set_figure_dimensions(fig, "half_square")
     return fig
 
 
@@ -36,7 +36,7 @@ def test_plotly_save_figure_filetype_examples(tmp_path, fname, filetypes, expect
     apc.plotly.save_figure(
         fig,
         tmp_path / fname,
-        "full_square",
+        "half_square",
         filetypes=filetypes,
     )
     for output in expected_outputs:
@@ -58,7 +58,7 @@ def test_plotly_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys)
     apc.plotly.save_figure(
         fig,
         tmp_path / fname,
-        "float_square",
+        "float_wide",
         filetypes=filetypes,
     )
     captured = capsys.readouterr()

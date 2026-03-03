@@ -505,9 +505,7 @@ def get_figure_dimensions(size: FigureSize) -> tuple[float, float]:
     Args:
         size (FigureSize): The size of the figure, which must be one of the following:
             - "full_wide"
-            - "full_square"
             - "float_wide"
-            - "float_square"
             - "half_square"
 
     Returns:
