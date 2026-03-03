@@ -1,9 +1,13 @@
+import warnings
 from typing import Union, cast
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-from colorspacious import cspace_converter  # type: ignore
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=SyntaxWarning, module="colorspacious")
+    from colorspacious import cspace_converter  # type: ignore
 from matplotlib.figure import Figure
 from numpy.typing import NDArray
 
