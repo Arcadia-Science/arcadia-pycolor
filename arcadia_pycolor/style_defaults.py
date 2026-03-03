@@ -16,7 +16,7 @@ FIGURE_PADDING_PIXELS = 30
 FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
-FigureSize = Literal["full_wide", "full_square", "float_wide", "float_square", "half_square"]
+FigureSize = Literal["full_wide", "float_wide", "half_square"]
 
 # This dictionary contains figure sizes in inches WITHOUT padding for the transparent border.
 # For example, the "full_wide" figure width is 13.33333333 inches, or 940 pixels at 72 DPI.
@@ -45,9 +45,10 @@ DEFAULT_FONT_PLOTLY = "AtkinsonHyperlegibleNext"
 MONOSPACE_FONT_PLOTLY = "AtkinsonHyperlegibleMono"
 
 # Font sizes.
-BASE_FONT_SIZE = 15
-TITLE_FONT_SIZE = 16
-MONOSPACE_FONT_SIZE = 14.5
+TITLE_FONT_SIZE = 17  # Key title, legend title
+AXIS_TITLE_FONT_SIZE = 15
+BASE_FONT_SIZE = 15  # Axis label, key label, explanatory text
+MONOSPACE_FONT_SIZE = 14.5  # Numbers
 
 # Specifications for categorical axes.
 CATEGORICAL_AXIS_TICKLENGTH = 0
@@ -85,7 +86,7 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
     "axes.prop_cycle": plt.cycler(color=palettes.all_ordered.colors),  # type: ignore
-    "axes.titlesize": TITLE_FONT_SIZE + 2,
+    "axes.titlesize": AXIS_TITLE_FONT_SIZE,
     "axes.titleweight": "medium",
     "axes.titlepad": 16,
     "axes.labelsize": BASE_FONT_SIZE,
