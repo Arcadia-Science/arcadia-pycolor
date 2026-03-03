@@ -19,7 +19,7 @@ FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 FigureSize = Literal["full_wide", "float_wide", "half_square"]
 
 # This dictionary contains figure sizes in inches WITHOUT padding for the transparent border.
-# For example, the "full_wide" figure width is 13.33333333 inches, or 940 pixels at 72 DPI.
+# For example, the "full_wide" figure width is 13.0555555556 inches, or 940 pixels at 72 DPI.
 # They are used to set dimensions for matplotlib figures.
 FIGURE_SIZES_IN_INCHES: dict[FigureSize, tuple[float, float]] = {
     "full_wide": (13.0555555556, 5.27777777),
