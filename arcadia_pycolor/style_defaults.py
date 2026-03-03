@@ -12,32 +12,28 @@ import arcadia_pycolor.palettes as palettes
 BASE_DPI = 72
 PRINT_DPI = 300
 
-FIGURE_PADDING_PIXELS = 20
+FIGURE_PADDING_PIXELS = 30
 FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
 FigureSize = Literal["full_wide", "full_square", "float_wide", "float_square", "half_square"]
 
 # This dictionary contains figure sizes in inches WITHOUT padding for the transparent border.
-# For example, the "full_wide" figure width is 13.33333333 inches, or 960 pixels at 72 DPI.
+# For example, the "full_wide" figure width is 13.33333333 inches, or 940 pixels at 72 DPI.
 # They are used to set dimensions for matplotlib figures.
 FIGURE_SIZES_IN_INCHES: dict[FigureSize, tuple[float, float]] = {
-    "full_wide": (13.33333333, 5.27777777),
-    "full_square": (6.52777777, 6.52777777),
-    "float_wide": (9.16666667, 5.27777777),
-    "float_square": (4.44444444, 4.44444444),
-    "half_square": (6.38888888, 6.38888888),
+    "full_wide": (13.0555555556, 5.27777777),
+    "float_wide": (8.19444444444, 5.27777777),
+    "half_square": (5.97222222222, 5.97222222222),
 }
 
 # This dictionary contains full figure sizes in pixels WITH padding for the transparent border.
-# For example, the "full_wide" figure width is 960 pixels plus 20 pixels of padding on each side.
+# For example, the "full_wide" figure width is 940 pixels plus 30 pixels of padding on each side.
 # They are used to set dimensions for Plotly figures.
 FIGURE_SIZES_IN_PIXELS: dict[FigureSize, tuple[int, int]] = {
     "full_wide": (1000, 420),
-    "full_square": (500, 500),
-    "float_wide": (700, 420),
-    "float_square": (360, 360),
-    "half_square": (500, 500),
+    "float_wide": (650, 420),
+    "half_square": (490, 490),
 }
 
 # Font families.
