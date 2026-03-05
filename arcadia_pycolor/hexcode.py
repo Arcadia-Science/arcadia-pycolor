@@ -1,9 +1,13 @@
 from __future__ import annotations
 import re
+import warnings
 from typing import Any, cast
 
 import matplotlib.colors as mcolors
-from colorspacious import cspace_converter  # type: ignore
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=SyntaxWarning, module="colorspacious")
+    from colorspacious import cspace_converter  # type: ignore
 
 from arcadia_pycolor.display import colorize
 
