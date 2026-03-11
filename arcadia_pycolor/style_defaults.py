@@ -12,32 +12,28 @@ import arcadia_pycolor.palettes as palettes
 BASE_DPI = 72
 PRINT_DPI = 300
 
-FIGURE_PADDING_PIXELS = 20
+FIGURE_PADDING_PIXELS = 30
 FIGURE_PADDING_INCHES = FIGURE_PADDING_PIXELS / BASE_DPI
 
 # Common figure sizes for Arcadia Creative Cloud library templates.
-FigureSize = Literal["full_wide", "full_square", "float_wide", "float_square", "half_square"]
+FigureSize = Literal["full_wide", "float", "half_square"]
 
-# This dictionary contains figure sizes in inches WITHOUT padding for the transparent border.
-# For example, the "full_wide" figure width is 13.33333333 inches, or 960 pixels at 72 DPI.
+# This dictionary contains figure sizes in inches WITH padding for the transparent border.
+# For example, the "full_wide" figure width is 13.8888888889 inches, or 1000 pixels at 72 DPI.
 # They are used to set dimensions for matplotlib figures.
 FIGURE_SIZES_IN_INCHES: dict[FigureSize, tuple[float, float]] = {
-    "full_wide": (13.33333333, 5.27777777),
-    "full_square": (6.52777777, 6.52777777),
-    "float_wide": (9.16666667, 5.27777777),
-    "float_square": (4.44444444, 4.44444444),
-    "half_square": (6.38888888, 6.38888888),
+    "full_wide": (13.8888888889, 5.27777777),
+    "float": (9.02777777778, 5.27777777),
+    "half_square": (6.80555555556, 6.80555555556),
 }
 
 # This dictionary contains full figure sizes in pixels WITH padding for the transparent border.
-# For example, the "full_wide" figure width is 960 pixels plus 20 pixels of padding on each side.
+# For example, the "full_wide" figure width is 940 pixels plus 30 pixels of padding on each side.
 # They are used to set dimensions for Plotly figures.
 FIGURE_SIZES_IN_PIXELS: dict[FigureSize, tuple[int, int]] = {
     "full_wide": (1000, 420),
-    "full_square": (500, 500),
-    "float_wide": (700, 420),
-    "float_square": (360, 360),
-    "half_square": (500, 500),
+    "float": (650, 420),
+    "half_square": (490, 490),
 }
 
 # Font families.
@@ -45,13 +41,16 @@ FONT_FILTER = "Atkinson"
 DEFAULT_FONT = "Atkinson Hyperlegible Next"
 MONOSPACE_FONT = "Atkinson Hyperlegible Mono"
 
-DEFAULT_FONT_PLOTLY = "AtkinsonHyperlegibleNext"
-MONOSPACE_FONT_PLOTLY = "AtkinsonHyperlegibleMono"
+DEFAULT_FONT_PLOTLY = f"AtkinsonHyperlegibleNext, {DEFAULT_FONT}"
+DEFAULT_FONT_PLOTLY_MEDIUM = f"AtkinsonHyperlegibleNext-Medium, {DEFAULT_FONT}"
+DEFAULT_FONT_PLOTLY_SEMIBOLD = f"AtkinsonHyperlegibleNext-SemiBold, {DEFAULT_FONT}"
+MONOSPACE_FONT_PLOTLY = f"AtkinsonHyperlegibleMono, {MONOSPACE_FONT}"
 
 # Font sizes.
-BASE_FONT_SIZE = 15
-TITLE_FONT_SIZE = 16
-MONOSPACE_FONT_SIZE = 14.5
+TITLE_FONT_SIZE = 17  # Key title, legend title
+AXIS_TITLE_FONT_SIZE = 15
+BASE_FONT_SIZE = 15  # Axis label, key label, explanatory text
+MONOSPACE_FONT_SIZE = 14.5  # Numbers
 
 # Specifications for categorical axes.
 CATEGORICAL_AXIS_TICKLENGTH = 0
@@ -89,7 +88,7 @@ ARCADIA_MATPLOTLIB_RC_PARAMS = {
     "axes.grid.axis": "both",
     "axes.grid.which": "major",
     "axes.prop_cycle": plt.cycler(color=palettes.all_ordered.colors),  # type: ignore
-    "axes.titlesize": TITLE_FONT_SIZE + 2,
+    "axes.titlesize": AXIS_TITLE_FONT_SIZE,
     "axes.titleweight": "medium",
     "axes.titlepad": 16,
     "axes.labelsize": BASE_FONT_SIZE,
@@ -189,7 +188,7 @@ PLOTLY_3D_AXIS_ATTRIBUTES = dict(
     ticks="outside",
     tickwidth=1,
     title=dict(
-        font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Medium", size=BASE_FONT_SIZE, color="black"),
+        font=dict(family=DEFAULT_FONT_PLOTLY_MEDIUM, size=BASE_FONT_SIZE, color="black"),
     ),
 )
 
@@ -202,7 +201,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
             ticks="outside",
             tickfont=dict(family=MONOSPACE_FONT_PLOTLY, size=MONOSPACE_FONT_SIZE),
             title=dict(
-                font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Medium", size=BASE_FONT_SIZE),
+                font=dict(family=DEFAULT_FONT_PLOTLY_MEDIUM, size=BASE_FONT_SIZE),
                 side="right",
             ),
         ),
@@ -219,7 +218,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
     ),
     legend=go.layout.Legend(
         title=dict(
-            font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=TITLE_FONT_SIZE, color="black")
+            font=dict(family=DEFAULT_FONT_PLOTLY_SEMIBOLD, size=TITLE_FONT_SIZE, color="black")
         ),
         font=dict(family=DEFAULT_FONT_PLOTLY, size=BASE_FONT_SIZE, color="black"),
         indentation=-12,
@@ -240,7 +239,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         zaxis=go.layout.scene.ZAxis(**PLOTLY_3D_AXIS_ATTRIBUTES),
     ),
     title=go.layout.Title(
-        font=dict(family=f"{DEFAULT_FONT_PLOTLY}-SemiBold", size=TITLE_FONT_SIZE, color="black"),
+        font=dict(family=DEFAULT_FONT_PLOTLY_SEMIBOLD, size=TITLE_FONT_SIZE, color="black"),
         automargin=True,
         yref="container",
     ),
@@ -254,7 +253,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         ticks="outside",
         tickwidth=1,
         title=dict(
-            font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Medium", size=BASE_FONT_SIZE, color="black"),
+            font=dict(family=DEFAULT_FONT_PLOTLY_MEDIUM, size=BASE_FONT_SIZE, color="black"),
             standoff=10,
         ),
         zerolinecolor="rgba(0,0,0,0)",
@@ -270,7 +269,7 @@ ARCADIA_PLOTLY_TEMPLATE_LAYOUT = go.Layout(
         ticks="outside",
         tickwidth=1,
         title=dict(
-            font=dict(family=f"{DEFAULT_FONT_PLOTLY}-Medium", size=BASE_FONT_SIZE, color="black"),
+            font=dict(family=DEFAULT_FONT_PLOTLY_MEDIUM, size=BASE_FONT_SIZE, color="black"),
             standoff=10,
         ),
         zerolinecolor="rgba(0,0,0,0)",
