@@ -10,6 +10,10 @@ The package is hosted on PyPI and can be installed using pip:
 pip install arcadia-pycolor
 ```
 
+### Fonts
+
+This package styles figures using [Atkinson Hyperlegible Next](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next) and [Atkinson Hyperlegible Mono](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Mono). These fonts must be installed on your system for matplotlib figures to render correctly; without them, matplotlib will fall back to its default font. Plotly HTML outputs load the fonts from Google Fonts automatically and do not require local installation.
+
 ## Usage
 
 Please see the quickstart guide for [Matplotlib](docs/mpl_quickstart.md) or [Plotly](docs/plotly_quickstart.md) for an introduction to the package, as well as how to use it to style plots.

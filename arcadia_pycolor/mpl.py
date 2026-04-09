@@ -606,8 +606,10 @@ def load_fonts(font_dirpath: Union[str, None] = None) -> None:
 
     if not _is_arcadia_font_set_available():
         print(
-            "Warning: The Arcadia fonts were not found. "
-            "The default matplotlib fonts will be used instead."
+            "Warning: The fonts were not found. "
+            "The default matplotlib fonts will be used instead. "
+            "To install the fonts, visit https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next "
+            "and https://fonts.google.com/specimen/Atkinson+Hyperlegible+Mono"
         )
 
 
