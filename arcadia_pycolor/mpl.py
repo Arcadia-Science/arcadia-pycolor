@@ -608,7 +608,7 @@ def load_fonts(font_dirpath: Union[str, None] = None) -> None:
         print(
             "Warning: The fonts were not found. "
             "The default matplotlib fonts will be used instead. "
-            "To install the fonts, visit https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next "
+            "To install the fonts, visit https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next "  # noqa: E501
             "and https://fonts.google.com/specimen/Atkinson+Hyperlegible+Mono"
         )
 
