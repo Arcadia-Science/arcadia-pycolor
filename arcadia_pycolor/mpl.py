@@ -156,6 +156,12 @@ def _fix_svg_fonts_for_illustrator(filename: str) -> None:
     new_content = new_content.replace("Atkinson Hyperlegible Next", "AtkinsonHyperlegibleNext")
     new_content = new_content.replace("Atkinson Hyperlegible Mono", "AtkinsonHyperlegibleMono")
 
+    new_content = re.sub(
+        r"(font-family:\s*'?AtkinsonHyperlegible\w+'?)[^;]*;",
+        r"\1;",
+        new_content,
+    )
+
     with open(filename, "w") as f:
         f.write(new_content)
 

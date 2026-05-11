@@ -41,10 +41,25 @@ FONT_FILTER = "Atkinson"
 DEFAULT_FONT = "Atkinson Hyperlegible Next"
 MONOSPACE_FONT = "Atkinson Hyperlegible Mono"
 
-DEFAULT_FONT_PLOTLY = f"AtkinsonHyperlegibleNext, {DEFAULT_FONT}"
-DEFAULT_FONT_PLOTLY_MEDIUM = f"AtkinsonHyperlegibleNext-Medium, {DEFAULT_FONT}"
-DEFAULT_FONT_PLOTLY_SEMIBOLD = f"AtkinsonHyperlegibleNext-SemiBold, {DEFAULT_FONT}"
-MONOSPACE_FONT_PLOTLY = f"AtkinsonHyperlegibleMono, {MONOSPACE_FONT}"
+WEIGHT_MATCHED_FALLBACK_FONT = "Noto Sans"
+FALLBACK_FONT = "DejaVu Sans"
+FALLBACK_MONOSPACE_FONT = "DejaVu Sans Mono"
+
+DEFAULT_FONT_PLOTLY = (
+    f"AtkinsonHyperlegibleNext, {DEFAULT_FONT}, "
+    f"NotoSans, {WEIGHT_MATCHED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
+)
+DEFAULT_FONT_PLOTLY_MEDIUM = (
+    f"AtkinsonHyperlegibleNext-Medium, {DEFAULT_FONT}, "
+    f"NotoSans-Medium, {WEIGHT_MATCHED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
+)
+DEFAULT_FONT_PLOTLY_SEMIBOLD = (
+    f"AtkinsonHyperlegibleNext-SemiBold, {DEFAULT_FONT}, "
+    f"NotoSans-SemiBold, {WEIGHT_MATCHED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
+)
+MONOSPACE_FONT_PLOTLY = (
+    f"AtkinsonHyperlegibleMono, {MONOSPACE_FONT}, {FALLBACK_MONOSPACE_FONT}, monospace"
+)
 
 # Font sizes.
 TITLE_FONT_SIZE = 17  # Key title, legend title
@@ -68,10 +83,9 @@ LINEWEIGHT = 0.75
 # API reference: https://matplotlib.org/stable/api/matplotlib_configuration_api.html.
 ARCADIA_MATPLOTLIB_RC_PARAMS = {
     # Fonts.
-    "font.family": "sans-serif",
+    "font.family": [DEFAULT_FONT, WEIGHT_MATCHED_FALLBACK_FONT, FALLBACK_FONT],
     "font.size": BASE_FONT_SIZE,
-    "font.sans-serif": "Atkinson Hyperlegible Next",
-    "font.monospace": "Atkinson Hyperlegible Mono",
+    "font.monospace": [MONOSPACE_FONT, FALLBACK_MONOSPACE_FONT],
     "font.weight": "regular",
     # Figure.
     "figure.titlesize": TITLE_FONT_SIZE,
@@ -306,6 +320,30 @@ PLOTLY_HTML_EXPORT_CSS = dedent(
     @font-face {
       font-family: "AtkinsonHyperlegibleMono";
       src: url("https://fonts.gstatic.com/s/atkinsonhyperlegiblemono/v8/tssNAoFBci4C4gvhPXrt3wjT1MqSzhA4t7IIcncBiyihrK15gZ4k_SaZHNeiDQ.ttf")
+        format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "NotoSans";
+      src: url("https://fonts.gstatic.com/s/notosans/v42/o-0mIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjcz6L1SoM-jCpoiyD9A99d.ttf")
+        format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "NotoSans-Medium";
+      src: url("https://fonts.gstatic.com/s/notosans/v42/o-0mIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjcz6L1SoM-jCpoiyDPA99d.ttf")
+        format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "NotoSans-SemiBold";
+      src: url("https://fonts.gstatic.com/s/notosans/v42/o-0mIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjcz6L1SoM-jCpoiyAjBN9d.ttf")
         format("truetype");
       font-weight: normal;
       font-style: normal;
