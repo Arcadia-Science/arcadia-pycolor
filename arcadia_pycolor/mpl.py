@@ -111,11 +111,11 @@ def _fix_svg_fonts_for_illustrator(filename: str) -> None:
     "font: 500 15px AtkinsonHyperlegibleNext, sans-serif;" or
     "font: 14.5px 'AtkinsonHyperlegibleMono';".
 
-    As a workaround, each CSS font property is explicitly set:
+    As a workaround, each CSS font property is explicitly set and fallback
+    families are stripped so only the Atkinson name remains:
 
     ```html
-    <text style="font-family: AtkinsonHyperlegibleNext, sans-serif;
-                  font-size: 15px; font-weight: 500;">
+    <text style="font-family: AtkinsonHyperlegibleNext; font-size: 15px; font-weight: 500;">
     ```
 
     Additionally, the font family may not be applied correctly in Illustrator

@@ -41,21 +41,21 @@ FONT_FILTER = "Atkinson"
 DEFAULT_FONT = "Atkinson Hyperlegible Next"
 MONOSPACE_FONT = "Atkinson Hyperlegible Mono"
 
-WEIGHT_MATCHED_FALLBACK_FONT = "Noto Sans"
+PREFERRED_FALLBACK_FONT = "Noto Sans"
 FALLBACK_FONT = "DejaVu Sans"
 FALLBACK_MONOSPACE_FONT = "DejaVu Sans Mono"
 
 DEFAULT_FONT_PLOTLY = (
     f"AtkinsonHyperlegibleNext, {DEFAULT_FONT}, "
-    f"NotoSans, {WEIGHT_MATCHED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
+    f"NotoSans, {PREFERRED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
 )
 DEFAULT_FONT_PLOTLY_MEDIUM = (
     f"AtkinsonHyperlegibleNext-Medium, {DEFAULT_FONT}, "
-    f"NotoSans-Medium, {WEIGHT_MATCHED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
+    f"NotoSans-Medium, {PREFERRED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
 )
 DEFAULT_FONT_PLOTLY_SEMIBOLD = (
     f"AtkinsonHyperlegibleNext-SemiBold, {DEFAULT_FONT}, "
-    f"NotoSans-SemiBold, {WEIGHT_MATCHED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
+    f"NotoSans-SemiBold, {PREFERRED_FALLBACK_FONT}, {FALLBACK_FONT}, sans-serif"
 )
 MONOSPACE_FONT_PLOTLY = (
     f"AtkinsonHyperlegibleMono, {MONOSPACE_FONT}, {FALLBACK_MONOSPACE_FONT}, monospace"
@@ -82,8 +82,9 @@ LINEWEIGHT = 0.75
 # Matplotlib runtime configuration parameters.
 # API reference: https://matplotlib.org/stable/api/matplotlib_configuration_api.html.
 ARCADIA_MATPLOTLIB_RC_PARAMS = {
-    # Fonts.
-    "font.family": [DEFAULT_FONT, WEIGHT_MATCHED_FALLBACK_FONT, FALLBACK_FONT],
+    # Fonts. font.family must be a list of specific names — generic families like
+    # "sans-serif" collapse to one font and skip per-glyph fallback entirely.
+    "font.family": [DEFAULT_FONT, PREFERRED_FALLBACK_FONT, FALLBACK_FONT],
     "font.size": BASE_FONT_SIZE,
     "font.monospace": [MONOSPACE_FONT, FALLBACK_MONOSPACE_FONT],
     "font.weight": "regular",
