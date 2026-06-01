@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Any, Literal, Union, get_args
 
@@ -8,6 +9,7 @@ from bs4 import BeautifulSoup
 from arcadia_pycolor.style_defaults import (
     ARCADIA_PLOTLY_TEMPLATE_LAYOUT,
     DEFAULT_FONT_PLOTLY,
+    FIGURE_PADDING_PIXELS,
     FIGURE_SIZES_IN_PIXELS,
     MONOSPACE_FONT_PLOTLY,
     MONOSPACE_FONT_SIZE,
@@ -27,6 +29,8 @@ PLOTLY_3D_TRACE_TYPES = (
     go.Parcoords,
     go.Streamtube,
 )
+
+logger = logging.getLogger(__name__)
 
 AxisSelector = Literal["x", "y", "z", "xy", "yz", "xz", "xyz", "all"]
 
@@ -142,7 +146,7 @@ def save_figure(
     filepath: str,
     size: FigureSize,
     filetypes: Union[list[str], None] = None,
-    **write_image_kwargs: dict[Any, Any],
+    **write_image_kwargs: Any,
 ) -> None:
     """Saves the current figure to a file without any margins or padding.
 
@@ -161,8 +165,14 @@ def save_figure(
             - "half_square"
         filetypes (list[str], optional): The file types(s) to save the figure to.
             If None, the original filetype of `filepath` is used.
-            If the original filetype is not in `filetypes`, it is appended to the list.
+            If the original filetype is not in `filetypes`, it is added to the list.
+            Valid filetypes are: 'png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf'. Invalid
+            filetypes are skipped with a warning.
         **write_image_kwargs: Additional keyword arguments to pass to `fig.write_image`.
+
+    Raises:
+        ValueError: If `size` is not a valid figure size, if no filetype can be
+            determined, or if no valid filetype remains to write.
     """
     # By default, our Plotly template attempts to add 40 pixels of margin on all sides.
     # However, due to Plotly's internal automargin strategy, the margin is not always
@@ -171,9 +181,13 @@ def save_figure(
     # For exports, we want to remove the margins and update the figure dimensions
     # so that the correct margins can be applied in Adobe Illustrator.
     # TODO(#69): Write a custom function to apply the margins.
+    if size not in FIGURE_SIZES_IN_PIXELS:
+        valid_sizes = ", ".join(repr(key) for key in FIGURE_SIZES_IN_PIXELS)
+        raise ValueError(f"Invalid size {size!r}. Must be one of: {valid_sizes}.")
+
     updated_margins = dict(l=0, r=0, t=0, b=0)
-    updated_width = FIGURE_SIZES_IN_PIXELS[size][0] - 60
-    updated_height = FIGURE_SIZES_IN_PIXELS[size][1] - 60
+    updated_width = FIGURE_SIZES_IN_PIXELS[size][0] - 2 * FIGURE_PADDING_PIXELS
+    updated_height = FIGURE_SIZES_IN_PIXELS[size][1] - 2 * FIGURE_PADDING_PIXELS
 
     # For some reason, the axis linewidths (which are set to 1 px) are being rendered as
     # 1 pt in Illustrator. Manually setting these to 0.75 px renders them as 0.75 pt.
@@ -184,9 +198,11 @@ def save_figure(
         margin=updated_margins,
         width=updated_width,
         height=updated_height,
-        xaxis=dict(linewidth=updated_axis_linewidth),
-        yaxis=dict(linewidth=updated_axis_linewidth),
     )
+    # Apply to every axis (including subplot axes such as xaxis2, yaxis2, ...), since
+    # update_layout(xaxis=..., yaxis=...) would only affect the primary axis pair.
+    fig_export.update_xaxes(linewidth=updated_axis_linewidth)
+    fig_export.update_yaxes(linewidth=updated_axis_linewidth)
 
     # If no file types are provided, use the filetype from the file path.
     valid_filetypes = ["png", "jpg", "jpeg", "webp", "svg", "pdf"]
@@ -198,13 +214,24 @@ def save_figure(
         if not filetype:
             raise ValueError("The filename must include a filetype if no filetypes are provided.")
         filetypes = [filetype]
-    else:
-        filetypes.append(filetype)
+    elif filetype and filetype not in filetypes:
+        filetypes = [*filetypes, filetype]
 
-    for ftype in filetypes:
-        if ftype not in valid_filetypes:
-            print(f"Invalid filetype '{ftype}'. Skipping.")
-            continue
+    invalid_filetypes = [ftype for ftype in filetypes if ftype not in valid_filetypes]
+    if invalid_filetypes:
+        logger.warning(
+            "Skipping invalid filetype(s): %s. Valid filetypes are: %s.",
+            ", ".join(repr(f) for f in invalid_filetypes),
+            ", ".join(valid_filetypes),
+        )
+
+    filetypes_to_write = [ftype for ftype in filetypes if ftype in valid_filetypes]
+    if not filetypes_to_write:
+        raise ValueError(
+            f"No valid filetypes to write. Valid filetypes are: {', '.join(valid_filetypes)}."
+        )
+
+    for ftype in filetypes_to_write:
         try:
             fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
         except Exception as error:

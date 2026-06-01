@@ -1,3 +1,5 @@
+import logging
+
 import plotly.express as px
 import pytest
 
@@ -45,24 +47,46 @@ def test_plotly_save_figure_filetype_examples(tmp_path, fname, filetypes, expect
 
 
 @pytest.mark.parametrize(
+    "fname, filetypes, expected_outputs",
+    [
+        # An invalid filetype is skipped (with a warning) while valid ones are still written.
+        ("test.pdf", ["invalid"], ["test.pdf"]),
+        ("test.invalid", ["pdf"], ["test.pdf"]),
+    ],
+)
+def test_plotly_save_figure_filetype_invalid_skipped(
+    tmp_path, fname, filetypes, expected_outputs, caplog
+):
+    fig = simple_plot()
+    with caplog.at_level(logging.WARNING, logger="arcadia_pycolor.plotly_utils"):
+        apc.plotly.save_figure(
+            fig,
+            tmp_path / fname,
+            "float",
+            filetypes=filetypes,
+        )
+    assert "invalid" in caplog.text.lower()
+    for output in expected_outputs:
+        assert (tmp_path / output).is_file()
+
+
+@pytest.mark.parametrize(
     "fname, filetypes",
     [
-        ("test.pdf", ["invalid"]),
         ("test", ["invalid"]),
-        ("test.invalid", ["pdf"]),
         ("test.invalid", None),
     ],
 )
-def test_plotly_save_figure_filetype_invalid(tmp_path, fname, filetypes, capsys):
+def test_plotly_save_figure_filetype_all_invalid_raises(tmp_path, fname, filetypes):
+    """When no valid filetypes remain, the function raises instead of silently doing nothing."""
     fig = simple_plot()
-    apc.plotly.save_figure(
-        fig,
-        tmp_path / fname,
-        "float",
-        filetypes=filetypes,
-    )
-    captured = capsys.readouterr()
-    assert "Invalid filetype 'invalid'. Skipping." in captured.out
+    with pytest.raises(ValueError):
+        apc.plotly.save_figure(
+            fig,
+            tmp_path / fname,
+            "float",
+            filetypes=filetypes,
+        )
 
 
 def test_plotly_save_figure_no_filetype(tmp_path):
