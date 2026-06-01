@@ -123,3 +123,27 @@ apc.gradients.blues
 This outputs a gradient swatch showing the colors in the gradient:
 
 ![blues gradient swatch](images/blues-gradient.png)
+
+## Saving figures to image files
+
+Once your figure is styled, you can save it to a static image file using `apc.plotly.save_figure`. This function strips margins and sets the correct dimensions so the exported file matches Arcadia's pre-defined figure sizes:
+
+```python
+apc.plotly.save_figure(fig, "my_plot.pdf", size="float")
+```
+
+You can also export to several file types at once by passing a list to `filetypes`:
+
+```python
+apc.plotly.save_figure(fig, "my_plot.pdf", size="float", filetypes=["pdf", "png", "svg"])
+```
+
+### Chrome requirement for static image export
+
+Under the hood, `save_figure` uses Plotly's `write_image`, which relies on [Kaleido](https://github.com/plotly/Kaleido). As of Kaleido v1, Chrome is no longer bundled and must be available on your system. If you don't already have Chrome/Chromium installed, install a compatible version once by running the following command in your terminal:
+
+```bash
+plotly_get_chrome
+```
+
+This is only required for static image export. The rest of the package — colors, styles, and interactive/HTML figures — works without Chrome.
