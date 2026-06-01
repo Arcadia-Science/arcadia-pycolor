@@ -37,6 +37,8 @@ from arcadia_pycolor.style_defaults import (
     FigureSize,
 )
 
+logger = logging.getLogger(__name__)
+
 # Disable matplotlib's very noisy warnings when the Arcadia fonts are not installed.
 logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
@@ -170,8 +172,8 @@ def save_figure(
     filepath: str,
     size: FigureSize,
     filetypes: Union[list[str], None] = None,
-    context: str = "web",
-    **savefig_kwargs: dict[Any, Any],
+    context: Literal["web", "print"] = "web",
+    **savefig_kwargs: Any,
 ) -> None:
     """Saves the current figure to a file using Arcadia's margin, padding, and dpi settings.
 
@@ -183,10 +185,26 @@ def save_figure(
             - "half_square"
         filetypes (list[str], optional): The file types(s) to save the figure to.
             If None, the original filetype of `filepath` is used.
-            If the original filetype is not in `filetypes`, it is appended to the list.
+            If the original filetype is not in `filetypes`, it is added to the list.
+            Valid filetypes are: 'eps', 'jpg', 'jpeg', 'pdf', 'pgf', 'png', 'ps',
+            'raw', 'rgba', 'svg', 'svgz', 'tif', 'tiff', 'webp'. Invalid filetypes
+            are skipped with a warning.
         context (str): The context to save the figure in, either 'web' or 'print'.
         **savefig_kwargs: Additional keyword arguments to pass to `plt.savefig`.
+
+    Note:
+        Padding is applied via an explicit `bbox_inches` Bbox. The default `pad_inches`
+        setting only takes effect if a caller overrides `bbox_inches="tight"` through
+        `savefig_kwargs`.
+
+    Raises:
+        ValueError: If `size` is not a valid figure size, if no filetype can be
+            determined, or if no valid filetype remains to write.
     """
+    if size not in FIGURE_SIZES_IN_INCHES:
+        valid_sizes = ", ".join(repr(key) for key in FIGURE_SIZES_IN_INCHES)
+        raise ValueError(f"Invalid size {size!r}. Must be one of: {valid_sizes}.")
+
     width, height = FIGURE_SIZES_IN_INCHES[size]
     bbox_inches = Bbox.from_bounds(
         -FIGURE_PADDING_INCHES,
@@ -195,8 +213,8 @@ def save_figure(
         height,
     )
 
-    kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
-    kwargs.update(**savefig_kwargs, bbox_inches=bbox_inches)  # type: ignore
+    base_kwargs = SAVEFIG_KWARGS_WEB if context == "web" else SAVEFIG_KWARGS_PRINT
+    kwargs = {**base_kwargs, **savefig_kwargs, "bbox_inches": bbox_inches}
 
     # Gets a list of valid filetypes for saving figures from matplotlib.
     valid_filetypes = list(FigureCanvasBase.get_supported_filetypes().keys())
@@ -209,14 +227,24 @@ def save_figure(
         if not filetype:
             raise ValueError("The filename must include a filetype if no filetypes are provided.")
         filetypes = [filetype]
-    else:
-        filetypes.append(filetype)
+    elif filetype and filetype not in filetypes:
+        filetypes = [*filetypes, filetype]
 
-    for ftype in filetypes:
-        if ftype not in valid_filetypes:
-            print(f"Invalid filetype '{ftype}'. Skipping.")
-            continue
+    invalid_filetypes = [ftype for ftype in filetypes if ftype not in valid_filetypes]
+    if invalid_filetypes:
+        logger.warning(
+            "Skipping invalid filetype(s): %s. Valid filetypes are: %s.",
+            ", ".join(repr(f) for f in invalid_filetypes),
+            ", ".join(valid_filetypes),
+        )
 
+    filetypes_to_write = [ftype for ftype in filetypes if ftype in valid_filetypes]
+    if not filetypes_to_write:
+        raise ValueError(
+            f"No valid filetypes to write. Valid filetypes are: {', '.join(valid_filetypes)}."
+        )
+
+    for ftype in filetypes_to_write:
         plt.savefig(fname=f"{filename}.{ftype}", **kwargs)
 
         if ftype == "svg":
