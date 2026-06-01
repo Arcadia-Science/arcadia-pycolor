@@ -146,6 +146,12 @@ def save_figure(
 ) -> None:
     """Saves the current figure to a file without any margins or padding.
 
+    Static image export relies on Plotly's `write_image`, which in turn uses
+    [Kaleido](https://github.com/plotly/Kaleido). As of Kaleido v1, Chrome is no longer
+    bundled and must be available on your system. If Chrome/Chromium isn't already
+    installed, run `plotly_get_chrome` once to install a compatible version. This is only
+    required for static image export; interactive/HTML figures work without Chrome.
+
     Args:
         fig (go.Figure): The figure to save.
         filepath (str): The path to save the figure to.
@@ -199,7 +205,18 @@ def save_figure(
         if ftype not in valid_filetypes:
             print(f"Invalid filetype '{ftype}'. Skipping.")
             continue
-        fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+        try:
+            fig_export.write_image(f"{filename}.{ftype}", **write_image_kwargs)
+        except Exception as error:
+            # Kaleido v1 no longer bundles Chrome, so a missing browser is a common
+            # cause of export failures. Surface an actionable hint when that's the case.
+            if "chrome" in str(error).lower():
+                raise RuntimeError(
+                    "Saving Plotly figures to static images requires Chrome/Chromium, which "
+                    "Kaleido (v1+) no longer bundles. Install a compatible version once by "
+                    "running `plotly_get_chrome` in your terminal, then try again."
+                ) from error
+            raise
 
 
 def export_to_html(fig: go.Figure, filepath: str) -> None:

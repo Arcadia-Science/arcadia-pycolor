@@ -47,8 +47,8 @@ colorspacious = ">=1.1.2"
 matplotlib = ">=3.7,!=3.8.0"
 numpy = ">=1.20"
 python = ">=3.9,<4.0"
-plotly = ">=6.0.0"
-kaleido = "==0.2.1"
+plotly = ">=6.1.1"
+kaleido = ">=1.3,<2.0"
 beautifulsoup4 = "^4.13.4"
 
 [tool.poetry.group.dev.dependencies]

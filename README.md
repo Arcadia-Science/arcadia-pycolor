@@ -39,6 +39,8 @@ Finally, install the package in editable mode:
 pip install -e .
 ```
 
+The Plotly image-export tests require Chrome, which Kaleido (v1+) no longer bundles. If it isn't already installed, run `plotly_get_chrome` once before running the test suite (see the [Plotly quickstart](docs/plotly_quickstart.md#chrome-requirement-for-static-image-export) for details).
+
 ### Testing
 
 We use pytest for testing. The tests are found in the `arcadia_pycolor/tests/` subpackage. To run the tests, simply run `pytest` from the root directory of the repository.
