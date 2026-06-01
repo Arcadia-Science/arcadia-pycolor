@@ -10,6 +10,16 @@ The package is hosted on PyPI and can be installed using pip:
 pip install arcadia-pycolor
 ```
 
+### Saving Plotly figures (Chrome requirement)
+
+Saving Plotly figures to static image files (via `apc.plotly.save_figure`, which uses Plotly's `write_image`) relies on [Kaleido](https://github.com/plotly/Kaleido). As of Kaleido v1, Chrome is no longer bundled and must be available on your system. If you don't already have Chrome/Chromium installed, install a compatible version once with:
+
+```bash
+plotly_get_chrome
+```
+
+This is only required for static image export; the rest of the package (colors, styles, and interactive/HTML Plotly figures) works without Chrome.
+
 ## Usage
 
 Please see the quickstart guide for [Matplotlib](docs/mpl_quickstart.md) or [Plotly](docs/plotly_quickstart.md) for an introduction to the package, as well as how to use it to style plots.
@@ -38,6 +48,8 @@ Finally, install the package in editable mode:
 ```bash
 pip install -e .
 ```
+
+The Plotly image-export tests require Chrome (see [Saving Plotly figures](#saving-plotly-figures-chrome-requirement)). If it isn't already installed, run `plotly_get_chrome` once before running the test suite.
 
 ### Testing
 

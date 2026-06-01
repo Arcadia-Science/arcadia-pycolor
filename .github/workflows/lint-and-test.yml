@@ -56,6 +56,11 @@ jobs:
       - name: Install arcadia-pycolor
         run: poetry run pip install .
 
+      # Kaleido v1 no longer bundles Chrome; it must be installed separately for
+      # static image export (used by `plotly.save_figure` and its tests).
+      - name: Install Chrome for Kaleido
+        run: poetry run plotly_get_chrome -y
+
       - name: Run tests
         run: poetry run pytest
 
