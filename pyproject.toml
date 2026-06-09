@@ -73,6 +73,8 @@ src = ["."]
 line-length = 100
 indent-width = 4
 extend-include = ["*.ipynb"]
+# Markdown files (e.g. skill docs) are intentionally not wrapped, so exclude them from linting.
+extend-exclude = ["*.md"]
 
 [tool.ruff.lint.per-file-ignores]
 # Ignore star and unused imports.
