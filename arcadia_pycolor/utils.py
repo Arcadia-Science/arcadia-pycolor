@@ -1,9 +1,8 @@
 from collections.abc import Sequence
-from typing import Union
 
 import numpy as np
 
-NumericSequence = Union[Sequence[int], Sequence[float]]
+NumericSequence = Sequence[int] | Sequence[float]
 
 
 def distribute_values(num_points: int, min_val: float = 0.0, max_val: float = 1.0) -> list[float]:
@@ -50,7 +49,7 @@ def is_non_decreasing(values: NumericSequence) -> bool:
 
     Copied from https://stackoverflow.com/questions/4983258.
     """
-    return all(x <= y for x, y in zip(values, values[1:]))
+    return all(x <= y for x, y in zip(values, values[1:], strict=False))
 
 
 def is_non_increasing(values: NumericSequence) -> bool:
@@ -58,7 +57,7 @@ def is_non_increasing(values: NumericSequence) -> bool:
 
     Copied from https://stackoverflow.com/questions/4983258.
     """
-    return all(x >= y for x, y in zip(values, values[1:]))
+    return all(x >= y for x, y in zip(values, values[1:], strict=False))
 
 
 def is_monotonic(values: NumericSequence) -> bool:

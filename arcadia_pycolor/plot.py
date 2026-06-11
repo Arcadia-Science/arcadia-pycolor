@@ -1,5 +1,5 @@
 import warnings
-from typing import Union, cast
+from typing import cast
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -17,8 +17,8 @@ from arcadia_pycolor.palettes import all_palettes
 
 
 def plot_gradient_lightness(
-    gradients: Union[Gradient, str, list[Gradient], list[str]],
-    title: Union[str, None] = None,
+    gradients: Gradient | str | list[Gradient] | list[str],
+    title: str | None = None,
     horizontal_spacing: float = 1.1,
     steps: int = 100,
     figsize: tuple[float, float] = (4, 4),
@@ -26,7 +26,7 @@ def plot_gradient_lightness(
     tickrotation: float = 50,
     markersize: float = 300,
     return_fig: bool = False,
-) -> Union[None, Figure]:
+) -> None | Figure:
     """Plots the lightness of one or more color gradients to assess their uniformity.
 
     Args:

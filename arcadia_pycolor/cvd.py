@@ -1,5 +1,5 @@
 import warnings
-from typing import Any, Union, cast, overload
+from typing import Any, cast, overload
 
 import matplotlib as mpl
 import numpy as np
@@ -46,8 +46,8 @@ def simulate_color(
 
 
 def simulate_color(
-    colors: Union[HexCode, list[HexCode]], cvd_type: str = "d", severity: int = 100
-) -> Union[HexCode, list[HexCode]]:
+    colors: HexCode | list[HexCode], cvd_type: str = "d", severity: int = 100
+) -> HexCode | list[HexCode]:
     """Simulates color vision deficiency for a single color or list of colors.
 
     Args:
