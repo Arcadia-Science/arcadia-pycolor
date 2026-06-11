@@ -1,7 +1,7 @@
 version: 2
 updates:
-  # Python dependencies managed by Poetry (pyproject.toml / poetry.lock).
-  - package-ecosystem: "pip"
+  # Python dependencies managed by uv (pyproject.toml / uv.lock).
+  - package-ecosystem: "uv"
     directory: "/"
     schedule:
       interval: "weekly"

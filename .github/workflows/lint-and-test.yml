@@ -14,58 +14,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        # Fetching the full git history is necessary because poetry's dynamic versioning extension
-        # requires it, and this extension is run even when the package is pip-installed locally
-        # (as we do below).
+        # Fetching the full git history is necessary because hatch-vcs derives the package version
+        # from git tags, and this runs even when the package is installed locally (as we do below).
         with:
           fetch-depth: 0
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
       - name: Install Python
-        id: setup-python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.10"
+        run: uv python install
 
-      - name: Cache Poetry install
-        uses: actions/cache@v5
-        with:
-          path: ~/.local
-          # Include the Python version in the key: the cached Poetry venv is linked
-          # against a specific libpython, so it must be invalidated when Python changes.
-          key: poetry-1.8.3-py${{ steps.setup-python.outputs.python-version }}-0
+      - name: Install dependencies
+        run: uv sync --group dev
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.3
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Cache Poetry dependencies
-        id: cache-deps-2025-05-29
-        uses: actions/cache@v5
-        with:
-          path: .venv
-          key: pydeps-${{ hashFiles('**/poetry.lock') }}
-
-      - run: poetry install --no-interaction --no-root --with=dev
-        if: steps.cache-deps-2025-05-29.outputs.cache-hit != 'true'
       - name: Run Ruff
-        run: poetry run ruff check --output-format=github .
+        run: uv run ruff check --output-format=github .
 
       - name: Run Ruff formatter
-        run: poetry run ruff format --check .
-
-      - name: Install arcadia-pycolor
-        run: poetry run pip install .
+        run: uv run ruff format --check .
 
       # Kaleido v1 no longer bundles Chrome; it must be installed separately for
       # static image export (used by `plotly.save_figure` and its tests).
       - name: Install Chrome for Kaleido
-        run: poetry run plotly_get_chrome -y
+        run: uv run plotly_get_chrome -y
 
       - name: Run tests
-        run: poetry run pytest
+        run: uv run pytest
 
       - name: Execute notebooks
         run: make execute-all-notebooks
