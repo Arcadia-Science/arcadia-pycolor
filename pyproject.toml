@@ -34,16 +34,16 @@ dev = [
     "ipykernel>=6.25.2",
     "jupyter>=1.0.0",
     "pandas>=2.2.2,<3.0.0",
-    "pre-commit==3.5.0",
+    "pre-commit==4.6.0",
     "pyright>=1.1.408,<2.0.0",
     "pytest>=9.0.3",
-    "ruff==0.4.4",
+    "ruff==0.15.16",
     "scikit-learn>=1.5.0,<2.0.0",
     "seaborn>=0.13.2,<0.14.0",
     "mkdocs-material>=9.6.12,<10.0.0",
     "mkdocs-git-revision-date-localized-plugin>=1.4.7,<2.0.0",
     "mkdocs-git-committers-plugin-2>=2.5.0,<3.0.0",
-    "mkdocs-jupyter>=0.25.1,<0.26.0",
+    "mkdocs-jupyter>=0.25.1,<0.27.0",
 ]
 
 [tool.hatch.version]
