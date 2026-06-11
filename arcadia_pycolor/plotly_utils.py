@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any, Literal, Union, get_args
+from typing import Any, Literal, get_args
 
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -42,7 +42,7 @@ def _has_subplots(fig: go.Figure) -> bool:
     return len(xaxes) > 1 or len(yaxes) > 1
 
 
-def _is_3d_plot(fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None) -> bool:
+def _is_3d_plot(fig: go.Figure, row: int | None = None, col: int | None = None) -> bool:
     """Returns True if the figure data only contains 3D traces."""
     if _has_subplots(fig) and row is not None and col is not None:
         return isinstance(fig.get_subplot(row, col), go.layout.Scene)
@@ -145,7 +145,7 @@ def save_figure(
     fig: go.Figure,
     filepath: str,
     size: FigureSize,
-    filetypes: Union[list[str], None] = None,
+    filetypes: list[str] | None = None,
     **write_image_kwargs: Any,
 ) -> None:
     """Saves the current figure to a file without any margins or padding.
@@ -271,9 +271,9 @@ def export_to_html(fig: go.Figure, filepath: str) -> None:
 def set_yticklabel_font(
     fig: go.Figure,
     font: str = DEFAULT_FONT_PLOTLY,
-    font_size: Union[float, None] = None,
-    row: Union[int, None] = None,
-    col: Union[int, None] = None,
+    font_size: float | None = None,
+    row: int | None = None,
+    col: int | None = None,
 ) -> None:
     """Sets the font and font size of the y-axis tick labels for a Plotly figure.
 
@@ -298,9 +298,9 @@ def set_yticklabel_font(
 def set_xticklabel_font(
     fig: go.Figure,
     font: str = DEFAULT_FONT_PLOTLY,
-    font_size: Union[float, None] = None,
-    row: Union[int, None] = None,
-    col: Union[int, None] = None,
+    font_size: float | None = None,
+    row: int | None = None,
+    col: int | None = None,
 ) -> None:
     """Sets the font and font size of the x-axis tick labels for a Plotly figure.
 
@@ -325,9 +325,9 @@ def set_xticklabel_font(
 def set_zticklabel_font(
     fig: go.Figure,
     font: str = DEFAULT_FONT_PLOTLY,
-    font_size: Union[float, None] = None,
-    row: Union[int, None] = None,
-    col: Union[int, None] = None,
+    font_size: float | None = None,
+    row: int | None = None,
+    col: int | None = None,
 ) -> None:
     """Sets the font and font size of the z-axis tick labels for a Plotly figure.
 
@@ -347,9 +347,9 @@ def set_zticklabel_font(
 def set_ticklabel_font(
     fig: go.Figure,
     font: str = DEFAULT_FONT_PLOTLY,
-    font_size: Union[float, None] = None,
-    row: Union[int, None] = None,
-    col: Union[int, None] = None,
+    font_size: float | None = None,
+    row: int | None = None,
+    col: int | None = None,
 ) -> None:
     """Sets the font and font size of the ticklabels for the given axes.
 
@@ -368,7 +368,7 @@ def set_ticklabel_font(
 
 
 def set_xticklabel_monospaced(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Sets the font of the x-axis ticklabels to the default monospace font.
 
@@ -381,7 +381,7 @@ def set_xticklabel_monospaced(
 
 
 def set_yticklabel_monospaced(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Sets the font of the y-axis ticklabels to the default monospace font.
 
@@ -394,7 +394,7 @@ def set_yticklabel_monospaced(
 
 
 def set_zticklabel_monospaced(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Sets the font of the z-axis ticklabels to the default monospace font.
 
@@ -407,7 +407,7 @@ def set_zticklabel_monospaced(
 
 
 def set_colorbar_ticklabel_monospaced(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Sets the font of the colorbar ticklabels to the default monospace font.
 
@@ -425,7 +425,7 @@ def set_colorbar_ticklabel_monospaced(
 
 
 def set_ticklabel_monospaced(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Sets the font of all ticklabels to the default monospace font.
 
@@ -442,9 +442,7 @@ def set_ticklabel_monospaced(
         set_colorbar_ticklabel_monospaced(fig, row, col)
 
 
-def capitalize_xticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_xticklabels(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes the x-axis ticklabels.
 
     Args:
@@ -468,9 +466,7 @@ def capitalize_xticklabels(
         fig.update_xaxes(ticktext=capitalized_ticklabels, row=row, col=col)
 
 
-def capitalize_yticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_yticklabels(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes the y-axis ticklabels if all letters are lowercase.
 
     Args:
@@ -494,9 +490,7 @@ def capitalize_yticklabels(
         fig.update_yaxes(ticktext=capitalized_ticklabels, row=row, col=col)
 
 
-def capitalize_zticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_zticklabels(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes the z-axis ticklabels if all letters are lowercase.
 
     Args:
@@ -513,9 +507,7 @@ def capitalize_zticklabels(
         )
 
 
-def capitalize_ticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_ticklabels(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes ticklabels for the x- and y-axes, and z-axis if applicable,
     if all letters are lowercase.
 
@@ -531,7 +523,7 @@ def capitalize_ticklabels(
 
 
 def add_commas_to_xaxis_ticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Adds commas to the x-axis ticklabels.
 
@@ -547,7 +539,7 @@ def add_commas_to_xaxis_ticklabels(
 
 
 def add_commas_to_yaxis_ticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Adds commas to the y-axis ticklabels.
 
@@ -563,7 +555,7 @@ def add_commas_to_yaxis_ticklabels(
 
 
 def add_commas_to_zaxis_ticklabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Adds commas to the z-axis ticklabels.
 
@@ -576,7 +568,7 @@ def add_commas_to_zaxis_ticklabels(
 
 
 def add_commas_to_axis_tick_labels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Adds commas to the numbers used for axis ticklabels.
 
@@ -593,9 +585,7 @@ def add_commas_to_axis_tick_labels(
         add_commas_to_zaxis_ticklabels(fig, row, col)
 
 
-def set_xaxis_categorical(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def set_xaxis_categorical(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Sets the style of the x-axis to a categorical axis by removing ticks.
 
     Args:
@@ -610,9 +600,7 @@ def set_xaxis_categorical(
         fig.update_xaxes(ticks="", row=row, col=col)
 
 
-def set_yaxis_categorical(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def set_yaxis_categorical(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Sets the style of the y-axis to a categorical axis by removing ticks.
 
     Args:
@@ -627,9 +615,7 @@ def set_yaxis_categorical(
         fig.update_yaxes(ticks="", row=row, col=col)
 
 
-def set_zaxis_categorical(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def set_zaxis_categorical(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Sets the style of the z-axis to a categorical axis by removing ticks.
 
     Args:
@@ -640,9 +626,7 @@ def set_zaxis_categorical(
     fig.update_scenes(zaxis_ticks="", row=row, col=col)
 
 
-def set_axes_categorical(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def set_axes_categorical(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Sets all axes to categorical axes by removing ticks.
 
     Args:
@@ -656,9 +640,7 @@ def set_axes_categorical(
         set_zaxis_categorical(fig, row, col)
 
 
-def capitalize_ylabel(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_ylabel(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes the y-axis label if all letters are lowercase.
 
     Args:
@@ -680,9 +662,7 @@ def capitalize_ylabel(
             fig.update_yaxes(title_text=label.capitalize(), row=row, col=col)
 
 
-def capitalize_xlabel(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_xlabel(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes the x-axis label if all letters are lowercase.
 
     Args:
@@ -704,9 +684,7 @@ def capitalize_xlabel(
             fig.update_xaxes(title_text=label.capitalize(), row=row, col=col)
 
 
-def capitalize_zlabel(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_zlabel(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes the z-axis label if all letters are lowercase.
 
     Args:
@@ -720,7 +698,7 @@ def capitalize_zlabel(
 
 
 def capitalize_colorbar_label(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
+    fig: go.Figure, row: int | None = None, col: int | None = None
 ) -> None:
     """Capitalizes the colorbar label if all letters are lowercase.
 
@@ -735,9 +713,7 @@ def capitalize_colorbar_label(
         fig.update_coloraxes(colorbar_title_text=new_label, row=row, col=col)
 
 
-def capitalize_axislabels(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def capitalize_axislabels(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Capitalizes all axis labels if all letters are lowercase.
 
     Args:
@@ -753,9 +729,7 @@ def capitalize_axislabels(
         capitalize_colorbar_label(fig, row, col)
 
 
-def hide_yaxis_ticks(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_yaxis_ticks(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the ticks and ticklabels on the y-axis.
 
     Args:
@@ -768,9 +742,7 @@ def hide_yaxis_ticks(
         fig.update_scenes(yaxis_ticks="", yaxis_showticklabels=False, row=row, col=col)
 
 
-def hide_xaxis_ticks(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_xaxis_ticks(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the ticks and ticklabelson the x-axis.
 
     Args:
@@ -783,9 +755,7 @@ def hide_xaxis_ticks(
         fig.update_scenes(xaxis_ticks="", xaxis_showticklabels=False, row=row, col=col)
 
 
-def hide_zaxis_ticks(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_zaxis_ticks(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the ticks and ticklabels on the z-axis.
 
     Args:
@@ -796,7 +766,7 @@ def hide_zaxis_ticks(
     fig.update_scenes(zaxis_ticks="", zaxis_showticklabels=False, row=row, col=col)
 
 
-def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None) -> None:
+def hide_ticks(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the ticks and ticklabels on all axes.
 
     Args:
@@ -810,9 +780,7 @@ def hide_ticks(fig: go.Figure, row: Union[int, None] = None, col: Union[int, Non
         hide_zaxis_ticks(fig, row, col)
 
 
-def hide_yaxis_line(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_yaxis_line(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the y-axis line.
 
     Args:
@@ -826,9 +794,7 @@ def hide_yaxis_line(
         fig.update_yaxes(showline=False, row=row, col=col)
 
 
-def hide_xaxis_line(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_xaxis_line(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the x-axis line.
 
     Args:
@@ -842,9 +808,7 @@ def hide_xaxis_line(
         fig.update_xaxes(showline=False, row=row, col=col)
 
 
-def hide_zaxis_line(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_zaxis_line(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides the z-axis line.
 
     Args:
@@ -855,9 +819,7 @@ def hide_zaxis_line(
     fig.update_scenes(zaxis_showline=False, row=row, col=col)
 
 
-def hide_axis_lines(
-    fig: go.Figure, row: Union[int, None] = None, col: Union[int, None] = None
-) -> None:
+def hide_axis_lines(fig: go.Figure, row: int | None = None, col: int | None = None) -> None:
     """Hides all axis lines.
 
     Args:
@@ -906,10 +868,10 @@ def get_arcadia_styles() -> dict[str, Any]:
 
 def style_plot(
     fig: go.Figure,
-    monospaced_axes: Union[AxisSelector, None] = None,
-    categorical_axes: Union[AxisSelector, None] = None,
-    row: Union[int, None] = None,
-    col: Union[int, None] = None,
+    monospaced_axes: AxisSelector | None = None,
+    categorical_axes: AxisSelector | None = None,
+    row: int | None = None,
+    col: int | None = None,
 ) -> None:
     """Styles the plot according to Arcadia's style guide.
 

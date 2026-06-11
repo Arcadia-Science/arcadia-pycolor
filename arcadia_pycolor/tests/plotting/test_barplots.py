@@ -102,7 +102,11 @@ def plot_vertical_barplot_with_matplotlib_with_categories(ax):
     """
     sample_categories = [sample_id.split(" ")[0] for sample_id in BARPLOT_SAMPLE_IDS]
     category_to_color = dict(
-        zip(set(sample_categories), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose])
+        zip(
+            set(sample_categories),
+            [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose],
+            strict=False,
+        )
     )
     colors = [category_to_color[category] for category in sample_categories]
 
@@ -158,7 +162,11 @@ def plot_vertical_barplot_with_seaborn_with_categories(ax):
     """
     sample_categories = [sample_id.split(" ")[0] for sample_id in BARPLOT_SAMPLE_IDS]
     category_to_color = dict(
-        zip(set(sample_categories), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose])
+        zip(
+            set(sample_categories),
+            [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose],
+            strict=False,
+        )
     )
 
     sns.barplot(
@@ -232,7 +240,9 @@ def plot_vertical_barplot_with_plotly_with_categories():
     color_dict = {
         label: color
         for label, color in zip(
-            set(color_labels), [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose]
+            set(color_labels),
+            [apc.aster, apc.aegean, apc.amber, apc.seaweed, apc.rose],
+            strict=False,
         )
     }
     fig = px.bar(

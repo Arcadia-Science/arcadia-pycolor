@@ -2,7 +2,7 @@ import logging
 import re
 import sys
 from pathlib import Path
-from typing import Any, Literal, Union, cast
+from typing import Any, Literal, cast
 
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
@@ -64,7 +64,7 @@ SAVEFIG_KWARGS_WEB = dict(dpi=BASE_DPI, pad_inches=FIGURE_PADDING_INCHES)
 SAVEFIG_KWARGS_PRINT = dict(dpi=PRINT_DPI, pad_inches=FIGURE_PADDING_INCHES)
 
 
-def _try_get_current_axes(axes: Union[Axes, None] = None) -> Axes:
+def _try_get_current_axes(axes: Axes | None = None) -> Axes:
     """Returns the current axes using `plt.gca()` if no axes are provided.
 
     Otherwise, returns the provided axes.
@@ -171,7 +171,7 @@ def _fix_svg_fonts_for_illustrator(filename: str) -> None:
 def save_figure(
     filepath: str,
     size: FigureSize,
-    filetypes: Union[list[str], None] = None,
+    filetypes: list[str] | None = None,
     context: Literal["web", "print"] = "web",
     **savefig_kwargs: Any,
 ) -> None:
@@ -252,7 +252,7 @@ def save_figure(
 
 
 def set_yticklabel_font(
-    axes: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+    axes: Axes | None = None, font: str = DEFAULT_FONT, font_size: float | None = None
 ) -> None:
     """Sets the font and font size of the y-axis tick labels.
 
@@ -273,7 +273,7 @@ def set_yticklabel_font(
 
 
 def set_xticklabel_font(
-    axes: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+    axes: Axes | None = None, font: str = DEFAULT_FONT, font_size: float | None = None
 ) -> None:
     """Sets the font and font size of the x-axis tick labels.
 
@@ -294,7 +294,7 @@ def set_xticklabel_font(
 
 
 def set_ticklabel_font(
-    axes: Union[Axes, None] = None, font: str = DEFAULT_FONT, font_size: Union[float, None] = None
+    axes: Axes | None = None, font: str = DEFAULT_FONT, font_size: float | None = None
 ) -> None:
     """Sets the font and font size of the ticklabels for the given axes.
 
@@ -311,19 +311,19 @@ def set_ticklabel_font(
     set_yticklabel_font(ax, font, font_size)
 
 
-def set_xticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+def set_xticklabel_monospaced(axes: Axes | None = None) -> None:
     """Sets the font of the x-axis ticklabels to a monospace font."""
     ax = _try_get_current_axes(axes)
     set_xticklabel_font(ax, MONOSPACE_FONT, MONOSPACE_FONT_SIZE)
 
 
-def set_yticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+def set_yticklabel_monospaced(axes: Axes | None = None) -> None:
     """Sets the font of the y-axis ticklabels to a monospace font."""
     ax = _try_get_current_axes(axes)
     set_yticklabel_font(ax, MONOSPACE_FONT, MONOSPACE_FONT_SIZE)
 
 
-def set_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+def set_ticklabel_monospaced(axes: Axes | None = None) -> None:
     """Sets the font of both the x- and y-axis ticklabels to a monospace font."""
     ax = _try_get_current_axes(axes)
 
@@ -331,7 +331,7 @@ def set_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
     set_yticklabel_monospaced(ax)
 
 
-def capitalize_xticklabels(axes: Union[Axes, None] = None) -> None:
+def capitalize_xticklabels(axes: Axes | None = None) -> None:
     """Capitalizes the x-axis ticklabels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
@@ -343,7 +343,7 @@ def capitalize_xticklabels(axes: Union[Axes, None] = None) -> None:
     ax.set_xticklabels(xticklabels)
 
 
-def capitalize_yticklabels(axes: Union[Axes, None] = None) -> None:
+def capitalize_yticklabels(axes: Axes | None = None) -> None:
     """Capitalizes the y-axis ticklabels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
@@ -355,7 +355,7 @@ def capitalize_yticklabels(axes: Union[Axes, None] = None) -> None:
     ax.set_yticklabels(yticklabels)
 
 
-def capitalize_ticklabels(axes: Union[Axes, None] = None) -> None:
+def capitalize_ticklabels(axes: Axes | None = None) -> None:
     """Capitalizes both the x- and y-axis ticklabels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
@@ -363,7 +363,7 @@ def capitalize_ticklabels(axes: Union[Axes, None] = None) -> None:
     capitalize_xticklabels(ax)
 
 
-def add_commas_to_axis_tick_labels(axes: Union[XAxis, YAxis]) -> None:
+def add_commas_to_axis_tick_labels(axes: XAxis | YAxis) -> None:
     """Adds commas to the numbers used for axis ticklabels.
 
     For example, transform 1000000 to 1,000,000.
@@ -371,7 +371,7 @@ def add_commas_to_axis_tick_labels(axes: Union[XAxis, YAxis]) -> None:
     axes.set_major_formatter(mpl.ticker.FuncFormatter(lambda x, _: format(int(x), ",")))  # type: ignore
 
 
-def set_xaxis_categorical(axes: Union[Axes, None] = None) -> None:
+def set_xaxis_categorical(axes: Axes | None = None) -> None:
     """Sets the style of the x-axis to a categorical axis, removing ticks and adjusting padding."""
     ax = _try_get_current_axes(axes)
 
@@ -383,7 +383,7 @@ def set_xaxis_categorical(axes: Union[Axes, None] = None) -> None:
     )
 
 
-def set_yaxis_categorical(axes: Union[Axes, None] = None) -> None:
+def set_yaxis_categorical(axes: Axes | None = None) -> None:
     """Sets the style of the y-axis to a categorical axis, removing ticks and adjusting padding."""
     ax = _try_get_current_axes(axes)
 
@@ -395,7 +395,7 @@ def set_yaxis_categorical(axes: Union[Axes, None] = None) -> None:
     )
 
 
-def set_axes_categorical(axes: Union[Axes, None] = None) -> None:
+def set_axes_categorical(axes: Axes | None = None) -> None:
     """Sets the style of both the x and y axes to categorical axes."""
     ax = _try_get_current_axes(axes)
 
@@ -403,7 +403,7 @@ def set_axes_categorical(axes: Union[Axes, None] = None) -> None:
     set_yaxis_categorical(ax)
 
 
-def capitalize_ylabel(axes: Union[Axes, None] = None) -> None:
+def capitalize_ylabel(axes: Axes | None = None) -> None:
     """Capitalizes the y-axis label if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
@@ -412,7 +412,7 @@ def capitalize_ylabel(axes: Union[Axes, None] = None) -> None:
         ax.set_ylabel(ylabel.capitalize())
 
 
-def capitalize_xlabel(axes: Union[Axes, None] = None) -> None:
+def capitalize_xlabel(axes: Axes | None = None) -> None:
     """Capitalizes the x-axis label if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
@@ -421,7 +421,7 @@ def capitalize_xlabel(axes: Union[Axes, None] = None) -> None:
         ax.set_xlabel(xlabel.capitalize())
 
 
-def capitalize_axislabels(axes: Union[Axes, None] = None) -> None:
+def capitalize_axislabels(axes: Axes | None = None) -> None:
     """Capitalizes both the x and y axis labels if all letters are lowercase."""
     ax = _try_get_current_axes(axes)
 
@@ -463,7 +463,7 @@ def style_legend(legend: Legend) -> None:
     justify_legend_text(legend)
 
 
-def set_colorbar_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
+def set_colorbar_ticklabel_monospaced(axes: Axes | None = None) -> None:
     """Set the font of the colorbar tick labels to the default monospace font."""
     ax = _try_get_current_axes(axes)
     if cbar := ax.collections[0].colorbar:  # type: ignore
@@ -471,7 +471,7 @@ def set_colorbar_ticklabel_monospaced(axes: Union[Axes, None] = None) -> None:
 
 
 def style_plot(
-    axes: Union[Axes, None] = None,
+    axes: Axes | None = None,
     monospaced_axes: Literal["x", "y", "both", "all", None] = None,
     categorical_axes: Literal["x", "y", "both", "all", None] = None,
     colorbar_exists: bool = False,
@@ -612,7 +612,7 @@ def load_colors() -> None:
     mpl.cm.colors.get_named_colors_mapping().update(colors)  # type: ignore
 
 
-def load_fonts(font_dirpath: Union[str, None] = None) -> None:
+def load_fonts(font_dirpath: str | None = None) -> None:
     """Detects the fonts installed on the system and loads them into matplotlib.
 
     Args:
@@ -659,7 +659,7 @@ def load_colormaps() -> None:
             list(arcadia_pycolor.palettes.__dict__.values())
             + list(arcadia_pycolor.gradients.__dict__.values())
         )
-        if isinstance(object, (Palette, Gradient))
+        if isinstance(object, Palette | Gradient)
     ]
 
     for arcadia_colormap in arcadia_colormaps:
@@ -679,7 +679,7 @@ def load_styles() -> None:
     plt.rcParams.update(ARCADIA_MATPLOTLIB_RC_PARAMS)
 
 
-def setup(font_dirpath: Union[str, None] = None) -> None:
+def setup(font_dirpath: str | None = None) -> None:
     """Loads all Arcadia colors, fonts, styles, and colormaps into matplotlib."""
     load_colors()
     load_fonts(font_dirpath)

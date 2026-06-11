@@ -71,7 +71,7 @@ class Gradient:
         if values is not None:
             if len(values) < 2:
                 raise ValueError("A gradient must have at least two values.")
-            if not all(isinstance(value, (int, float)) for value in values):
+            if not all(isinstance(value, int | float) for value in values):
                 raise ValueError("All values must be integers or floats.")
             if not all(0 <= value <= 1 for value in values):
                 raise ValueError("All values must be between 0 and 1.")
@@ -83,7 +83,9 @@ class Gradient:
         else:
             anchor_values = distribute_values(len(colors))
 
-        self.anchors = [Anchor(color, value) for color, value in zip(colors, anchor_values)]
+        self.anchors = [
+            Anchor(color, value) for color, value in zip(colors, anchor_values, strict=False)
+        ]
 
     @property
     def anchor_colors(self) -> list[HexCode]:

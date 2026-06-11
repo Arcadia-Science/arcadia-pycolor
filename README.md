@@ -20,26 +20,17 @@ For detailed documentation about the package and links to example plots, see the
 
 ### Environment setup
 
-We use poetry to manage dependencies and packaging. First, create a new conda environment and install poetry:
+We use [uv](https://docs.astral.sh/uv/) to manage dependencies and packaging. If you don't already have it installed, see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+Install dependencies (including the development dependencies) and the package itself into a managed virtual environment with a single command:
 
 ```bash
-conda env create -n arcadia-pycolor -f envs/dev.yml
-conda activate arcadia-pycolor
+uv sync
 ```
 
-Then, install dependencies, including the development dependencies:
+This creates a `.venv` directory, installs the matching Python version (from `.python-version`), and installs `arcadia_pycolor` in editable mode. Prefix commands with `uv run` (e.g. `uv run pytest`) to run them inside this environment without activating it.
 
-```bash
-poetry install --no-root --with=dev
-```
-
-Finally, install the package in editable mode:
-
-```bash
-pip install -e .
-```
-
-The Plotly image-export tests require Chrome, which Kaleido (v1+) no longer bundles. If it isn't already installed, run `plotly_get_chrome` once before running the test suite (see the [Plotly quickstart](docs/plotly_quickstart.md#chrome-requirement-for-static-image-export) for details).
+The Plotly image-export tests require Chrome, which Kaleido (v1+) no longer bundles. If it isn't already installed, run `uv run plotly_get_chrome` once before running the test suite (see the [Plotly quickstart](docs/plotly_quickstart.md#chrome-requirement-for-static-image-export) for details).
 
 ### Testing
 
@@ -115,7 +106,7 @@ Building arcadia-pycolor (0.1.0)
   - Building wheel
 ```
 
-__Make sure that the version number matches the one from the git tag that you just created.__ If it does not, double-check that you created the git tag correctly. If the version number is `0.0.0`, this indicates that Poetry is failing to infer any version number at all. Check that you are in the correct conda environment and that you have installed the dev dependencies using `poetry install --no-root --with=dev`.
+__Make sure that the version number matches the one from the git tag that you just created.__ If it does not, double-check that you created the git tag correctly. If the version number is `0.0.0`, this indicates that hatch-vcs is failing to infer any version number at all. Check that your environment is set up with `uv sync` and that your local checkout includes the git tag (the full git history must be available).
 
 Next, test that you can publish the package to the PyPI test server:
 
@@ -123,7 +114,7 @@ Next, test that you can publish the package to the PyPI test server:
 make build-and-test-publish
 ```
 
-This command calls `poetry build` to build the package and then `poetry publish` to upload the build artifacts to the test server.
+This command calls `uv build` to build the package and then `uv publish` to upload the build artifacts to the test server.
 
 Note: the build artifacts are also written to the `dist/` directory.
 
