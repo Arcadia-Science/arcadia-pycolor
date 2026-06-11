@@ -92,8 +92,16 @@ no-lines-before = ["future", "standard-library"]
 typeCheckingMode = "basic"
 include = ["."]
 
+# Setting `exclude` overrides pyright's default excludes, so we must list them explicitly
+# (otherwise pyright would type-check the uv-managed `.venv` and other generated directories).
 # TODO: add type hints for the tests.
-exclude = ["**/tests/**"]
+exclude = [
+    "**/tests/**",
+    "**/node_modules",
+    "**/__pycache__",
+    ".venv",
+    "dist",
+]
 
 # Pyright reports a lot of unknown-member errors for matplotlib objects.
 # For now, rather than add even more `type: ignore` comments, we'll just disable these errors.
