@@ -26,6 +26,7 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
       - name: Install Python
+        id: setup-python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
@@ -34,7 +35,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.local
-          key: poetry-1.8.3-0
+          # Include the Python version in the key: the cached Poetry venv is linked
+          # against a specific libpython, so it must be invalidated when Python changes.
+          key: poetry-1.8.3-py${{ steps.setup-python.outputs.python-version }}-0
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
