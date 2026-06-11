@@ -13,7 +13,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:      
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         # Fetching the full git history is necessary because poetry's dynamic versioning extension
         # requires it, and this extension is run even when the package is pip-installed locally
         # (as we do below).
@@ -27,12 +27,12 @@ jobs:
 
       - name: Install Python
         id: setup-python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
       - name: Cache Poetry install
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.local
           # Include the Python version in the key: the cached Poetry venv is linked
@@ -48,7 +48,7 @@ jobs:
 
       - name: Cache Poetry dependencies
         id: cache-deps-2025-05-29
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: .venv
           key: pydeps-${{ hashFiles('**/poetry.lock') }}
