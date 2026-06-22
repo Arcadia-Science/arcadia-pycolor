@@ -252,10 +252,12 @@ class Gradient:
             if adjusted_values and v <= adjusted_values[-1]:
                 v = adjusted_values[-1] + epsilon
             adjusted_values.append(v)
+
         colors = [
-            (v, anchor.color.hex_code) for v, anchor in zip(adjusted_values, self.anchors,
-                                                            strict=True)
+            (v, anchor.color.hex_code)
+            for v, anchor in zip(adjusted_values, self.anchors, strict=True)
         ]
+        
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,
             colors=colors,
