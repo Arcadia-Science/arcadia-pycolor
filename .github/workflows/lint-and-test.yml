@@ -13,7 +13,7 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         # Fetching the full git history is necessary because hatch-vcs derives the package version
         # from git tags, and this runs even when the package is installed locally (as we do below).
         with:
