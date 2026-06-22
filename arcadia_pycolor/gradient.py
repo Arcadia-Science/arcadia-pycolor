@@ -237,8 +237,24 @@ class Gradient:
         )
 
     def to_mpl_cmap(self) -> mcolors.LinearSegmentedColormap:
-        """Converts the gradient to a matplotlib colormap."""
-        colors = [(anchor.value, anchor.color.hex_code) for anchor in self.anchors]
+        """Converts the gradient to a matplotlib colormap.
+
+        Diverging gradients (built by concatenating two gradients with ``+``) store
+        the shared midpoint color at position 0.5 in *both* halves, resulting in a
+        duplicate anchor value.  ``LinearSegmentedColormap.from_list`` requires
+        strictly increasing positions, so any duplicate is nudged forward by a
+        negligible epsilon before the colormap is constructed.
+        """
+        epsilon = 1e-10
+        adjusted_values: list[float] = []
+        for anchor in self.anchors:
+            v = anchor.value
+            if adjusted_values and v <= adjusted_values[-1]:
+                v = adjusted_values[-1] + epsilon
+            adjusted_values.append(v)
+        colors = [
+            (v, anchor.color.hex_code) for v, anchor in zip(adjusted_values, self.anchors)
+        ]
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,
             colors=colors,
