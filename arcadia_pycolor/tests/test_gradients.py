@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 
+import arcadia_pycolor as apc
 from arcadia_pycolor import Gradient, HexCode
 from arcadia_pycolor.colors import black, white
 
@@ -196,3 +197,28 @@ def test_gradient_anchor_properties():
     # Check parent properties.
     assert gradient.anchor_colors == colors
     assert gradient.anchor_values == values
+
+
+def test_diverging_gradient_to_mpl_cmap_no_duplicate_anchor():
+    """Regression: diverging gradients must not crash LinearSegmentedColormap.from_list.
+
+    The ``+`` operator shares the midpoint color in both halves, which produced a
+    duplicate position value (0.5 twice) before the epsilon fix in to_mpl_cmap().
+    """
+    left = Gradient("left", [HexCode("red", "#FF0000"), HexCode("white", "#FFFFFF")])
+    right = Gradient("right", [HexCode("white", "#FFFFFF"), HexCode("blue", "#0000FF")])
+    diverging = left + right
+    # Must not raise ValueError from matplotlib.
+    cmap = diverging.to_mpl_cmap()
+    assert cmap is not None
+
+
+@pytest.mark.parametrize(
+    "gradient",
+    [apc.gradients.orange_sage, apc.gradients.red_blue, apc.gradients.purple_green],
+    ids=["orange_sage", "red_blue", "purple_green"],
+)
+def test_builtin_diverging_gradients_to_mpl_cmap(gradient):
+    """Regression: all built-in diverging gradients must convert to a matplotlib colormap."""
+    cmap = gradient.to_mpl_cmap()
+    assert cmap is not None
