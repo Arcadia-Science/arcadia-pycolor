@@ -257,7 +257,7 @@ class Gradient:
             (v, anchor.color.hex_code)
             for v, anchor in zip(adjusted_values, self.anchors, strict=True)
         ]
-        
+
         return mcolors.LinearSegmentedColormap.from_list(
             self.name,
             colors=colors,
