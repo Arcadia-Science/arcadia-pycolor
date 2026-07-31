@@ -111,4 +111,7 @@ reportUnknownMemberType = false
 filterwarnings = [
     # Ignore deprecation warnings for Plotly.
     'ignore:.* is deprecated!:DeprecationWarning',
+    # colorspacious uses invalid escape sequences in docstrings (e.g. `\Delta`).
+    'ignore:invalid escape sequence:SyntaxWarning',
+    'ignore:invalid escape sequence:DeprecationWarning',
 ]
