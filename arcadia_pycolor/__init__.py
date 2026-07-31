@@ -6,8 +6,10 @@ from .gradient import Gradient
 from .hexcode import HexCode
 from .palette import Palette
 
-# This is a placeholder that will be replaced by the version number at build time.
-__version__ = "0.0.0"
+try:
+    from ._version import __version__
+except ImportError:
+    __version__ = "0.0.0"
 
 __all__ = [
     "cvd",

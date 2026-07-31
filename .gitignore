@@ -77,7 +77,7 @@ venv/
 # OS
 .DS_Store
 
-# written by setuptools_scm
+# written by hatch-vcs
 **/_version.py
 
 # Nextflow related folders and files
