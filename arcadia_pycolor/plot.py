@@ -1,16 +1,12 @@
-import warnings
 from typing import cast
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=SyntaxWarning, module="colorspacious")
-    from colorspacious import cspace_converter  # type: ignore
 from matplotlib.figure import Figure
 from numpy.typing import NDArray
 
+from arcadia_pycolor._colorspacious import cspace_converter
 from arcadia_pycolor.gradient import Gradient
 from arcadia_pycolor.gradients import all_gradients
 from arcadia_pycolor.palettes import all_palettes
